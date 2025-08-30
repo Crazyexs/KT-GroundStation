@@ -1,0 +1,51 @@
+{
+    "port": 1234,
+    "key":{
+        "0": {
+            "map": {
+                "lat": 37.5665,
+                "lng": 126.9780,
+                "zoom": 12
+            },
+            "state": [
+                "STARTUP",
+                "IDLE_SAFE",
+                "ARMED",
+                "PAD_PREOP",
+                "POWERED",
+                "COASTING",
+                "DROG_DEPL",
+                "DROG_DESC",
+                "MAIN_DEPL",
+                "MAIN_DESC",
+                "LANDED",
+                "REC_SAFE"
+            ]
+        },
+        "1": {
+            "map": {
+                "lat": 37.5665,
+                "lng": 126.9780,
+                "zoom": 12
+            },
+            "state": [
+                "STARTUP",
+                "IDLE_SAFE",
+                "ARMED",
+                "PAD_PREOP",
+                "POWERED",
+                "COASTING",
+                "DROG_DEPL",
+                "DROG_DESC",
+                "MAIN_DEPL",
+                "MAIN_DESC",
+                "LANDED",
+                "REC_SAFE"
+            ]
+        }
+    },
+    "plot": {
+        "x": "time",
+        "y": "value"
+    }
+}
