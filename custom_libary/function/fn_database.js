@@ -1,14 +1,15 @@
 /* Dowload CSV file */
 let app,Parser,fs,sqlite3,callbackify;
+let data;
 
-export function configureCSVDownload(expression,db){
+export function configureDatabase(expression){
   app = expression.app;
   Parser = expression.Parser;
   fs = expression.fs;
   sqlite3 = expression.sqlite3;
   callbackify = expression.callbackify;
-  db = db;
 }
+
 export function setupDownloadRoutes() {
   app.get('/download_sensor',async (req, res) => {
     const tempFolder = path.join('./', 'temp_csv');
@@ -20,21 +21,23 @@ export function setupDownloadRoutes() {
 
     const promises = [];
 
-    for (const [name, database] of Object.entries(db.sensor)) {
-      const p = dbAll(database, `SELECT * FROM ${name}`).then(rows => {
-        const csv = new Parser().parse(rows);
-        fs.writeFileSync(path.join(tempFolder, `${name}.csv`), csv);
-      });
-      promises.push(p);
+    for(const [boardNumber, value] of Object.values(data)) {
+      db = value.db;
+      for (const [name, database] of Object.entries(db.sensor)) {
+        const p = dbAll(database, `SELECT * FROM ${name}`).then(rows => {
+          const csv = new Parser().parse(rows);
+          fs.writeFileSync(path.join(tempFolder, `${name}.csv`), csv);
+        });
+        promises.push(p);
+      }
+      for (const [name, database] of Object.entries(db.command)) {
+        const p = dbAll(database, `SELECT * FROM ${name}`).then(rows => {
+          const csv = new Parser().parse(rows);
+          fs.writeFileSync(path.join(tempFolder, `${name}.csv`), csv);
+        });
+        promises.push(p);
+      }
     }
-    for (const [name, database] of Object.entries(db.command)) {
-      const p = dbAll(database, `SELECT * FROM ${name}`).then(rows => {
-        const csv = new Parser().parse(rows);
-        fs.writeFileSync(path.join(tempFolder, `${name}.csv`), csv);
-      });
-      promises.push(p);
-    }
-
     await Promise.all(promises); // wait until all CSVs are written
 
     res.setHeader('Content-Type', 'application/zip');
@@ -52,11 +55,17 @@ export function setupDownloadRoutes() {
   });
 }
 
+
 export function resetDatabase(){
-  for (const [name, database] of Object.entries(db.sensor)) {
-    database.run("DELETE FROM " + name);
-  }
-  for (const [name, database] of Object.entries(db.command)) {
-    database.run("DELETE FROM " + name);
-  }
+  app.post('/reset-db', (req, res) => {
+    for (const [name, database] of Object.entries(data)) {
+      database.sensor.run("DELETE FROM " + name);
+      database.command.run("DELETE FROM " + name);
+    }
+    res.send("Database reset");
+  });
+}
+
+export function syncData_database(dataIn){
+  data = dataIn;
 }

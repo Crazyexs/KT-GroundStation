@@ -1,5 +1,7 @@
-const { SerialPort } = require('serialport');
-const { ReadlineParser } = require('@serialport/parser-readline');
+import { SerialPort } from 'serialport';
+import { ReadlineParser } from '@serialport/parser-readline';
+import { callbackify } from 'node:util';
+
 const listPortsCb = callbackify(SerialPort.list);
 
-module.exports = { SerialPort, ReadlineParser, listPortsCb };
+export { SerialPort, ReadlineParser, listPortsCb };

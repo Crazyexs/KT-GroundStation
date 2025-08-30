@@ -1,6 +1,4 @@
-import { Database } from "sqlite3";
-
-let SerialPort, Parser, fs, sqlite3, callbackify, db;
+let SerialPort, Parser, fs, sqlite3, callbackify;
 let data;
 
 function changeDataType(dataIn,dataType){
@@ -16,10 +14,15 @@ function changeDataType(dataIn,dataType){
     }
 }
 
-export function configureSerialPort(config) {
+export function configureSerial(expression) {
+    SerialPort = expression.SerialPort;
+    Parser = expression.ReadlineParser;
+    fs = expression.fs;
+    sqlite3 = expression.sqlite3;
+    callbackify = expression.callbackify;
 }
 
-export function reconnectPort(boardNumber) {
+function reconnectPort(boardNumber) {
     return new Promise((resolve) => {
         const interval = setInterval(() => {
             if (data[boardNumber].connectOrNot === true) {
@@ -30,7 +33,7 @@ export function reconnectPort(boardNumber) {
     });
 }
 
-export function run_port(boardNumber){
+function run_port(boardNumber){
     reconnectPort(boardNumber).then((boardNumber) => {
         console.log(`Opening port: ${data[boardNumber].COM_PORT}`);
 

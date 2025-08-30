@@ -1,4 +1,4 @@
-const { callbackify } = require('node:util');
-const { connect } = require('node:http2');
+import { callbackify } from 'node:util';
+import { connect } from 'node:http2';
 
-module.exports = { callbackify, connect };
+export { callbackify, connect };

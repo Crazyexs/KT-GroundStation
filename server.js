@@ -1,29 +1,25 @@
 /*server.js */
-  
+
+  // import modules
+import path from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
+
   // directory
 const dir = { init: "./custom_libary/__init__/",
   function: "./custom_libary/function/",
-  config: "./custom_libary/config/"
+  config: "./config/"
 }
 
   // expression
 let expression = {};
 
-  // read config
-const data_setting = require(dir.config + 'data_setting.json');
-const setting = require(dir.config + 'setting.json');
-
-const config = {
-  "data_setting": data_setting,
-  "setting": setting
-}
-
   // import express
-import { callbackify, connect } from dir.init + 'node_init.js';
-import { express, app, server, io } from dir.init + 'server_init.js';
-import { Parser_db, fs, sqlite3,db} from dir.init + 'db_init.js';
-import { SerialPort, ReadlineParser, listPortsCb } from dir.init + 'serial_init.js';
+const { callbackify, connect } = await import(`${dir.init}node_init.js`);
+const { express, app, server, io } = await import(`${dir.init}server_init.js`);
+const { Parser_db, fs, sqlite3, db } = await import(`${dir.init}db_init.js`);
+const { SerialPort, ReadlineParser, listPortsCb } = await import(`${dir.init}serial_init.js`);
 
+  // assign expression
 expression.callbackify = callbackify;
 expression.connect = connect;
 expression.express = express;
@@ -33,53 +29,78 @@ expression.io = io;
 expression.Parser_db = Parser_db;
 expression.fs = fs;
 expression.sqlite3 = sqlite3;
+expression.SerialPort = SerialPort;
 expression.ReadlineParser = ReadlineParser;
 expression.listPortsCb = listPortsCb;
 
-  // import init function
-import {initializeServer} from dir.init + 'server_init.js';
-import {initializeDatabase} from dir.init + 'db_init.js';
+console.log('Setup expression success');
 
-  // import function  
-import { syncData_serial} from dir.function + "fn_serial";
-import { syncData_IO} from dir.function + "fn_IO";
+  // read config
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const data_setting = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, dir.config, 'data_setting.json'), 'utf-8')
+);
+const setting = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, dir.config, 'setting.json'), 'utf-8')
+);
+
+const config = {
+  "data_setting" : data_setting,
+  "setting" : setting
+};
+
+console.log('Config success', config);
+
+  // import init function
+const { initializeServer } = await import(`${dir.init}server_init.js`);
+const { initializeDatabase } = await import(`${dir.init}db_init.js`);
+
+console.log('import init function success');
+
+  // import function
+const { syncData_database, configureDatabase, setupDownloadRoutes, resetDatabase } = await import(`${dir.function}fn_database.js`);
+const { syncData_serial, configureSerial, startPort } = await import(`${dir.function}fn_serial.js`);
+const { syncData_IO, configureIO, setupIOroutes, sendPortAvailable } = await import(`${dir.function}fn_IO.js`);
+
+console.log('import function success');
 
   // import syncData
-import { initSyncData } from "./sync_data";
+const { initSyncData } = await import('./sync_data.js');
+
+console.log('import syncData success');
+
+  // initialize syncData
 let data = initSyncData(config.data_setting, db);
 
+console.log('initialize syncData success');
+
   // export syncData
+syncData_database(data);
 syncData_serial(data);
 syncData_IO(data);
 
+console.log('syncData success');
+
   // initialize
-initializeServer();
-initializeDatabase(config);
+initializeServer(config.setting);
+initializeDatabase(config.data_setting);
 
+console.log('initialize success');
 
+  // Config function
+configureDatabase(expression);
+configureSerial(expression);
+configureIO(expression);
 
+console.log('Config success');
 
+  // main
+setupDownloadRoutes();
+resetDatabase();
+startPort();
+setupIOroutes();
+sendPortAvailable();
 
-
-io.on('connection', (socket) => {
-  console.log('🌐 Web client connected');
-
-  socket.on('select-port', (data) => {
-    COM_PORT = data.port;
-    connectOrNot = data.connectOrNot;
-    console.log('🔄 Selected port from client:', COM_PORT);
-    console.log('🔄 Connect or Disconnect port:', connectOrNot);
-  });
-
-  socket.on('uplink', (msg) => {
-    console.log('🔄 Received command from client:', msg);
-
-    // คุณสามารถส่งคำสั่งนี้ออก serial port ได้ เช่น:
-    if (serial && serial.writable) {
-      serial.write(`cmd ${msg}\n`);
-    }
-    
-  });
-});
-
-reconnectPort();
+console.log('finish setup');
