@@ -1,4 +1,6 @@
-let SerialPort, Parser, fs, sqlite3, callbackify;
+const { dir } = await import('../../dir.js');
+
+const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb} = await import(`${dir.expression}`);
 let data;
 
 function changeDataType(dataIn,dataType){
@@ -12,14 +14,6 @@ function changeDataType(dataIn,dataType){
         default:
             return dataIn;
     }
-}
-
-export function configureSerial(expression) {
-    SerialPort = expression.SerialPort;
-    Parser = expression.ReadlineParser;
-    fs = expression.fs;
-    sqlite3 = expression.sqlite3;
-    callbackify = expression.callbackify;
 }
 
 function reconnectPort(boardNumber) {
@@ -37,7 +31,8 @@ function run_port(boardNumber){
     reconnectPort(boardNumber).then((boardNumber) => {
         console.log(`Opening port: ${data[boardNumber].COM_PORT}`);
 
-        boardData = data[boardNumber];
+        let boardData = data[boardNumber];
+        console.log(`Connect to Board ${boardNumber} baudRate:`, boardData.baudRate);
         boardData.serial = new SerialPort({ path: boardData.COM_PORT, baudRate: boardData.baudRate });
         boardData.parser = boardData.serial.pipe(new ReadlineParser({ delimiter: '\n' }));
 
@@ -50,7 +45,7 @@ function run_port(boardNumber){
             if (parts.length === Object.keys(boardData.data_format).length) {
                 
                 let dbData = {};
-                let IOData = {boardNumber : boardNumber};
+                let IOData = {"boardNumber" : boardNumber};
                 let i = 0
                 for (const [nameData, typeData] of Object.entries(boardData.data_format)) {
                     dbData.push(changeDataType(parts[i], typeData));
@@ -98,13 +93,13 @@ function run_port(boardNumber){
             if (connectOrNot === false) {
                 console.log(`🔌 Disconnecting serial ${boardNumber} as per user request...`);
                 if (parser) {
-                    serial.unpipe(parser);
+                    boardData.serial.unpipe(parser);
                     parser.removeAllListeners();
                     parser = null;
                 }
-                serial.removeAllListeners();
-                if (serial.isOpen) {
-                    serial.close((err) => {
+                boardData.serial.removeAllListeners();
+                if (boardData.serial.isOpen) {
+                    boardData.serial.close((err) => {
                     if (err) console.error(`Error closing Serial ${boardNumber}:`, err);
                     else console.log(`Serial ${boardNumber} port closed`);
                     run_port(boardNumber); // เรียกหลังปิด port
@@ -112,16 +107,16 @@ function run_port(boardNumber){
                 } else {
                     run_port(boardNumber); // ถ้า port ปิดอยู่แล้ว
                 }
-                serial = null;
+                boardData.serial = null;
             }
         });
 
-        serial.on('error', (err) => {
+        boardData.serial.on('error', (err) => {
             console.error(`❌ Serial ${boardNumber} Error:`, err.message);
             run_port(boardNumber);
         });
 
-        serial.on('close', () => {
+        boardData.serial.on('close', () => {
             console.warn(`⚠️ Serial ${boardNumber} port closed, reconnecting...`);
             run_port(boardNumber);
         });

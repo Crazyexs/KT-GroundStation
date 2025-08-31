@@ -5,35 +5,15 @@ import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 
   // directory
-const dir = { init: "./custom_libary_server/__init__/",
+const dir = { 
+  init: "./custom_libary_server/__init__/",
   function: "./custom_libary_server/function/",
-  config: "./config/"
-}
-
-  // expression
-let expression = {};
+  config: "./config/",
+  expression: "./custom_libary_server/expression.js"
+};
 
   // import express
-const { callbackify, connect } = await import(`${dir.init}node_init.js`);
-const { express, app, server, io } = await import(`${dir.init}server_init.js`);
-const { Parser_db, fs, sqlite3, db } = await import(`${dir.init}db_init.js`);
-const { SerialPort, ReadlineParser, listPortsCb } = await import(`${dir.init}serial_init.js`);
-
-  // assign expression
-expression.callbackify = callbackify;
-expression.connect = connect;
-expression.express = express;
-expression.app = app;
-expression.server = server;
-expression.io = io;
-expression.Parser_db = Parser_db;
-expression.fs = fs;
-expression.sqlite3 = sqlite3;
-expression.SerialPort = SerialPort;
-expression.ReadlineParser = ReadlineParser;
-expression.listPortsCb = listPortsCb;
-
-console.log('Setup expression success');
+const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb} = await import(`${dir.expression}`);
 
   // read config
 const __filename = fileURLToPath(import.meta.url);
@@ -55,7 +35,7 @@ console.log('Config success', config);
 
   // import init function
 const { initializeServer } = await import(`${dir.init}server_init.js`);
-const { initializeDatabase } = await import(`${dir.init}db_init.js`);
+const { initializeDatabase, syncData_initializeDatabase } = await import(`${dir.init}db_init.js`);
 
 console.log('import init function success');
 
@@ -72,11 +52,12 @@ const { initSyncData } = await import('./sync_data.js');
 console.log('import syncData success');
 
   // initialize syncData
-let data = initSyncData(config.data_setting, db);
+let data = initSyncData(config.data_setting);
 
 console.log('initialize syncData success');
 
   // export syncData
+syncData_initializeDatabase(data);
 syncData_database(data);
 syncData_serial(data);
 syncData_IO(data);
@@ -89,11 +70,6 @@ initializeDatabase(config.data_setting);
 
 console.log('initialize success');
 
-  // Config function
-configureDatabase(expression);
-configureSerial(expression);
-configureIO(expression);
-
 console.log('Config success');
 
   // main
@@ -104,3 +80,13 @@ setupIOroutes();
 sendPortAvailable();
 
 console.log('finish setup');
+console.log('Data:', data);
+
+function dfsData(data){
+  console.log(data);
+  if(Array.isArray(data)){
+    data.forEach(item => {
+      dfsData(item);
+    });
+  }
+}

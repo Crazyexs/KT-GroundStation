@@ -1,14 +1,8 @@
 /* Dowload CSV file */
-let app,Parser,fs,sqlite3,callbackify;
-let data;
+const { dir } = await import('../../dir.js');
 
-export function configureDatabase(expression){
-  app = expression.app;
-  Parser = expression.Parser;
-  fs = expression.fs;
-  sqlite3 = expression.sqlite3;
-  callbackify = expression.callbackify;
-}
+const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb} = await import(`${dir.expression}`);
+let data;
 
 export function setupDownloadRoutes() {
   app.get('/download_sensor',async (req, res) => {
@@ -22,7 +16,7 @@ export function setupDownloadRoutes() {
     const promises = [];
 
     for(const [boardNumber, value] of Object.values(data)) {
-      db = value.db;
+      db = value.database;
       for (const [name, database] of Object.entries(db.sensor)) {
         const p = dbAll(database, `SELECT * FROM ${name}`).then(rows => {
           const csv = new Parser().parse(rows);

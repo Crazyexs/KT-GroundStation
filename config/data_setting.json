@@ -3,9 +3,13 @@
         "header":"<0>,",
         "delimiter": ",",
         "data_format":{
-            "name": "TEXT",
-            "age": "INTEGER",
-            "email": "TEXT"
+            "counter": "INTEGER",
+            "state": "TEXT",
+            "gps_latitude": "REAL",
+            "gps_longitude": "REAL",
+            "apogee": "REAL",
+            "last_ack": "INTEGER",
+            "last_nack": "INTEGER"
         },
         "database":{
             "sensor_database_name": "db1",

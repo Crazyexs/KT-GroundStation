@@ -393,12 +393,12 @@ socket.on('Port-available', (ports) => {
 document.getElementById('ConnectBtn').addEventListener('click', () => {
   if (document.getElementById('portSelect').value) {
     const selectedPort = document.getElementById('portSelect').value;
-    socket.emit('select-port', {port : selectedPort, connectOrNot: true});
+    socket.emit('select-port', {boardNumber : "0",baudRate : 115200,port : selectedPort, connectOrNot: true});
   }
 });
 
 document.getElementById('DisconnectBtn').addEventListener('click', () => {
-  socket.emit('select-port', {port: null, connectOrNot: false});
+  socket.emit('select-port', {boardNumber : "0",baudRate : 115200, port: null, connectOrNot: false});
 });
 
 /* Map initialization */

@@ -1,4 +1,6 @@
-let io,callbackify,listPortsCb;
+const { dir } = await import('../../dir.js');
+
+const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb} = await import(`${dir.expression}`);
 let data;
 let prevPorts = [];
 
@@ -13,12 +15,12 @@ export function setupIOroutes() {
   io.on('connection', (socket) => {
     console.log('🌐 Web client connected');
 
-    socket.on('select-port', (data) => {
-        boardNumber = data.boardNumber;
+    socket.on('select-port', (dataIn) => {
+        let boardNumber = dataIn.boardNumber;
 
-        data[boardNumber].COM_PORT = COM_PORT;
-        data[boardNumber].baudRate = baudRate;
-        data[boardNumber].connectOrNot = connectOrNot;
+        data[boardNumber].COM_PORT = dataIn.port;
+        data[boardNumber].baudRate = dataIn.baudRate;
+        data[boardNumber].connectOrNot = dataIn.connectOrNot;
     });
 
     socket.on('uplink', (boardNumber,msg) => {

@@ -8,7 +8,7 @@ export function initSyncData(data_setting,db){
             baudRate: null,
             serial: null,
             parser: null,
-            db: db[name],
+            db: null,
             data_format: data_setting[name].data_format,
         };
     }
