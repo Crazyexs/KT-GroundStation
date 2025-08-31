@@ -44,7 +44,7 @@ function run_port(boardNumber){
             const parts = trimmed.split(boardData.delimiter);
             if (parts.length === Object.keys(boardData.data_format).length) {
                 
-                let dbData = {};
+                let dbData = [];
                 let IOData = {"boardNumber" : boardNumber};
                 let i = 0
                 for (const [nameData, typeData] of Object.entries(boardData.data_format)) {
@@ -53,10 +53,10 @@ function run_port(boardNumber){
                     i += 1;
                 }
                 const database_run = `INSERT INTO ${boardData.db.nameSensorDB} 
-                                (${Object.entries(data_setting.data_format)
+                                (${Object.entries(boardData.data_format)
                                     .map(([key,type]) => `${key}`)
                                     .join(", ")}) 
-                                VALUES (${Object.entries(data_setting.data_format)
+                                VALUES (${Object.entries(boardData.data_format)
                                     .map(() => `?`)
                                     .join(", ")})`;
 
@@ -76,7 +76,7 @@ function run_port(boardNumber){
             else {
                 const cmd = trimmed;
                 // ✅ บันทึกลงฐานข้อมูล
-                boardData.db.command.run(`INSERT INTO ${boardData.db.nameCommandDB} (cmd) VALUES (?)`, [cmd],
+                boardData.db.command.run(`INSERT INTO ${boardData.db.nameCommandDB} (command) VALUES (?)`, [cmd],
                     (err) => {
                         if (err) {
                             console.error(`❌ DB cmd ${boardNumber} Error:`, err.message);
@@ -90,12 +90,12 @@ function run_port(boardNumber){
                 io.emit('cmd-data', cmd);
             }
 
-            if (connectOrNot === false) {
+            if (boardData.connectOrNot === false) {
                 console.log(`🔌 Disconnecting serial ${boardNumber} as per user request...`);
                 if (parser) {
                     boardData.serial.unpipe(parser);
-                    parser.removeAllListeners();
-                    parser = null;
+                    boardData.parser.removeAllListeners();
+                    boardData.parser = null;
                 }
                 boardData.serial.removeAllListeners();
                 if (boardData.serial.isOpen) {

@@ -80,13 +80,5 @@ setupIOroutes();
 sendPortAvailable();
 
 console.log('finish setup');
-console.log('Data:', data);
 
-function dfsData(data){
-  console.log(data);
-  if(Array.isArray(data)){
-    data.forEach(item => {
-      dfsData(item);
-    });
-  }
-}
+console.log('Data:', data);

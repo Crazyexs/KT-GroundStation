@@ -10,6 +10,8 @@ export function initSyncData(data_setting,db){
             parser: null,
             db: null,
             data_format: data_setting[name].data_format,
+            header:data_setting[name].header,
+            delimiter: data_setting[name].delimiter
         };
     }
     return data;
