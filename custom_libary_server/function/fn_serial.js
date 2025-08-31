@@ -50,7 +50,7 @@ function run_port(boardNumber){
             if (parts.length === Object.keys(boardData.data_format).length) {
                 
                 let dbData = {};
-                let IOData = {};
+                let IOData = {boardNumber : boardNumber};
                 let i = 0
                 for (const [nameData, typeData] of Object.entries(boardData.data_format)) {
                     dbData.push(changeDataType(parts[i], typeData));
