@@ -11,8 +11,8 @@ export function initializeDatabase(data_settings) {
 
         db[boardNumber] = {sensor: {}, command: {}, nameSensorDB: sensor_database_name, nameCommandDB: command_database_name};
 
-        db[boardNumber].sensor = new sqlite3.Database(`${sensor_database_name}.db`);
-        db[boardNumber].command = new sqlite3.Database(`${command_database_name}.db`);
+        db[boardNumber].sensor = new sqlite3.Database(`./database/${sensor_database_name}.db`);
+        db[boardNumber].command = new sqlite3.Database(`./database/${command_database_name}.db`);
         for(const [key, value] of Object.entries(data_setting.data_format)) {
             db[boardNumber].sensor.run(`DROP TABLE IF EXISTS ${sensor_database_name}`);
             db[boardNumber].command.run(`DROP TABLE IF EXISTS ${command_database_name}`);

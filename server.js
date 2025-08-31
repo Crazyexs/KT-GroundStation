@@ -5,8 +5,8 @@ import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 
   // directory
-const dir = { init: "./custom_libary/__init__/",
-  function: "./custom_libary/function/",
+const dir = { init: "./custom_libary_server/__init__/",
+  function: "./custom_libary_server/function/",
   config: "./config/"
 }
 
