@@ -331,25 +331,10 @@
     <!--Map-->
     <section class="container" aria-labelledby="map-title">
       <div class="section__hdr">
-        <h2 class="section__title" id="map-title">Rocket MAP</h2>
+        <h2 class="section__title" id="map-title">Rocket Map</h2>
       </div>
-      <div id="map" class="resizable" style="--min-h:420px; --ar:auto" role="img" aria-label="map placeholder">
-        <script>
-  // Initialize map
-  const map = L.map('map').setView([13.7563, 100.5018], 6); // Default center (Bangkok)
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-  }).addTo(map);
-
-  //maker rocket location
-  let rocketMarker = L.marker([13.7563, 100.5018]).addTo(map)
-    .bindPopup("Rocket Location")
-    .openPopup();
-</script>
-      </div>
-    </section>   
-
+      <div id="map" class="resizable" style="--min-h:420px; --ar:auto" role="img" aria-label="rocket map"></div>
+    </section>
     <!--Table -->
     <section class="container" aria-labelledby="table-title">
       <div class="section__hdr">
