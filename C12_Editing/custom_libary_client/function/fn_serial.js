@@ -4,14 +4,19 @@ const { config } = await import(dir.config);
 
 let data;
 
-export function updateData(){
-
-}
-
-export function sendUplink(){
+export function connectBoardNumber(){
     
 }
 
-export function syncData_IO(dataIn){
+export function connectSerialPort(){
+    
+}
+
+export function disconnectSerialPort(){
+    
+}
+
+
+export function syncData_serial(dataIn){
     data = dataIn;
 }

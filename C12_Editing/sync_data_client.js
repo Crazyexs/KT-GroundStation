@@ -1,12 +1,9 @@
 let data = {};
 
-export function initSyncData(data_setting,db){
+export function initSyncData(data_setting){
+    data.boardNow = null;
     for (let name of Object.keys(data_setting)) {
         data[name] = {
-            connectOrNot: false,
-            COM_PORT: null,
-            baudRate: null,
-            db: null,
             data_format: data_setting.data_format,
             dataIn: {},
             dataType: {}

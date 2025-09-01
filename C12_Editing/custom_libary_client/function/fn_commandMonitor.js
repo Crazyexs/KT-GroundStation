@@ -4,14 +4,10 @@ const { config } = await import(dir.config);
 
 let data;
 
-export function updateData(){
+export function updateCommandMonitor(){
 
 }
 
-export function sendUplink(){
-    
-}
-
-export function syncData_IO(dataIn){
+export function syncData_commandMonitor(dataIn){
     data = dataIn;
 }

@@ -4,14 +4,11 @@ const { config } = await import(dir.config);
 
 let data;
 
-export function updateData(){
-
+export function loadChartData(key) {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : [];
 }
 
-export function sendUplink(){
-    
-}
-
-export function syncData_IO(dataIn){
+export function syncData_localStorage(dataIn){
     data = dataIn;
 }

@@ -4,14 +4,6 @@ const { config } = await import(dir.config);
 
 let data;
 
-export function updateData(){
-
-}
-
-export function sendUplink(){
-    
-}
-
-export function syncData_IO(dataIn){
+export function syncData_map(dataIn){
     data = dataIn;
 }
