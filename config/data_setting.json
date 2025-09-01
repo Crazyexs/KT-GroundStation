@@ -1,0 +1,32 @@
+{
+    "0":{
+        "header":"<0>,",
+        "delimiter": ",",
+        "data_format":{
+            "counter": "INTEGER",
+            "state": "TEXT",
+            "gps_latitude": "REAL",
+            "gps_longitude": "REAL",
+            "apogee": "REAL",
+            "last_ack": "INTEGER",
+            "last_nack": "INTEGER"
+        },
+        "database":{
+            "sensor_database_name": "db1",
+            "command_database_name": "cmd1"
+        }
+    },
+    "1":{
+        "header":"<1> ",
+        "delimiter": ",",
+        "data_format":{
+            "name": "TEXT",
+            "age": "INTEGER",
+            "email": "TEXT"
+        },
+        "database":{
+            "sensor_database_name": "db2",
+            "command_database_name": "cmd2"
+        }
+    }
+}
