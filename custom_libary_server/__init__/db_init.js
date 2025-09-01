@@ -1,7 +1,11 @@
 import { Parser } from 'json2csv';
 import fs from 'fs';
 import sqlite3Pkg from 'sqlite3';
+import { promisify } from "util";
+import archiver from "archiver";
+
 const sqlite3 = sqlite3Pkg.verbose();
+const Parser_db = Parser;
 let data = {};
 let db = {};
 
@@ -15,8 +19,8 @@ export function initializeDatabase(data_settings) {
         data[boardNumber].db.sensor = new sqlite3.Database(`./database/${sensor_database_name}.db`);
         data[boardNumber].db.command = new sqlite3.Database(`./database/${command_database_name}.db`);
         for(const [key, value] of Object.entries(data_setting.data_format)) {
-            data[boardNumber].db.sensor.run(`DROP TABLE IF EXISTS ${sensor_database_name}`);
-            data[boardNumber].db.command.run(`DROP TABLE IF EXISTS ${command_database_name}`);
+            // data[boardNumber].db.sensor.run(`DROP TABLE IF EXISTS ${sensor_database_name}`);
+            // data[boardNumber].db.command.run(`DROP TABLE IF EXISTS ${command_database_name}`);
 
             const columns_sensor = Object.entries(data_setting.data_format)
                 .map(([key, type]) => `${key} ${type}`)
@@ -31,4 +35,4 @@ export function initializeDatabase(data_settings) {
 export function syncData_initializeDatabase(dataIn){
     data = dataIn
 }
-export { Parser, fs, sqlite3};
+export { Parser_db, fs, sqlite3, promisify, archiver};

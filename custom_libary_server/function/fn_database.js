@@ -1,11 +1,14 @@
 /* Dowload CSV file */
 const { dir } = await import('../../dir.js');
 
-const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb} = await import(`${dir.expression}`);
+const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb, promisify, archiver} = await import(`${dir.expression}`);
 let data;
+let p;
+
+import path from "path";
 
 export function setupDownloadRoutes() {
-  app.get('/download_sensor',async (req, res) => {
+  app.get('/download_database',async (req, res) => {
     const tempFolder = path.join('./', 'temp_csv');
 
     if (!fs.existsSync(tempFolder)) {
@@ -15,22 +18,32 @@ export function setupDownloadRoutes() {
 
     const promises = [];
 
-    for(const [boardNumber, value] of Object.values(data)) {
-      db = value.database;
-      for (const [name, database] of Object.entries(db.sensor)) {
-        const p = dbAll(database, `SELECT * FROM ${name}`).then(rows => {
-          const csv = new Parser().parse(rows);
-          fs.writeFileSync(path.join(tempFolder, `${name}.csv`), csv);
+    for(const [boardNumber, value] of Object.entries(data)) {
+      let db = value.db;
+      console.log(db)
+      // for (const [name, database] of Object.entries(db.sensor)) {
+        p = dbAll(db.sensor, `SELECT * FROM ${db.nameSensorDB}`).then(rows => {
+          if (!rows || rows.length === 0) {
+            console.warn(`No data found in ${db.nameSensorDB}, creating empty CSV with headers`);
+            return;
+          }
+          const csv = new Parser_db({ fields: Object.keys(rows[0]) }).parse(rows);
+          fs.writeFileSync(path.join(tempFolder, `${db.nameSensorDB}.csv`), csv);
         });
         promises.push(p);
-      }
-      for (const [name, database] of Object.entries(db.command)) {
-        const p = dbAll(database, `SELECT * FROM ${name}`).then(rows => {
-          const csv = new Parser().parse(rows);
-          fs.writeFileSync(path.join(tempFolder, `${name}.csv`), csv);
+      // }
+      // for (const [name, database] of Object.entries(db.command)) {
+        p = dbAll(db.command, `SELECT * FROM ${db.nameCommandDB}`).then(rows => {
+          if (!rows || rows.length === 0) {
+            console.warn(`No data found in ${db.nameCommandDB}, creating empty CSV with headers`);
+            return;
+          }
+          const csv = new Parser_db({ fields: Object.keys(rows[0]) }).parse(rows);
+          fs.writeFileSync(path.join(tempFolder, `${db.nameCommandDB}.csv`), csv);
         });
         promises.push(p);
-      }
+
+      // }
     }
     await Promise.all(promises); // wait until all CSVs are written
 
@@ -52,9 +65,10 @@ export function setupDownloadRoutes() {
 
 export function resetDatabase(){
   app.post('/reset-db', (req, res) => {
-    for (const [name, database] of Object.entries(data)) {
-      database.sensor.run("DELETE FROM " + name);
-      database.command.run("DELETE FROM " + name);
+    for(const [boardNumber,boardData] of Object.entries(data)){
+      const databaseData = boardData.db;
+      databaseData.sensor.run("DELETE FROM " + databaseData.nameSensorDB);
+      databaseData.command.run("DELETE FROM " + databaseData.nameCommandDB);
     }
     res.send("Database reset");
   });

@@ -1,6 +1,6 @@
 const { dir } = await import('../../dir.js');
 
-const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb} = await import(`${dir.expression}`);
+const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb, promisify, archiver} = await import(`${dir.expression}`);
 let data;
 
 function changeDataType(dataIn,dataType){
@@ -63,9 +63,9 @@ function run_port(boardNumber){
                 boardData.db.sensor.run(database_run, dbData,
                     (err) => {
                         if (err) {
-                            console.error(`❌ DB sensor ${boardNumber} Error:`, err.message);
+                            console.error(`❌ DB sensor ${boardData.db.nameSensorDB} Error:`, err.message);
                         } else {
-                            console.log('✅ Inserted:', parts);
+                            console.log('✅ Inserted sensor:', parts);
                         }
                     }
                 );
@@ -79,9 +79,9 @@ function run_port(boardNumber){
                 boardData.db.command.run(`INSERT INTO ${boardData.db.nameCommandDB} (command) VALUES (?)`, [cmd],
                     (err) => {
                         if (err) {
-                            console.error(`❌ DB cmd ${boardNumber} Error:`, err.message);
+                            console.error(`❌ DB cmd ${boardData.db.nameCommandDB} Error:`, err.message);
                         } else {
-                            console.log('✅ Inserted:', cmd);
+                            console.log('✅ Inserted cmd: ', cmd);
                         }
                     }
                 );
@@ -92,8 +92,8 @@ function run_port(boardNumber){
 
             if (boardData.connectOrNot === false) {
                 console.log(`🔌 Disconnecting serial ${boardNumber} as per user request...`);
-                if (parser) {
-                    boardData.serial.unpipe(parser);
+                if (boardData.parser) {
+                    boardData.serial.unpipe(boardData.parser);
                     boardData.parser.removeAllListeners();
                     boardData.parser = null;
                 }
