@@ -1,20 +1,23 @@
 const { dir } = await import('../../dir.js');
 const { id } = await import('../../id.js');
-const { config } = await import(dir.config);
 
-let data;
+let data,config;
 
-export function initializeTable(){
-    table.innerHTML = ""; // ล้างตารางเก่า
-    Object.entries(data).forEach(([key, value]) => {
+export function initializeTable(id){
+    id.innerHTML = ""; // ล้างตารางเก่า
+    Object.entries(data[data.boardNow].data_format).forEach(([name, value]) => {
         const tr = document.createElement("tr");
-        tr.innerHTML = `<th>${key}</th><td>${value}</td>`;
-        table.appendChild(tr);
+        tr.innerHTML = `<th>${name}</th><td>Wait for data...</td>`;
+        id.appendChild(tr);
     });
 }
 
 export function updateTable(){
-
+    Object.entries(data[data.boardNow].data_format).forEach(([name, value]) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<th>${name}</th><td>${value}</td>`;
+        id.appendChild(tr);
+    });
 }
 
 export function syncData_table(dataIn){

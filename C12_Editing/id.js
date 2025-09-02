@@ -1,5 +1,3 @@
-import { resetDatabase } from "../custom_libary_server/function/fn_database";
-
 const elementId = {
     graph: {
         xValue: document.getElementById('xValue'),

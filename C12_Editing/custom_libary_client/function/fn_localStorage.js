@@ -9,6 +9,8 @@ export function loadChartData(key) {
   return data ? JSON.parse(data) : [];
 }
 
+
+
 export function syncData_localStorage(dataIn){
     data = dataIn;
 }

@@ -28,6 +28,10 @@ export function deleteGrpah(){
 
 }
 
+export function updateChart(){
+    
+}
+
 export function syncData_graph(dataIn){
     data = dataIn;
 }

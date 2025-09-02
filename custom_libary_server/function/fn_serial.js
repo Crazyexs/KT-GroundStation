@@ -2,6 +2,7 @@ const { dir } = await import('../../dir.js');
 
 const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb, promisify, archiver} = await import(`${dir.expression}`);
 let data;
+let counter_cmd = 0;
 
 function changeDataType(dataIn,dataType){
     switch (dataType) {
@@ -42,10 +43,10 @@ function run_port(boardNumber){
             console.log(`${boardData.COM_PORT} get data CSV:`, trimmed);
 
             const parts = trimmed.split(boardData.delimiter);
+            let dbData = [];
+            let IOData = {"boardNumber" : boardNumber};
             if (parts.length === Object.keys(boardData.data_format).length) {
                 
-                let dbData = [];
-                let IOData = {"boardNumber" : boardNumber};
                 let i = 0
                 for (const [nameData, typeData] of Object.entries(boardData.data_format)) {
                     dbData.push(changeDataType(parts[i], typeData));
@@ -85,9 +86,11 @@ function run_port(boardNumber){
                         }
                     }
                 );
-            
+                counter_cmd++;
                 // ✅ ส่งให้หน้าเว็บ
-                io.emit('cmd-data', cmd);
+                IOData.command = cmd;
+                IOData.counter = counter_cmd;
+                io.emit('cmd-data', IOData);
             }
 
             if (boardData.connectOrNot === false) {
