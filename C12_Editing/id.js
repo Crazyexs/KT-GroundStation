@@ -1,39 +1,45 @@
+const qs  = (s, r = document) => r.querySelector(s);
+
 const elementId = {
     graph: {
-        xValue: document.getElementById('xValue'),
-        yValue: document.getElementById('yValue'),
-        xMx: document.getElementById('xMx'),
-        xMn: document.getElementById('xMn'),
-        yMx: document.getElementById('yMx'),
-        yMn: document.getElementById('yMn'),
-        container: document.getElementById('graphsContainer'),
+        xValue: qs('#xValue'),
+        yValue: qs('#yValue'),
+        xMx: qs('#xMx'),
+        xMn: qs('#xMn'),
+        yMx: qs('#yMx'),
+        yMn: qs('#yMn'),
+        container: qs('#graph-grid'),
         button: {
-            add: document.getElementById('addGraphBtn'),
-            autoAdd: document.getElementById('autoAddGraphBtn'),
-            clear: document.getElementById('clearGraphBtn')
+            add: qs('#addGraphBtn'),
+            autoAdd: qs('#autoAddGraphBtn'),
+            clear: qs('#clearGraphBtn')
         },
         shiftValue: {
-            placeholder: document.getElementById('number_of_value'),
-            button: document.getElementById('addNumber_of_valueBtn')
+            placeholder: qs('number_of_value'),
+            button: qs('addNumber_of_valueBtn')
         }
     },
-    table: document.getElementById("dataTable"),
+    table: qs("#telemetry-table tbody"),
     uplink: {
-        selected: document.getElementById('commandSelect'),
-        button: document.getElementById('sendBtn')
+        selected: qs('#uplink-cmd'),
+        placeholder: qs('#cmd-tag'),
+        button: qs('#sendBtn')
     },
     monitor: {
-        sensor: document.getElementById('output'),
-        command: document.getElementById('output_cmd');
+        sensor: qs('#value-monitor'),
+        command: qs('#monitor')
     },
     map: document.elementId(""),
     database: {
-        resetDatabaseBtn: document.getElementById('resetDbBtn')
+        resetDatabaseBtn: qs('resetDbBtn')
     },
     SerialPort: {
-        portSelected: document.getElementById('portSelect'),
-        connectBtn: document.getElementById('ConnectBtn'),
-        disconnectBtn: document.getElementById('DisconnectBtn')
+        selected:{
+            port:  qs('#port-label'),
+            baudRate: qs('#baud')
+        },
+        connectBtn: qs('[data-btn="serial-request"]'),
+        disconnectBtn: qs('[data-btn="serial-disconnect"]')
     }
 }
 

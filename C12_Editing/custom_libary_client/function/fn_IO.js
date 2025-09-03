@@ -1,3 +1,5 @@
+import { listAvaiablePort } from './fn_serial.js';
+
 const { dir } = await import('../../dir.js');
 const { id } = await import('../../id.js');
 const { config } = await import(dir.config);
@@ -15,14 +17,19 @@ export function initializeUpdateData(){
     });
     socket.on("cmd-data" , (dataIn) => {
         data[dataIn.boardNumber].dataIn.command.counter = dataIn.counter;
-        data[dataIn.boardNumber].dataIn.command.counter = dataIn.command;
+        data[dataIn.boardNumber].dataIn.command.command = dataIn.command;
     });
     socket.on("Port-available", (dataIn) => {
         data.portAvailable = dataIn
+        listAvaiablePort();
     });
 }
 
-export function sendUplink(msg){
+export function sendUplink(){
+    let msg = id.uplink.selected.value;
+    if(msg.length == 0){
+        msg = id.uplink.placeholder.value;
+    }
     socket.emit("uplink",msg);
 }
 

@@ -7,19 +7,19 @@
     // Web Serial
     baud: qs('#baud'),
     portLabel: qs('#port-label'),
-    serialDot: qs('#serial-dot'),
-    serialState: qs('#serial-state'),
+    // serialDot: qs('#serial-dot'),
+    // serialState: qs('#serial-state'),
     connectBtn: qs('[data-btn="serial-request"]'),
     disconnectBtn: qs('[data-btn="serial-disconnect"]'),
 
     // Server (Socket.IO)
-    serverDot: qs('#server-dot'),
-    serverState: qs('#server-state'),
-    portSelect: qs('#portSelect'),
-    serverConnectBtn: qs('#ConnectBtn'),
-    serverDisconnectBtn: qs('#DisconnectBtn'),
-    shiftInput: qs('#number_of_value'),
-    shiftApplyBtn: qs('#addNumber_of_valueBtn'),
+    // serverDot: qs('#server-dot'),
+    // serverState: qs('#server-state'),
+    // portSelect: qs('#portSelect'),
+    // serverConnectBtn: qs('#ConnectBtn'),
+    // serverDisconnectBtn: qs('#DisconnectBtn'),
+    // shiftInput: qs('#number_of_value'),
+    // shiftApplyBtn: qs('#addNumber_of_valueBtn'),
 
     // Uplink
     sendBtn: qs('#sendBtn'),
@@ -29,10 +29,10 @@
     // Stats & monitors
     monitor: qs('#monitor'),
     valueMonitor: qs('#value-monitor'),
-    statPackets: qs('#stat-packets'),
-    statUplink: qs('#stat-uplink'),
-    statDownlink: qs('#stat-downlink'),
-    statErrors: qs('#stat-errors'),
+    // statPackets: qs('#stat-packets'),
+    // statUplink: qs('#stat-uplink'),
+    // statDownlink: qs('#stat-downlink'),
+    // statErrors: qs('#stat-errors'),
 
     // Graphs
     graphGrid: qs('#graph-grid'),

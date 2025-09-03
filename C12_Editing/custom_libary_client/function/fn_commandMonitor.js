@@ -5,11 +5,13 @@ const { config } = await import(dir.config);
 let data;
 
 export function updateCommandMonitor(){
-    socket.on('cmd-data', (data) => {
+    const output = id.monitor.command;
+
+
     console.log('Received command data:', data);
     const line = document.createElement("div");
     line.textContent =
-        `${data.monitor.command}`;  
+        `${data[data.boardNow].command.command}`;  
     output.appendChild(line);
 
     // keep only last 200 lines (optional, prevents memory bloat)
@@ -17,8 +19,6 @@ export function updateCommandMonitor(){
         output.removeChild(output.firstChild);
     }
     output.scrollTop = output.scrollHeight;
-
-    });
 }
 
 export function syncData_commandMonitor(dataIn){
