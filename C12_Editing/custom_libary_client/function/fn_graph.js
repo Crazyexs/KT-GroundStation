@@ -106,7 +106,10 @@ export function createChart(xValue,yValue,xMx=null ,xMn=null ,yMx=null ,yMn=null
         yValue = [yValue];
     }    
     chartOptions.title.text = title;
-
+    const container = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 300;
+    id.graph.container.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     var chart = new ApexCharts(ctx, chartOptions);
 
@@ -167,11 +170,11 @@ export function autoAddGraph(){
 }
 
 export function shiftValue(){
-    
+    data.shiftValue = id.graph.shiftValue.placeholder;
 }
 
 export function deleteGrpah(){
-
+    localStorage.clear();  // ลบข้อมูลทุก key ใน localStorage
 }
 
 export function updateChart(){
@@ -181,15 +184,22 @@ export function updateChart(){
         let xValue = data[data.boardNow].charts[index].chartOptions.label
         let xTitle = data[data.boardNow].charts[index].chartOptions.xaxis.title.text;
         let yValue = data[data.boardNow].charts[index].chartOptions.series
+        let len;
         for(let yName of Object.keys(yValue)){
-            yValue[yName].data.push(data[data.boardNow].sensor.dataIn[yName]);
-        }
-        xValue.push(data[data.boardNow].sensor.dataIn[xTitle]);
-        while(xValue.lenght > data.shiftValue){
-            xValue.shift();
-            for(let yName of Object.keys(yValue)){
-                yValue[yName].data.shift();
+            len = data[data.boardNow].sensor.dataIn[yName].lenght
+            if(data.shiftValue < len){
+                yValue[yName] = arr.slice(0,len)
             }
+            else{
+                yValue[yname] = arr.slice(len-shiftValue,len)
+            }
+        }
+        len = data[data.boardNow].sensor.dataIn[xTitle].lenght;
+        if(data.shiftValue < len){
+            xValue = arr.slice(0,len)
+        }
+        else{
+            xValue = arr.slice(len-shiftValue,len)
         }
     }
 }

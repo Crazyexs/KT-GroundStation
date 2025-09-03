@@ -1,4 +1,4 @@
-import { dir } from "./dir_client";
+import { dir } from "./dir_client.js";
 
 const qs  = (s, r = document) => r.querySelector(s);
 

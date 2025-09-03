@@ -4,22 +4,17 @@ const { config } = await import(dir.config);
 
 let data;
 
-export function saveSyncData(){
-
+export function saveData(key,data){
+  localStorage.setItem(key, JSON.stringify(data));
 }
 
-export function saveChartData(){
-
+export function saveSyncData(){
+  saveData("syncData",data)
 }
 
 export function clearLocalStorage(){
     localStorage.clear();
     alert('Local storage cleared!');
-}
-
-export function loadChartData(key) {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : [];
 }
 
 export function reloadChart(){

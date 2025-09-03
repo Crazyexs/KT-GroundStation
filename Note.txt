@@ -1,0 +1,4 @@
+localStorage for chart reload initialization
+Add frontend
+
+fix suncData when localStorage

@@ -12,7 +12,7 @@ export function initSyncData(data_setting){
     data.boardNow = null;
     for (let name of Object.keys(data_setting)) {
         data[name] = {
-            data_format: data_setting[data.boardNow]_format,
+            data_format: data_setting[data.boardNow].data_format,
             sensor: {
                 dataIn: {},
                 dataType: {}
