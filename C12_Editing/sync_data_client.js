@@ -1,18 +1,30 @@
+import { id } from "./id";
+const { uplink } = await import(`${dir.config}uplink.json`);
+const { data_setting } = await import(`${dir.config}data_setting.json`);
+const { setting } = await import(`${dir.config}setting.json`);
+
 let data = {};
 
 export function initSyncData(data_setting){
+    data.data_setting = data_setting;
+    data.setting = setting;
     data.portAvailable = null;
     data.boardNow = null;
     for (let name of Object.keys(data_setting)) {
         data[name] = {
             data_format: data_setting.data_format,
-            sensor:{
+            sensor: {
                 dataIn: {},
                 dataType: {}
             },
-            command:{
+            command: {
                 counter: null,
                 command: null
+            },
+            map: {
+                lat: null,
+                lon: null,
+                alt: null
             }
         };
         for(let [dataName,dataType] of Object.entries(data_setting.data_format)){
@@ -20,5 +32,6 @@ export function initSyncData(data_setting){
             data[name].sensor.dataType[dataName] = dataType;
         }
     }
+    data.uplink = uplink;
     return data;
 }

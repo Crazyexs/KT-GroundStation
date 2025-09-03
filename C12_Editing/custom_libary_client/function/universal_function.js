@@ -88,7 +88,7 @@ function isText(label){
 }
 
 /* Get Event */
-function event(){
+export function event(){
     // Graph
     id.graph.button.add.addEventListener(click, () => {
         addGraph();
@@ -120,7 +120,7 @@ function event(){
 }
 
 /* Wait Until */
-function waitUntil(conditionFn, interval = 100) {
+export function waitUntil(conditionFn, interval = 100) {
   return new Promise((resolve) => {
     const timer = setInterval(() => {
       if (conditionFn()) {

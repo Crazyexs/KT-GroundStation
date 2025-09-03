@@ -1,6 +1,8 @@
+import { dir } from "./dir_client";
+
 const qs  = (s, r = document) => r.querySelector(s);
 
-const elementId = {
+const id = {
     graph: {
         xValue: qs('#xValue'),
         yValue: qs('#yValue'),
@@ -29,7 +31,7 @@ const elementId = {
         sensor: qs('#value-monitor'),
         command: qs('#monitor')
     },
-    map: document.elementId(""),
+    map: document.elementId("map"),
     database: {
         resetDatabaseBtn: qs('resetDbBtn')
     },
@@ -42,9 +44,9 @@ const elementId = {
         disconnectBtn: qs('[data-btn="serial-disconnect"]')
     },
     boardNow:{
-        selected: qs(''),
-        button: qs('')
+        selected: qs('boardSelected'),
+        button: qs('boardSelectedBtn')
     }
 }
 
-export { elementId }
+export { id }

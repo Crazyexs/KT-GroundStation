@@ -1,9 +1,26 @@
-const { dir } = await import('../../dir.js');
+const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
 const { config } = await import(dir.config);
 
 let data;
 let prevPorts = []; // เก็บ state ก่อนหน้า
+const uplink_format = JSON.parse(
+  fs.readFileSync(path.resolve(__dirname, dir.config, 'uplink.json'), 'utf-8')
+);
+
+
+export function listBoardNumber(){
+    let value,label;
+    id.boardNow.selected.innerHTML = '<option value="">-- Select Port --</option>'; // reset
+    for(let boardNum of Object.keys(data.datasetting)){
+        value = boardNum;
+        label = boardNum;
+        const option = document.createElement('option');
+        option.value = value;        // ค่าที่จะส่งไป server
+        option.textContent = label;  // ข้อความที่แสดงใน select
+        id.boardNow.selected.appendChild(option);        
+    }
+}
 
 export function connectBoardNumber(){
     data.boardNow = id.boardNow.selected

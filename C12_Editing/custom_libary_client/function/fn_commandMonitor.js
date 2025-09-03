@@ -1,4 +1,4 @@
-const { dir } = await import('../../dir.js');
+const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
 const { config } = await import(dir.config);
 
@@ -6,7 +6,6 @@ let data;
 
 export function updateCommandMonitor(){
     const output = id.monitor.command;
-
 
     console.log('Received command data:', data);
     const line = document.createElement("div");

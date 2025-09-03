@@ -1,9 +1,9 @@
-const { dir } = await import('../../dir.js');
+const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
 
 let data,config;
 
-export function initializeTable(id){
+export function initializeTable(){
     id.innerHTML = ""; // ล้างตารางเก่า
     Object.entries(data[data.boardNow].data_format).forEach(([name, value]) => {
         const tr = document.createElement("tr");
