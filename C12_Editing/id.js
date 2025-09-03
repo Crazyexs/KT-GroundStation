@@ -40,6 +40,10 @@ const elementId = {
         },
         connectBtn: qs('[data-btn="serial-request"]'),
         disconnectBtn: qs('[data-btn="serial-disconnect"]')
+    },
+    boardNow:{
+        selected: qs(''),
+        button: qs('')
     }
 }
 

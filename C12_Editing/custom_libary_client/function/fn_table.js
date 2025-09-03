@@ -13,7 +13,7 @@ export function initializeTable(id){
 }
 
 export function updateTable(){
-    Object.entries(data[data.boardNow].data_format).forEach(([name, value]) => {
+    Object.entries(data[data.boardNow].dataIn).forEach(([name, value]) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `<th>${name}</th><td>${value}</td>`;
         id.appendChild(tr);

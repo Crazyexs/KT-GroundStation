@@ -6,7 +6,7 @@ let data;
 let prevPorts = []; // เก็บ state ก่อนหน้า
 
 export function connectBoardNumber(){
-    data.boardNumber
+    data.boardNow = id.boardNow.selected
 }
 
 export function connectSerialPort(){

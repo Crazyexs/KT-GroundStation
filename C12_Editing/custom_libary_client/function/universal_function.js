@@ -86,3 +86,47 @@ function isText(label){
   if(label == 'state') { return 1; }
   return 0;
 }
+
+/* Get Event */
+function event(){
+    // Graph
+    id.graph.button.add.addEventListener(click, () => {
+        addGraph();
+    })
+    id.graph.button.autoAdd.addEventListener(click, () => {
+        autoAddGraph();
+    })
+    id.graph.button.clear.addEventListener(click, () => {
+
+    })
+
+    // Uplink
+    id.uplink.button.addEventListener(click, () => {
+        sendUplink();
+    })
+
+    // Database
+    id.database.resetDatabaseBtn.addEventListener(click, () => {
+
+    })
+
+    // Serial
+    id.SerialPort.connectBtn.addEventListener(click, () => {
+        connectSerialPort();
+    })
+    id.SerialPort.disconnecBtn.addEventListener(click, () => {
+        disconnectSerialPort();
+    })
+}
+
+/* Wait Until */
+function waitUntil(conditionFn, interval = 100) {
+  return new Promise((resolve) => {
+    const timer = setInterval(() => {
+      if (conditionFn()) {
+        clearInterval(timer);
+        resolve();
+      }
+    }, interval);
+  });
+}

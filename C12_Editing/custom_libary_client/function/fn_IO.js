@@ -8,7 +8,7 @@ let data;
 
 const socket = io();
 
-export function initializeUpdateData(){
+export function initializeUpdateDataIO(){
     socket.on("sensor-data", (dataIn) => {
         let dataGet = data[dataIn.boardNumber].dataIn.sensor;
         for(let name of Object.keys(dataGet)){
