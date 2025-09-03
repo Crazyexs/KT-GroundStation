@@ -46,6 +46,9 @@ const id = {
     boardNow:{
         selected: qs('boardSelected'),
         button: qs('boardSelectedBtn')
+    },
+    localStorage: {
+        clearBtn: qs('')
     }
 }
 

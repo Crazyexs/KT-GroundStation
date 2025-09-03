@@ -3,10 +3,11 @@
     "key": {
         "0": {
             "map": {
-                "lat": 37.5665,
-                "lng": 126.9780,
+                "lat": "gps_latitude",
+                "lon": "gps_longitude",
                 "zoom": 12
             },
+            "altitude": "apogee",
             "state": [
                 "STARTUP",
                 "IDLE_SAFE",
@@ -20,14 +21,23 @@
                 "MAIN_DESC",
                 "LANDED",
                 "REC_SAFE"
-            ]
+            ],
+            "plot": [
+                {
+                    "x": "time",
+                    "y": "value",
+                    "type": "scatter"
+                }
+            ],
+            "shiftValue": 50
         },
         "1": {
             "map": {
-                "lat": 37.5665,
-                "lng": 126.9780,
+                "lat": "gps_latitude",
+                "lng": "gps_longitude",
                 "zoom": 12
             },
+            "altitude": "apogee",
             "state": [
                 "STARTUP",
                 "IDLE_SAFE",
@@ -44,10 +54,4 @@
             ]
         }
     },
-    "plot": [
-            {
-                "x": "time",
-                "y": "value"
-            }
-    ]
 }

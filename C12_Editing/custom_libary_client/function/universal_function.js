@@ -117,6 +117,11 @@ export function event(){
     id.SerialPort.disconnecBtn.addEventListener(click, () => {
         disconnectSerialPort();
     })
+
+    // local Storage
+    id.localStorage.clearBtn.addEventListener('click', () => {
+      clearLocalStorage
+    });
 }
 
 /* Wait Until */

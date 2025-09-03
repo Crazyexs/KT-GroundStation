@@ -4,6 +4,19 @@ const { config } = await import(dir.config);
 
 let data;
 
+export function saveSyncData(){
+
+}
+
+export function saveChartData(){
+
+}
+
+export function clearLocalStorage(){
+    localStorage.clear();
+    alert('Local storage cleared!');
+}
+
 export function loadChartData(key) {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : [];
@@ -27,11 +40,6 @@ export function reloadChart(){
     charts[i].chart.data.datasets[0].data = chartData[i].data;
     charts[i].chart.update();
   }
-  
-  document.getElementById('clearGraphBtn').addEventListener('click', () => {
-    localStorage.clear();
-    alert('Local storage cleared!');
-  });
 }
 
 export function reloadSyncData(){

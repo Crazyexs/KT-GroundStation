@@ -12,7 +12,7 @@ export function initSyncData(data_setting){
     data.boardNow = null;
     for (let name of Object.keys(data_setting)) {
         data[name] = {
-            data_format: data_setting.data_format,
+            data_format: data_setting[data.boardNow]_format,
             sensor: {
                 dataIn: {},
                 dataType: {}
@@ -25,7 +25,14 @@ export function initSyncData(data_setting){
                 lat: null,
                 lon: null,
                 alt: null
-            }
+            },
+            updataDataOrNot: {
+                sensor: false,
+                command: false
+            },
+            n_chart: 0,
+            charts: [],
+            shiftValue: setting[data.boardNow].shiftValue
         };
         for(let [dataName,dataType] of Object.entries(data_setting.data_format)){
             data[name].sensor.dataIn[dataName] = null;

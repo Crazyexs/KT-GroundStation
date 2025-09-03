@@ -49,35 +49,32 @@ id.boardNow.button.addEventListener('click', async () => {
     console.log("Client INITIALIZE success");
 
     // SENSOR
-    while(1){
-        await waitUntil(() => counter.sensor != data[data.boardNow].sensor.dataIn.counter, 10);
-        counter.sensor = data[data.boardNow].sensor.dataIn.counter
+    const sensor_interval = setInterval(() => {
+        if(data[data.boardNow].updateDataOrNot.sensor == true){
+            data[data.boardNow].updateDataOrNot.sensor = false;
 
-        updateChart();
-        updateTable();
-        updateMap();
-    }
+            updateChart();
+            updateTable();
+            updateMap();
+
+            updateLocalStorage_sensor();
+        }
+    },100)
 
     console.log("Client UPDATE SENSOR success");
 
     // COMMAND
-    while(1){
-        await waitUntil(() => counter.command != data[data.boardNow].command.counter, 10);
-        counter.command = data[data.boardNow].command.counter
+    const command_interval = setInterval(() => {
+        if(data[data.boardNow].updateDataOrNot.command == true){
+            data[data.boardNow].updateDataOrNot.command = false;
 
-        updateCommandMonitor();
-    }
+            updateCommandMonitor();
+
+            updateLocalStorage_command();
+        }
+    },100)
 
     console.log("Client UPDATE COMMAND success");
-
-    // SENSOR AND COMMAND
-    while(1){
-        await waitUntil(() => counter.command != data[data.boardNow].command.counter || counter.sensor != data[data.boardNow].sensor.dataIn.counter, 10);
-
-        updateLocalStorage();
-    }
-
-    console.log("Client UPDATE SENSOR AND COMMAND success");
 
     event();
     

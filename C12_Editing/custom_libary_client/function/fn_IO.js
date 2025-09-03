@@ -14,10 +14,12 @@ export function initializeUpdateDataIO(){
         for(let name of Object.keys(dataGet)){
             dataGet[name] = dataIn[name];
         }
+        data[data.boardNow].updateDataOrNot.sensor = true;
     });
     socket.on("cmd-data" , (dataIn) => {
         data[dataIn.boardNumber].dataIn.command.counter = dataIn.counter;
         data[dataIn.boardNumber].dataIn.command.command = dataIn.command;
+        data[data.boardNow].updateDataOrNot.command = true;
     });
     socket.on("Port-available", (dataIn) => {
         data.portAvailable = dataIn

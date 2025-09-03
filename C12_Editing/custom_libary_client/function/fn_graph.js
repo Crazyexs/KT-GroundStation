@@ -4,12 +4,135 @@ const { config } = await import(dir.config);
 
 let data;
 
-export function initializeGraph(){
+export function createChart(xValue,yValue,xMx=null ,xMn=null ,yMx=null ,yMn=null ,type="linear" ){
+    var chartOptions = {
+        chart: {
+            height: 400,
+            type: type,
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            foreColor: '#6E729B',
+            toolbar: {
+            show: false,
+            },
+        },
+        stroke: {
+            curve: 'smooth',
+            width: 2,
+        },
+        series: [
+        ],
+        title: {
+            text: "Graph",
+            align: 'left',
+            offsetY: 25,
+            offsetX: 5,
+            style: {
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#373d3f',
+            },
+        },
+        markers: {
+            size: 6,
+            strokeWidth: 0,
+            hover: {
+            size: 9,
+            },
+        },
+        grid: {
+            show: true,
+            padding: {
+            bottom: 0,
+            },
+        },
+        labels: [],
+        xaxis: {
+            min: xMn,
+            max: xMx,
+            tooltip: {
+            enabled: false,
+            },
+            categories: [1, 2, 3, 4, 5],
+            title: {
+            text: xValue,   // ✅ ชื่อแกน X
+                style: {
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                    color: '#555'
+                }
+            }
+        },
+        yaxis: {
+            min: yMn,
+            max: yMx,  
+            title: {
+                text: yValue,
+                style: {
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                    color: '#555'
+                }
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            offsetY: -10,
+            labels: {
+            colors: '#373d3f',
+            },
+        },
+        grid: {
+            borderColor: '#D9DBF3',
+            xaxis: {
+            lines: {
+                show: true,
+            },
+            },
+        },
+    };
+    let title = `Graph Between ${xValue} and`;
+    if(Array.isArray(yValue))
+    {
+        for(ySubValue of yValue){
+            chartOptions.series.push({name:ySubValue, data:[]})
+        }
+        title += ` ${ySubValue},`
+    }
+    else
+    {
+        chartOptions.series.push({name:yValue, data:[]}) 
+        title +=  ` ${yValue}`
+        yValue = [yValue];
+    }    
+    chartOptions.title.text = title;
 
+    const ctx = canvas.getContext('2d');
+    var chart = new ApexCharts(ctx, chartOptions);
+
+    data[data.boardNow].n_chart += 1;
+    data[data.boardNow].charts.label.push({x:xValue,y:yValue})
+    data[data.boardNow].charts.charts.push(chart);
 }
 
-export function createChart(){
-    
+export function initializeGraph(){
+    let x, y, xMx, xMn, yMx, yMn,type;
+
+    for (let valueGraph of data.setting.key[data.boardNow].plot) {
+        x = valueGraph.x;
+        y = valueGraph.y;
+
+        // use optional chaining + nullish coalescing ??
+        xMx = valueGraph?.xMx ?? null;   // default 0 if missing
+        xMn = valueGraph?.xMn ?? null;
+        yMx = valueGraph?.yMx ?? null;
+        yMn = valueGraph?.yMn ?? null;
+
+        type = valueGraph?.type ?? "linear";
+
+        createChart(xValue=x,yValue=y,xMx=xMx,xMn=xMn,yMx=yMx,yMn=yMn,type=type);
+    }
+
 }
 
 export function addGraph(){
@@ -36,7 +159,9 @@ export function addGraph(){
 export function autoAddGraph(){
     data[data.boardNow].data_format.array.forEach(({xName,xType},index) => {
         data[data.boardNow].data_format.array.forEach(({yName,yType},index) => {
-            createChart(xLabel = xName,yLabel = yName)
+            if(xType != "TEXT" && yType != "TEXT"){
+                createChart(xLabel = xName,yLabel = yName)
+            }
         });
     });
 }
@@ -50,7 +175,23 @@ export function deleteGrpah(){
 }
 
 export function updateChart(){
-    
+    dataChart = data[data.boardNow].sensor.dataIn;
+    let index = 0;
+    while(index < data.n_chart){
+        let xValue = data[data.boardNow].charts[index].chartOptions.label
+        let xTitle = data[data.boardNow].charts[index].chartOptions.xaxis.title.text;
+        let yValue = data[data.boardNow].charts[index].chartOptions.series
+        for(let yName of Object.keys(yValue)){
+            yValue[yName].data.push(data[data.boardNow].sensor.dataIn[yName]);
+        }
+        xValue.push(data[data.boardNow].sensor.dataIn[xTitle]);
+        while(xValue.lenght > data.shiftValue){
+            xValue.shift();
+            for(let yName of Object.keys(yValue)){
+                yValue[yName].data.shift();
+            }
+        }
+    }
 }
 
 export function syncData_graph(dataIn){

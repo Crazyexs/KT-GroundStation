@@ -5,7 +5,7 @@ const { config } = await import(dir.config);
 let data;
 let map,rocketMarker;
 export function initializeMap(){
-    map = L.map(id.map).setView([13.7563, 100.5018], 13);
+    map = L.map(id.map).setView([13.7563, 100.5018], data.setting.key[data.boardNow].map.zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(id.map);
     rocketMarker = L.marker([13.7563, 100.5018]).addTo(id.map).bindPopup('Rocket Location');
 }
