@@ -17,7 +17,7 @@ import { fileURLToPath } from "url"; // Node.js built-in
 
     console.log("import function success")
     
-    const socket = io();
+    // const socket = io();
 
     console.log("connect to server success")
 
