@@ -6,25 +6,27 @@ const { config } = await import(dir.config);
 
 let data;
 
-const socket = io();
+const socket = (typeof io !== 'undefined') ? io() : null;
 
 export function initializeUpdateDataIO(){
-    socket.on("sensor-data", (dataIn) => {
-        let dataGet = data[dataIn.boardNumber].dataIn.sensor;
-        for(let name of Object.keys(dataGet)){
-            dataGet[name] = dataIn[name];
-        }
-        data[data.boardNow].updateDataOrNot.sensor = true;
-    });
-    socket.on("cmd-data" , (dataIn) => {
-        data[dataIn.boardNumber].dataIn.command.counter = dataIn.counter;
-        data[dataIn.boardNumber].dataIn.command.command = dataIn.command;
-        data[data.boardNow].updateDataOrNot.command = true;
-    });
-    socket.on("Port-available", (dataIn) => {
-        data.portAvailable = dataIn
-        listAvaiablePort();
-    });
+    if(socket){
+        socket.on("sensor-data", (dataIn) => {
+            let dataGet = data[dataIn.boardNumber].dataIn.sensor;
+            for(let name of Object.keys(dataGet)){
+                dataGet[name] = dataIn[name];
+            }
+            data[data.boardNow].updateDataOrNot.sensor = true;
+        });
+        socket.on("cmd-data" , (dataIn) => {
+            data[dataIn.boardNumber].dataIn.command.counter = dataIn.counter;
+            data[dataIn.boardNumber].dataIn.command.command = dataIn.command;
+            data[data.boardNow].updateDataOrNot.command = true;
+        });
+        socket.on("Port-available", (dataIn) => {
+            data.portAvailable = dataIn
+            listAvaiablePort();
+        });
+    }
 }
 
 export function sendUplink(){
