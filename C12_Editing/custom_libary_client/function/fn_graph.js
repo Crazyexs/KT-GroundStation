@@ -200,6 +200,7 @@ export function updateChart(){
         else{
             chartOptions.label = dataChart[xTitle].slice(len-shiftValue,len)
         }
+        data[data.boardNow].charts[index].updateOptions(data[data.boardNow].charts[index].chartOptions);
     }
 }
 

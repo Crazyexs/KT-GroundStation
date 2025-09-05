@@ -32,6 +32,11 @@
                     "x": "counter",
                     "y": "apogee",
                     "type": "scatter"
+                },
+                {
+                    "x": "counter",
+                    "y": ["apogee","counter"],
+                    "type": "scatter"
                 }
             ],
             "shiftValue": 50
