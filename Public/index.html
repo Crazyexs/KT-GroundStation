@@ -170,95 +170,6 @@
               ></svg>
             </div>
           </article>
-
-          <!-- Serial Connect (Web Serial) -->
-          <article class="card" aria-labelledby="conn-card-title">
-            <div class="card__hdr">
-              <div class="card__title" id="conn-card-title">Serial Connect (Web Serial)</div>
-              <div class="kv">
-                <span class="dot bad" id="serial-dot" aria-hidden="true"></span>
-                <span id="serial-state">Disconnected</span>
-              </div>
-            </div>
-
-            <div class="card__body">
-              <div class="row cols-2">
-                <div>
-                  <label for="baud">Baud Rate</label>
-                  <div class="select select-lg">
-                    <select id="baud" name="baud" data-field="baud">
-                      <option value="115200" selected>115200</option>
-                      <option value="921600">921600</option>
-                      <option value="460800">460800</option>
-                      <option value="230400">230400</option>
-                      <option value="57600">57600</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label>Port</label>
-                  <div class="port-box" id="port-label" data-field="portLabel">No port selected</div>
-                </div>
-              </div>
-
-              <div class="btnrow">
-                <button class="btn btn--accent" data-btn="serial-request">Connect Serial</button>
-                <button class="btn" data-btn="serial-disconnect">Disconnect</button>
-                <button class="btn btn--danger" data-btn="reset-db">Reset Database</button>
-              </div>
-
-              <p class="muted">Tip: If Web Serial isn’t available, use “Server Connect” below.</p>
-            </div>
-          </article>
-
-          <!-- Server Connect (Socket.IO) -->
-          <article class="card" aria-labelledby="server-conn-title">
-            <div class="card__hdr">
-              <div class="card__title" id="server-conn-title">Server Connect (Socket.IO)</div>
-              <div class="kv">
-                <span class="dot bad" id="server-dot" aria-hidden="true"></span>
-                <span id="server-state">Disconnected</span>
-              </div>
-            </div>
-
-            <div class="card__body">
-              <div class="row cols-2">
-                <div>
-                  <label for="portSelect">Port</label>
-                  <div class="select select-lg">
-                    <select id="portSelect">
-                      <option value="">-- Select Port --</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label for="number_of_value">Shift Size</label>
-                  <input id="number_of_value" placeholder="default 50" />
-                </div>
-              </div>
-
-              <div class="btnrow">
-                <button class="btn btn--primary" id="ConnectBtn">Connect</button>
-                <button class="btn" id="DisconnectBtn">Disconnect</button>
-                <button class="btn" id="addNumber_of_valueBtn">Apply Shift</button>
-              </div>
-            </div>
-          </article>
-
-          <!-- Downloads -->
-          <article class="card" aria-labelledby="downloads-title" id="downloads">
-            <div class="card__hdr">
-              <div class="card__title" id="downloads-title">Downloads</div>
-            </div>
-            <div class="card__body">
-              <div class="btnrow">
-                <a class="btn btn--primary" href="/download_sensor">Download Sensor Data</a>
-                <a class="btn" href="/download_cmd">Download Command Data</a>
-              </div>
-            </div>
-          </article>
         </div>
       </div> <!-- /dashboard-grid -->
     </section>
@@ -416,6 +327,93 @@
         </div>
       </article>
     </section>
+     <!-- Serial Connect (Web Serial) -->
+          <article class="card" aria-labelledby="conn-card-title">
+            <div class="card__hdr">
+              <div class="card__title" id="conn-card-title">Serial Connect (Web Serial)</div>
+              <div class="kv">
+                <span class="dot bad" id="serial-dot" aria-hidden="true"></span>
+                <span id="serial-state">Disconnected</span>
+              </div>
+            </div>
+
+            <div class="card__body">
+              <div class="row cols-2">
+                <div>
+                  <label for="baud">Baud Rate</label>
+                  <div class="select select-lg">
+                    <select id="baud" name="baud" data-field="baud">
+                      <option value="115200" selected>115200</option>
+                      <option value="921600">921600</option>
+                      <option value="460800">460800</option>
+                      <option value="230400">230400</option>
+                      <option value="57600">57600</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label>Port</label>
+                  <div class="port-box" id="port-label" data-field="portLabel">No port selected</div>
+                </div>
+              </div>
+
+              <div class="btnrow">
+                <button class="btn btn--accent" data-btn="serial-request">Connect Serial</button>
+                <button class="btn" data-btn="serial-disconnect">Disconnect</button>
+                <button class="btn btn--danger" data-btn="reset-db">Reset Database</button>
+              </div>
+
+              <p class="muted">Tip: If Web Serial isn’t available, use “Server Connect” below.</p>
+            </div>
+          </article>
+           <!-- Server Connect (Socket.IO) -->
+          <article class="card" aria-labelledby="server-conn-title">
+            <div class="card__hdr">
+              <div class="card__title" id="server-conn-title">Server Connect (Socket.IO)</div>
+              <div class="kv">
+                <span class="dot bad" id="server-dot" aria-hidden="true"></span>
+                <span id="server-state">Disconnected</span>
+              </div>
+            </div>
+
+            <div class="card__body">
+              <div class="row cols-2">
+                <div>
+                  <label for="portSelect">Port</label>
+                  <div class="select select-lg">
+                    <select id="portSelect">
+                      <option value="">-- Select Port --</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="number_of_value">Shift Size</label>
+                  <input id="number_of_value" placeholder="default 50" />
+                </div>
+              </div>
+
+              <div class="btnrow">
+                <button class="btn btn--primary" id="ConnectBtn">Connect</button>
+                <button class="btn" id="DisconnectBtn">Disconnect</button>
+                <button class="btn" id="addNumber_of_valueBtn">Apply Shift</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Downloads -->
+          <article class="card" aria-labelledby="downloads-title" id="downloads">
+            <div class="card__hdr">
+              <div class="card__title" id="downloads-title">Downloads</div>
+            </div>
+            <div class="card__body">
+              <div class="btnrow">
+                <a class="btn btn--primary" href="/download_sensor">Download Sensor Data</a>
+                <a class="btn" href="/download_cmd">Download Command Data</a>
+              </div>
+            </div>
+          </article>
   </main>
 
   <!-- ========== Footer ========== -->
