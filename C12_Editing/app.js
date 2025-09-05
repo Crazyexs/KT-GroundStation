@@ -143,6 +143,7 @@ let data;
             console.log("Client reloadWindow success");
 
             const visual_data = setInterval(() => {
+                console.log("data:")
                 console.log(data)
             },2000)
         };

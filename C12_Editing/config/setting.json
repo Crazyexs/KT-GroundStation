@@ -26,15 +26,15 @@
                 {
                     "x": "counter",
                     "y": "apogee",
-                    "type": "scatter"
+                    "type": "line"
                 },
                 {
                     "x": "counter",
                     "y": ["apogee","counter"],
-                    "type": "scatter"
+                    "type": "line"
                 }
             ],
-            "shiftValue": 50
+            "shiftValue": 5
         },
         "1": {
             "map": {

@@ -50,7 +50,7 @@ function run_port(boardNumber){
                 let i = 0
                 for (const [nameData, typeData] of Object.entries(boardData.data_format)) {
                     dbData.push(changeDataType(parts[i], typeData));
-                    IOData[nameData] = changeDataType(parts[i], typeData);
+                    IOData[nameData] = String(parts[i], typeData);
                     i += 1;
                 }
                 const database_run = `INSERT INTO ${boardData.db.nameSensorDB} 

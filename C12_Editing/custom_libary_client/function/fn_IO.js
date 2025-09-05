@@ -14,6 +14,7 @@ export function initializeUpdateDataIO(){
             for(let name of Object.keys(dataGet)){
                 if(Number.isFinite(dataIn[name])){
                     dataGet[name].push(parseFloat(dataIn[name]));
+                    console.log(`counter: ${dataIn["counter"]}`)
                 }
                 else{
                     dataGet[name].push(dataIn[name]);

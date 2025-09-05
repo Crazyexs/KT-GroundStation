@@ -16,7 +16,12 @@ export function updateMap(){
     const nameLon = data.setting.key[data.boardNow].map.lon
     const dataLat = dataIn[nameLat][dataIn[nameLat].length - 1]
     const dataLon = dataIn[nameLon][dataIn[nameLon].length - 1]
-    if (Number.isFinite(parseFloat(dataLat)) && Number.isFinite(dataLon))  rocketMarker.setLatLng([dataLat, dataLat]);
+    if (Number.isFinite(parseFloat(dataLat)) && Number.isFinite(parseFloat(dataLon))){
+        console.log("update map")
+        rocketMarker.setLatLng([dataLat, dataLon]);
+    }else{
+        console.log(`lat: ${dataLat} type: ${Number.isFinite(parseFloat(dataLat))}, lon: ${dataLon} type: ${Number.isFinite(parseFloat(dataLon))}`)
+    }
 }
 
 export function syncData_map(dataIn){

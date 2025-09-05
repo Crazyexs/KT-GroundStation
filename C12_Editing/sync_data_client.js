@@ -43,6 +43,7 @@ export function initSyncData(){
             },
             n_chart: 0,
             charts: [],
+            chartOptions: [],
             storageChart: [],
             shiftValue: setting.key[name].shiftValue
         };

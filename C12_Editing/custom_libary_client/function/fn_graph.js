@@ -59,7 +59,7 @@ export function createChart({
       stroke: { curve: 'smooth', width: 2 },
       series: [],
       title: {
-        text: `Graph Between ${xValue} and ${yValue}`,
+        text: `${xValue} and ${yValue}`,
         align: 'left',
         offsetY: 25,
         offsetX: 5,
@@ -73,12 +73,12 @@ export function createChart({
       },
       labels: [],
       xaxis: {
-        min: xMn, max: xMx,
+        // min: xMn, max: xMx,
         categories: [],
         title: { text: xValue, style: { fontSize: '12px', fontWeight: 'bold', color: '#555' } }
       },
       yaxis: {
-        min: yMn, max: yMx,
+        // min: yMn, max: yMx,
         title: { text: yValue, style: { fontSize: '12px', fontWeight: 'bold', color: '#555' } }
       },
       legend: {
@@ -96,7 +96,7 @@ export function createChart({
       chartOptions.series.push({ name: yValue, data: [] });
     }
   }
-
+  console.log(xMx,xMn,yMx,yMn);
   // ✅ use div instead of canvas
   const chartDiv = placeChartSlot();
 
@@ -110,6 +110,7 @@ export function createChart({
   if (!initGraph) {
     data[data.boardNow].storageChart.push(chartOptions);
   }
+  data[data.boardNow].chartOptions.push(chartOptions);
 }
 
 
@@ -127,11 +128,10 @@ export function initializeGraph(){
         yMx = valueGraph?.yMx ?? null;
         yMn = valueGraph?.yMn ?? null;
 
-        type = valueGraph?.type ?? "linear";
+        type = valueGraph?.type ?? "line";
 
         createChart({xValue: x,yValue: y,xMx: xMx,xMn: xMn,yMx: yMx,yMn: yMn,type: type});
     }
-
 }
 
 export function addGraph(){
@@ -148,7 +148,7 @@ export function addGraph(){
     const yMn = parseFloat(id.graph.yMn.value);
     const yMx = parseFloat(id.graph.yMx.value);
 
-    createChart({initGrpah: false,xLabel: x, yLabel: y,xMin : xMn, xMax : xMx, yMin : yMn, yMax : yMx});
+    createChart({initGrpah: false,xValue: x, yValue: y,xMin : xMn, xMax : xMx, yMin : yMn, yMax : yMx});
     id.graph.xMn.value = '';
     id.graph.xMx.value = '';
     id.graph.yMn.value = '';
@@ -159,14 +159,14 @@ export function autoAddGraph(){
     Object.entries(data[data.boardNow].data_format).forEach(({xName,xType},index) => {
         Object.entries(data[data.boardNow].data_format).forEach(({yName,yType},index) => {
             if(xType != "TEXT" && yType != "TEXT"){
-                createChart({xLabel : xName,yLabel : yName})
+                createChart({xValue : xName,yValue : yName})
             }
         });
     });
 }
 
 export function shiftValue(){
-    data.shiftValue = id.graph.shiftValue.placeholder;
+    data[data.boardNow].shiftValue = parseInt(id.graph.shiftValue.placeholder);
 }
 
 export function deleteGrpah(){
@@ -177,30 +177,36 @@ export function deleteGrpah(){
 export function updateChart(){
     let dataChart = data[data.boardNow].sensor.dataIn;
     let index = 0;
-    while(index < data.n_chart){
-        let chartOptions = data[data.boardNow].charts[index].chartOptions
-        // let xValue = data[data.boardNow].charts[index].chartOptions.label
+    while(index < data[data.boardNow].n_chart){
+        let chartOptions = data[data.boardNow].chartOptions[index]
+        // let xValue = data[data.boardNow].charts[index].chartOptions.labels
         // let yValue = data[data.boardNow].charts[index].chartOptions.series
-        let xTitle = data[data.boardNow].charts[index].chartOptions.xaxis.title.text;
+        let xTitle = chartOptions.xaxis.title.text;
         
+        let shiftValue = data[data.boardNow].shiftValue;
+        console.log(`shiftValeu: ${shiftValue} len: ${dataChart[xTitle].length}`);
+
         let len;
-        for(let yName of Object.keys(chartOptions.series)){
+        for(let yNumber of Object.keys(chartOptions.series)){
+            let yName = chartOptions.series[yNumber].name;
             len = dataChart[yName].length
-            if(data.shiftValue < len){
-                chartOptions.series[yName] = dataChart[yName].slice(0,len)
-            }
-            else{
-                chartOptions.series[yname] = dataChart[yName].slice(len-shiftValue,len)
+            if(data[data.boardNow].shiftValue > len){
+                chartOptions.series[yNumber].data = dataChart[yName].slice(0,len)
+            }else{
+                chartOptions.series[yNumber].data = dataChart[yName].slice(len-shiftValue,len)
             }
         }
         len = dataChart[xTitle].length;
-        if(data.shiftValue < len){
-            chartOptions.label = dataChart[xTitle].slice(0,len)
+        if(data[data.boardNow].shiftValue > len){
+            chartOptions.labels = dataChart[xTitle].slice(0,len).map(String);
+        }else{
+            chartOptions.labels = dataChart[xTitle].slice(len-shiftValue,len).map(String);
         }
-        else{
-            chartOptions.label = dataChart[xTitle].slice(len-shiftValue,len)
-        }
-        data[data.boardNow].charts[index].updateOptions(data[data.boardNow].charts[index].chartOptions);
+        console.log("chartData")
+        console.log(chartOptions.series)
+        console.log(chartOptions.labels)
+        data[data.boardNow].charts[index].updateOptions({series: chartOptions.series,labels: chartOptions.labels});
+        index += 1;
     }
 }
 
