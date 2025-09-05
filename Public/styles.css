@@ -136,6 +136,23 @@ nav.primary{display:flex; gap:8px}
   color:#fecaca
 }
 
+/* Toolbar for compact rows (Board Controls) */
+.toolbar{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.toolbar__spacer{ flex:1 }
+
+/* Ghost button variant for secondary actions */
+.btn--ghost{
+  background: transparent;
+  border-color: rgba(148,163,184,.25);
+  color: var(--muted);
+}
+.btn--ghost:hover{
+  background: rgba(148,163,184,.10);
+  color: var(--text);
+}
+
 .select{position:relative}
 .select select,
 input{
@@ -212,8 +229,13 @@ label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px}
 }
 
 .table-wrap{
-  background:linear-gradient(180deg, #040816, #050a16);
-  border:var(--border); border-radius:14px; overflow:auto;
+  background: linear-gradient(180deg, #040816, #050a16);
+  border: var(--border);
+  border-radius:14px;
+  overflow:auto;
+  /* vertical table comfort */
+  max-height: 400px;
+  overflow-y: auto;
 }
 table{width:100%; border-collapse:collapse}
 thead th{
@@ -284,7 +306,6 @@ footer{margin:40px 0; color:var(--muted); text-align:center}
   .topbar__inner{ gap:12px }
   .brand__name{ letter-spacing:.08em }
 }
-<<<<<<< HEAD
 
 /* ===================== Utilities ===================== */
 .hidden{ display:none !important }
@@ -293,13 +314,3 @@ footer{margin:40px 0; color:var(--muted); text-align:center}
   padding:0 !important; margin:-1px !important; overflow:hidden !important;
   clip:rect(0 0 0 0) !important; white-space:nowrap !important; border:0 !important;
 }
-=======
-/*Vertical Table setting ข้างบน*/
-.table-wrap {
-  max-height: 400px;   
-  overflow-y: auto;    
-  background:#040816; 
-  border:1px solid rgba(148,163,184,.15); 
-  border-radius:14px; 
-}
->>>>>>> Backend
