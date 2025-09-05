@@ -242,10 +242,104 @@
         scales:{ x:{ type:'linear', title:{display:true, text:xLabel}, min:xMin, max:xMax },
                  y:{ title:{display:true, text:yLabel}, beginAtZero:true, min:yMin, max:yMax } } }
     };
-    const chart = new Chart(canvas.getContext('2d'), cfg);
+      const chart = new Chart(canvas.getContext('2d'), cfg);
+    charts.push({ chart, x: xLabel, y: yLabel });
+    return chart;
+  
+  }
+    function createChartApex(canvas, { xLabel, yLabel, xMin=null, xMax=null, yMin=0, yMax=null }) {
+    canvas.width = 600; canvas.height = 300;
+    var chartOptions = {
+  chart: {
+    height: 400,
+    type: 'scatter',
+    fontFamily: 'Helvetica, Arial, sans-serif',
+    foreColor: '#6E729B',
+    toolbar: {
+      show: false,
+    },
+  },
+  stroke: {
+    curve: 'smooth',
+    width: 2,
+  },
+  series: [
+    {
+      name: 'Music',
+      data: [1, 15, 26, 20, 33, 27],
+    },
+    {
+      name: 'Photos',
+      data: [3, 33, 21, 42, 19, 32],
+    },
+    {
+      name: 'Files',
+      data: [0, 39, 52, 11, 29, 43],
+    },
+  ],
+  title: {
+    text: 'Media',
+    align: 'left',
+    offsetY: 25,
+    offsetX: 5,
+    style: {
+      fontSize: '14px',
+      fontWeight: 'bold',
+      color: '#373d3f',
+    },
+  },
+  markers: {
+    size: 6,
+    strokeWidth: 0,
+    hover: {
+      size: 9,
+    },
+  },
+  grid: {
+    show: true,
+    padding: {
+      bottom: 0,
+    },
+  },
+  labels: ['2018', '2019', '2020', '2021', '2022', '2023'],
+  xaxis: {
+    tooltip: {
+      enabled: false,
+    },
+    categories: [1, 2, 3, 4, 5],
+    title: {
+      text: '(s)',   // ✅ ชื่อแกน X
+      style: {
+        fontSize: '12px',
+        fontWeight: 'bold',
+        color: '#555'
+      }
+    }
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right',
+    offsetY: -10,
+    labels: {
+      colors: '#373d3f',
+    },
+  },
+  grid: {
+    borderColor: '#e6e6e6ff',
+    xaxis: {
+      line: {
+        show: true,
+      },
+    }
+  }
+}
+    
+
+    const chart = new ApexCharts(canvas.getContext('2d'), chartOptions);
     charts.push({ chart, x: xLabel, y: yLabel });
     return chart;
   }
+
   function placeChartCanvas() {
     const empty = qsa('.graph-slot.is-empty')[0];
     const canvas = document.createElement('canvas');
@@ -276,8 +370,10 @@
   function autoAddGraphs() {
     for (let i=0;i<allLabel.length;i++) for (let j=0;j<allLabel.length;j++) {
       if (i===j) continue; if (isText(allLabel[i]) || isText(allLabel[j])) continue;
-      const canvas = placeChartCanvas();
+      let canvas = placeChartCanvas();
       createChart(canvas, { xLabel:allLabel[i], yLabel:allLabel[j] });
+      canvas = placeChartCanvas();
+      createChartApex(canvas, { xLabel:allLabel[i], yLabel:allLabel[j] });
       chartData.push({ name_x:allLabel[i], name_y:allLabel[j], data:[], state:[] });
     }
   }

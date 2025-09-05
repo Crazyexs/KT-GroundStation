@@ -284,6 +284,7 @@ footer{margin:40px 0; color:var(--muted); text-align:center}
   .topbar__inner{ gap:12px }
   .brand__name{ letter-spacing:.08em }
 }
+<<<<<<< HEAD
 
 /* ===================== Utilities ===================== */
 .hidden{ display:none !important }
@@ -292,3 +293,13 @@ footer{margin:40px 0; color:var(--muted); text-align:center}
   padding:0 !important; margin:-1px !important; overflow:hidden !important;
   clip:rect(0 0 0 0) !important; white-space:nowrap !important; border:0 !important;
 }
+=======
+/*Vertical Table setting ข้างบน*/
+.table-wrap {
+  max-height: 400px;   
+  overflow-y: auto;    
+  background:#040816; 
+  border:1px solid rgba(148,163,184,.15); 
+  border-radius:14px; 
+}
+>>>>>>> Backend

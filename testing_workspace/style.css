@@ -1,0 +1,140 @@
+/* public/style.css */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 40px auto;
+  max-width: 1800px;
+  background-color: #f9fafb;
+  color: #222;
+  text-align: center;
+
+  display: flex;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+h1 {
+  color: #004aad;
+  margin-bottom: 20px;
+}
+
+#content {
+  background: white;
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 0 12px rgb(0 0 0 / 0.1);
+}
+
+canvas {
+  display: block;
+  margin: 30px auto;
+  max-width: 100%;
+}
+
+#output {
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #555;
+}
+
+#controls {
+  margin-top: 40px;
+}
+
+#controls input {
+  padding: 8px 12px;
+  font-size: 1rem;
+  margin-right: 10px;
+  width: 180px;
+  max-width: 45%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#controls button {
+  padding: 9px 18px;
+  font-size: 1rem;
+  border: none;
+  background-color: #007acc;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#controls button:hover {
+  background-color: #005f99;
+}
+
+#stateLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.color {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+  border-radius: 3px;
+}
+
+.color.startup     { background-color: #A9A9A9; }
+.color.idle_safe   { background-color: #708090; }
+.color.armed       { background-color: #FFD700; }
+.color.pad_preop   { background-color: #FFA500; }
+.color.powered     { background-color: #FF4500; }
+.color.coasting    { background-color: #FF6347; }
+.color.drog_depl   { background-color: #FF8C00; }
+.color.drog_desc   { background-color: #FF7F50; }
+.color.main_depl   { background-color: #DC143C; }
+.color.main_desc   { background-color: #B22222; }
+.color.landed      { background-color: #228B22; }
+.color.rec_safe    { background-color: #2E8B57; }
+
+#commandSelect {
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  background-color: #fff;
+}
+#commandSelect option {
+  padding: 5px;
+}
+
+.left-panel {
+  flex-basis: 25%;   /* กำหนดฝั่งซ้าย 30% */
+  max-width: 25%;    /* ไม่ให้กินเกิน */
+  text-align: left;
+}
+
+.right-panel {
+  flex-basis: 75%;   /* กำหนดฝั่งขวา 80% */
+  max-width: 75%;
+  text-align: center;
+}
+
+.separator {
+  width: 2px;
+  background-color: #ccc; /* สีเส้น */
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+.map_container {
+  height: 500px;
+  width: 100%;
+}
