@@ -1,40 +1,31 @@
 const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
-const { config } = await import(dir.config);
+
+const { reloadChart } = await import('./fn_graph.js')
 
 let data;
 
-export function saveData(key,data){
-  localStorage.setItem(key, JSON.stringify(data));
+function saveData(key, obj) {
+    const seen = new WeakSet();
+    const json = JSON.stringify(obj, (k, v) => {
+        if (v && typeof v === "object") {
+            if (seen.has(v)) return; // skip circular reference
+            seen.add(v);
+        }
+        return v;
+    });
+    localStorage.setItem(key, json);
 }
 
-export function saveSyncData(){
+
+
+export function updateLocalStorage(){
   saveData("syncData",data)
 }
 
 export function clearLocalStorage(){
     localStorage.clear();
     alert('Local storage cleared!');
-}
-
-export function reloadChart(){
-  n_chart = loadChartData('n_chart');
-  if (!n_chart || isNaN(n_chart)) { n_chart = 0; }
-
-  for(let i = 0; i < n_chart; i++) {
-    chartData[i] = loadChartData(`chartData_${i}`);
-    const container = document.createElement('canvas');
-    container.id = `chart${charts.length}`;
-
-    createChart(container, {
-      xLabel: chartData[i].name_x,
-      yLabel: chartData[i].name_y,
-    });
-
-    // Restore chart data
-    charts[i].chart.data.datasets[0].data = chartData[i].data;
-    charts[i].chart.update();
-  }
 }
 
 export function reloadSyncData(){
@@ -44,7 +35,7 @@ export function reloadSyncData(){
 
 export function reloadWindow(){
   window.onload = () => {
-    reloadChart();
+    // reloadChart();
     reloadSyncData();
   };
 }

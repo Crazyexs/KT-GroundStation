@@ -6,20 +6,20 @@
   const els = {
     // Web Serial
     baud: qs('#baud'),
-    portLabel: qs('#port-label'),
+    // portLabel: qs('#port-label'),
     // serialDot: qs('#serial-dot'),
     // serialState: qs('#serial-state'),
-    connectBtn: qs('[data-btn="serial-request"]'),
-    disconnectBtn: qs('[data-btn="serial-disconnect"]'),
+    // connectBtn: qs('[data-btn="serial-request"]'),
+    // disconnectBtn: qs('[data-btn="serial-disconnect"]'),
 
     // Server (Socket.IO)
     // serverDot: qs('#server-dot'),
     // serverState: qs('#server-state'),
-    // portSelect: qs('#portSelect'),
-    // serverConnectBtn: qs('#ConnectBtn'),
-    // serverDisconnectBtn: qs('#DisconnectBtn'),
-    // shiftInput: qs('#number_of_value'),
-    // shiftApplyBtn: qs('#addNumber_of_valueBtn'),
+    portSelect: qs('#portSelect'),
+    serverConnectBtn: qs('#ConnectBtn'),
+    serverDisconnectBtn: qs('#DisconnectBtn'),
+    shiftInput: qs('#number_of_value'),
+    shiftApplyBtn: qs('#addNumber_of_valueBtn'),
 
     // Uplink
     sendBtn: qs('#sendBtn'),

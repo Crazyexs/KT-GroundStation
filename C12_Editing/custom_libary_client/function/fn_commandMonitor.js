@@ -1,6 +1,5 @@
 const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
-const { config } = await import(dir.config);
 
 let data;
 

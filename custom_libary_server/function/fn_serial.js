@@ -34,7 +34,7 @@ function run_port(boardNumber){
 
         let boardData = data[boardNumber];
         console.log(`Connect to Board ${boardNumber} baudRate:`, boardData.baudRate);
-        boardData.serial = new SerialPort({ path: boardData.COM_PORT, baudRate: boardData.baudRate });
+        boardData.serial = new SerialPort({ path: boardData.COM_PORT, baudRate: parseInt(boardData.baudRate) });
         boardData.parser = boardData.serial.pipe(new ReadlineParser({ delimiter: '\n' }));
 
         // โค้ดอื่นที่ต้องใช้ serial parser รันต่อที่นี่

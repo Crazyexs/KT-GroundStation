@@ -1,18 +1,15 @@
 const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
-const { config } = await import(dir.config);
 
 let data;
 let prevPorts = []; // เก็บ state ก่อนหน้า
-const uplink_format = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, dir.config, 'uplink.json'), 'utf-8')
-);
 
+const socket = (typeof io !== 'undefined') ? io() : null;
 
 export function listBoardNumber(){
     let value,label;
     id.boardNow.selected.innerHTML = '<option value="">-- Select Port --</option>'; // reset
-    for(let boardNum of Object.keys(data.datasetting)){
+    for(let boardNum of Object.keys(data.data_setting)){
         value = boardNum;
         label = boardNum;
         const option = document.createElement('option');
@@ -23,13 +20,13 @@ export function listBoardNumber(){
 }
 
 export function connectBoardNumber(){
-    data.boardNow = id.boardNow.selected
+    data.boardNow = id.boardNow.selected.value;
 }
 
 export function connectSerialPort(){
-    if (id.SerialPort.selected.value.lenght > 0) {
-        const selectedPort = id.SerialPort.selected.value;
-        const baudRate = id.SerialPort.baudRate.value;
+    if (id.SerialPort.selected.port.value.length > 0) {
+        const selectedPort = id.SerialPort.selected.port.value;
+        const baudRate = id.SerialPort.selected.baudRate.value;
         socket.emit('select-port', {boardNumber : data.boardNow,baudRate : baudRate,port : selectedPort, connectOrNot: true});
     }
 }
@@ -38,8 +35,7 @@ export function disconnectSerialPort(){
     socket.emit('select-port', {boardNumber : data.boardNow,baudRate : null, port: null, connectOrNot: false});
 }
 
-export function listAvaiablePort(){
-
+export function listAvaiablePort(ports){
     const newPorts = ports.map(p => p.path);
 
     // เช็คว่ามีการเปลี่ยนแปลงจริงหรือไม่
@@ -56,7 +52,7 @@ export function listAvaiablePort(){
     ports.forEach(port => {
         const option = document.createElement('option');
         option.value = port.path;        // ค่าที่จะส่งไป server
-        option.textContent = port.path;  // ข้อความที่แสดงใน select
+        option.textContent = port.friendlyName;  // ข้อความที่แสดงใน select
         portSelect.appendChild(option);
     });
 }

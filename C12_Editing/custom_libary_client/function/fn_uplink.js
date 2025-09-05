@@ -2,14 +2,11 @@ const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
 
 let data;
-const uplink_format = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, dir.config, 'uplink.json'), 'utf-8')
-);
 
 export function initializeUplink(){
     let value,label
     id.uplink.selected.innerHTML = '<option value="">-- Select Port --</option>'; // reset
-    for(let uplinkNumber of uplink_format[data.boardNow]){
+    for(let uplinkNumber of data.uplink[data.boardNow]){
         value = uplinkNumber.value;
         label = uplinkNumber.label;
         const option = document.createElement('option');

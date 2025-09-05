@@ -24,13 +24,8 @@
             ],
             "plot": [
                 {
-                    "x": "counter",
-                    "y": "counter",
-                    "type": "scatter"
-                },
-                {
-                    "x": "counter",
-                    "y": "apogee",
+                    "x": "time",
+                    "y": "value",
                     "type": "scatter"
                 }
             ],

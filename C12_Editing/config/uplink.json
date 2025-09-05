@@ -1,0 +1,142 @@
+{
+    "0":[
+        {
+            "value": "ping",
+            "label": "Ping"
+        },
+        {
+            "value": "wake",
+            "label": "Wake"
+        },
+        {
+            "value": "on",
+            "label": "On"
+        },
+        {
+            "value": "arm",
+            "label": "Arm"
+        },
+        {
+            "value": "disarm",
+            "label": "Disarm"
+        },
+        {
+            "value": "pad",
+            "label": "Pad"
+        },
+        {
+            "value": "servo-a-lock",
+            "label": "Servo A Lock"
+        },
+        {
+            "value": "servo-a-deploy",
+            "label": "Servo A Deploy"
+        },
+        {
+            "value": "servo-b-lock",
+            "label": "Servo B Lock"
+        },
+        {
+            "value": "servo-b-deploy",
+            "label": "Servo B Deploy"
+        },
+        {
+            "value": "launch-override",
+            "label": "Launch Override"
+        },
+        {
+            "value": "recover",
+            "label": "Recover"
+        },
+        {
+            "value": "zero",
+            "label": "Zero"
+        },
+        {
+            "value": "sleep",
+            "label": "Sleep"
+        },
+        {
+            "value": "shutdown",
+            "label": "Shutdown"
+        },
+        {
+            "value": "reboot",
+            "label": "Reboot"
+        },
+        {
+            "value": "restart",
+            "label": "Restart"
+        }
+    ],
+    "1":[
+        {
+            "value": "ping",
+            "label": "Ping"
+        },
+        {
+            "value": "wake",
+            "label": "Wake"
+        },
+        {
+            "value": "on",
+            "label": "On"
+        },
+        {
+            "value": "arm",
+            "label": "Arm"
+        },
+        {
+            "value": "disarm",
+            "label": "Disarm"
+        },
+        {
+            "value": "pad",
+            "label": "Pad"
+        },
+        {
+            "value": "servo-a-lock",
+            "label": "Servo A Lock"
+        },
+        {
+            "value": "servo-a-deploy",
+            "label": "Servo A Deploy"
+        },
+        {
+            "value": "servo-b-lock",
+            "label": "Servo B Lock"
+        },
+        {
+            "value": "servo-b-deploy",
+            "label": "Servo B Deploy"
+        },
+        {
+            "value": "launch-override",
+            "label": "Launch Override"
+        },
+        {
+            "value": "recover",
+            "label": "Recover"
+        },
+        {
+            "value": "zero",
+            "label": "Zero"
+        },
+        {
+            "value": "sleep",
+            "label": "Sleep"
+        },
+        {
+            "value": "shutdown",
+            "label": "Shutdown"
+        },
+        {
+            "value": "reboot",
+            "label": "Reboot"
+        },
+        {
+            "value": "restart",
+            "label": "Restart"
+        }
+    ]
+}

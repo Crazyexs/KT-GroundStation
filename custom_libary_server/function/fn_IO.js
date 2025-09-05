@@ -41,6 +41,7 @@ export function sendPortAvailable() {
         console.error(err);
         return;
       }
+      
       io.emit('Port-available', ports);
 
       const prevPaths = prevPorts.map(p => p.path);

@@ -18,7 +18,7 @@
     },
     "1":{
         "header":"<1> ",
-        "delimiter": " ",
+        "delimiter": ",",
         "data_format":{
             "name": "TEXT",
             "age": "INTEGER",

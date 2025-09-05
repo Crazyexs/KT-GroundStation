@@ -33,7 +33,7 @@
   <header class="topbar" role="banner">
     <div class="container topbar__inner">
       <div class="brand">
-        <img src="/Public/assets/spaceac.jpg" alt="SPACE AC logo" style="width:100px;height:80px;"
+        <img src="/assets/spaceac.jpg" alt="SPACE AC logo" style="width:100px;height:80px;"
              onerror="this.replaceWith(Object.assign(document.createElement('div'),{textContent:'SPACE AC',style:'font-weight:800;letter-spacing:.2em'}))">
         <div class="brand__name">SPACE&nbsp;AC</div>
       </div>
@@ -50,10 +50,17 @@
 
   <main>
     <!--Top Console-->
-    <select id="boardSelected">
-      <option value = "0">0</option>
-    </select>
+    <select id="boardSelected"></select>
     <button id ="boardSelectedBtn">connect board</button>
+
+    <br>
+
+    <button id="clearLocalStorageBtn">clearLocalStorageBtn</button> 
+
+    <button id="resetDbBtn">resetDbBtn</button>
+
+  
+
     <section id="connect" class="container" aria-labelledby="console-title">
       <div class="section__hdr">
         <h2 class="section__title" id="console-title">Mission Console</h2>
@@ -151,19 +158,6 @@
               <div class="card__title" id="table-title">Vertical Table</div>
             </div>
             <div class="card__body table-wrap resizable">
-              <table aria-describedby="table-title" id="telemetry-table">
-                <thead>
-                  <tr>
-                    <th style="width:160px">Field</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="demo-row">
-                    <td>—</td><td>Waiting for data…</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </article>
         </div>
@@ -364,7 +358,11 @@
   <footer>
     <div class="container">© <span id="year">2025</span> SPACE AC — Groundstation by KT</div>
   </footer>
-  
+
   <script type="module" src="app.js"></script>
+  <script type="module" src="id.js"></script>
+
+
+
 </body>
 </html>

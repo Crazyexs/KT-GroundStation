@@ -17,8 +17,8 @@ const id = {
             clear: qs('#clearGraphBtn')
         },
         shiftValue: {
-            placeholder: qs('number_of_value'),
-            button: qs('addNumber_of_valueBtn')
+            placeholder: qs('#number_of_value'),
+            button: qs('#addNumber_of_valueBtn')
         }
     },
     table: qs("#telemetry-table tbody"),
@@ -31,24 +31,24 @@ const id = {
         sensor: qs('#value-monitor'),
         command: qs('#monitor')
     },
-    map: document.elementId("map"),
+    map: qs("#map"),
     database: {
-        resetDatabaseBtn: qs('resetDbBtn')
+        resetDatabaseBtn: qs('#resetDbBtn')
     },
     SerialPort: {
         selected:{
-            port:  qs('#port-label'),
+            port:  qs('#portSelect'),
             baudRate: qs('#baud')
         },
-        connectBtn: qs('[data-btn="serial-request"]'),
-        disconnectBtn: qs('[data-btn="serial-disconnect"]')
+        connectBtn: qs('#ConnectBtn'),
+        disconnectBtn: qs('#DisconnectBtn')
     },
     boardNow:{
-        selected: qs('boardSelected'),
-        button: qs('boardSelectedBtn')
+        selected: qs('#boardSelected'),
+        button: qs('#boardSelectedBtn')
     },
     localStorage: {
-        clearBtn: qs('')
+        clearBtn: qs('#clearLocalStorageBtn')
     }
 }
 

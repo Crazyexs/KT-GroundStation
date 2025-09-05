@@ -2,7 +2,6 @@ import { listAvaiablePort } from './fn_serial.js';
 
 const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
-const { config } = await import(dir.config);
 
 let data;
 
@@ -11,21 +10,27 @@ const socket = (typeof io !== 'undefined') ? io() : null;
 export function initializeUpdateDataIO(){
     if(socket){
         socket.on("sensor-data", (dataIn) => {
-            let dataGet = data[dataIn.boardNumber].dataIn.sensor;
+            let dataGet = data[dataIn.boardNumber].sensor.dataIn;
             for(let name of Object.keys(dataGet)){
-                dataGet[name] = dataIn[name];
+                if(Number.isFinite(dataIn[name])){
+                    dataGet[name].push(parseFloat(dataIn[name]));
+                }
+                else{
+                    dataGet[name].push(dataIn[name]);
+                }
             }
             data[data.boardNow].updateDataOrNot.sensor = true;
+            console.log(`Get sensor: ${dataIn}`)
         });
         socket.on("cmd-data" , (dataIn) => {
             data[dataIn.boardNumber].dataIn.command.counter = dataIn.counter;
             data[dataIn.boardNumber].dataIn.command.command = dataIn.command;
             data[data.boardNow].updateDataOrNot.command = true;
+            console.log(`Get command: ${dataIn}`)
         });
-        socket.on("Port-available", (dataIn) => {
-            data.portAvailable = dataIn
-            listAvaiablePort();
-        });
+        socket.on("Port-available", (ports) => {
+            listAvaiablePort(ports);
+        })
     }
 }
 

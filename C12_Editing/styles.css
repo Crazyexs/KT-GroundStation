@@ -186,3 +186,39 @@ footer{margin:40px 0; color:var(--muted); text-align:center}
   border:1px solid rgba(148,163,184,.15); 
   border-radius:14px; 
 }
+
+
+.card--graph {
+  width: 100%;
+  max-width: 680px;
+  padding: 15px;
+
+  position: relative;
+}
+
+.card--graph::before,
+.card--graph::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.card--graph::before {
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translate(-30px, -30px);
+}
+
+.card--graph::after {
+  z-index: 2;
+  background-color: #ffffff;
+}
+
+.card--graph-content {
+  position: relative;
+  z-index: 3;
+}

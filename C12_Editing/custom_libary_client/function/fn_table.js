@@ -4,19 +4,20 @@ const { id } = await import('../../id.js');
 let data,config;
 
 export function initializeTable(){
-    id.innerHTML = ""; // ล้างตารางเก่า
+    id.table.innerHTML = ""; // ล้างตารางเก่า
     Object.entries(data[data.boardNow].data_format).forEach(([name, value]) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `<th>${name}</th><td>Wait for data...</td>`;
-        id.appendChild(tr);
+        id.table.appendChild(tr);
     });
 }
 
 export function updateTable(){
-    Object.entries(data[data.boardNow].dataIn).forEach(([name, value]) => {
+    id.table.innerHTML = ""; // ล้างตารางเก่า
+    Object.entries(data[data.boardNow].sensor.dataIn).forEach(([name, value]) => {
         const tr = document.createElement("tr");
-        tr.innerHTML = `<th>${name}</th><td>${value}</td>`;
-        id.appendChild(tr);
+        tr.innerHTML = `<th>${name}</th><td>${value[value.length - 1]}</td>`;
+        id.table.appendChild(tr);
     });
 }
 

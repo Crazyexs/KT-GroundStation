@@ -1,19 +1,45 @@
-/* C12_Editing/script.js */
+/* C12_Editing/app.js */
 import { dir } from "./dir_client.js";
 import { id } from "./id.js";
-import { fileURLToPath } from "url"; // Node.js built-in
+
+let prevBoard = null;
+let data;
 
 (async () => {
 
-    const { syncData_commandMonitor, updateCommandMonitor } = await import(`${dir.init}fn_commandMonitor.js`);
-    const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, initializeGraph } = await import(`${dir.init}graph.js`);
-    const { syncData_IO, sendSelectPort, sendUplink, initializeUpdateDataIO } = await import(`${dir.init}fn_IO.js`);
-    const { syncData_localStorage, reloadWindow, reloadSyncData, reloadChart, loadChartData } = await import(`${dir.init}fn_localStorage.js`);
-    const { syncData_map, initializeMap, updateMap } = await import(`${dir.init}fn_map.js`);
-    const { syncData_serial, listBoardNumber, listAvaiablePort, disconnectSerialPort, connectSerialPort, connectBoardNumber } = await import(`${dir.init}fn_serial.js`);
-    const { syncData_table, initializeTable, updateTable } = await import(`${dir.init}fn_table.js`);
-    const { syncData_uplink, initializeUplink } = await import(`${dir.init}fn_uplink.js`);
-    const { event, waitUntil } = await import(`${dir.init}universal_function.js`);
+    console.log("start");
+
+    const { initSyncData } = await import(`./sync_data_client.js`);
+    console.log("sync_data_client.js import success");
+
+
+
+    const { syncData_commandMonitor, updateCommandMonitor } = await import(`${dir.function}fn_commandMonitor.js`);
+    console.log("fn_commandMonitor.js import success");
+
+    const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, initializeGraph } = await import(`${dir.function}fn_graph.js`);
+    console.log("fn_graph.js import success");
+
+    const { syncData_IO, sendSelectPort, sendUplink, initializeUpdateDataIO } = await import(`${dir.function}fn_IO.js`);
+    console.log("fn_IO.js import success");
+
+    const { syncData_localStorage, reloadWindow, reloadSyncData, reloadChart, updateLocalStorage } = await import(`${dir.function}fn_localStorage.js`);
+    console.log("fn_localStorage.js import success");
+
+    const { syncData_map, initializeMap, updateMap } = await import(`${dir.function}fn_map.js`);
+    console.log("fn_map.js import success");
+
+    const { syncData_serial, listBoardNumber, listAvaiablePort, disconnectSerialPort, connectSerialPort, connectBoardNumber } = await import(`${dir.function}fn_serial.js`);
+    console.log("fn_serial.js import success");
+
+    const { syncData_table, initializeTable, updateTable } = await import(`${dir.function}fn_table.js`);
+    console.log("fn_table.js import success");
+
+    const { syncData_uplink, initializeUplink } = await import(`${dir.function}fn_uplink.js`);
+    console.log("fn_uplink.js import success");
+
+    const { event, waitUntil } = await import(`${dir.function}universal_function.js`);
+    console.log("universal_function.js import success");
 
     console.log("import function success")
     
@@ -21,15 +47,7 @@ import { fileURLToPath } from "url"; // Node.js built-in
 
     console.log("connect to server success")
 
-    /* Declear Variable */
-    let counter = {
-        sensor: 0,
-        command: 0
-    };
-
-    listBoardNumber();
-
-    console.log("list board available success")
+    data = initSyncData();
 
     syncData_commandMonitor(data);
     syncData_graph(data);
@@ -42,55 +60,91 @@ import { fileURLToPath } from "url"; // Node.js built-in
 
     console.log("sync Data success");
 
+    listBoardNumber();
+
+    console.log("list board available success")
+
     /* Start */
     id.boardNow.button.addEventListener('click', async () => {  
-
         // CONNECT BOARD NUMBER
+        console.log("start connect board");
+        
         connectBoardNumber();
 
-        // INITIALIZE
-        initializeTable();
-        initializeUpdateDataIO();
-        initializeUplink(config.uplink);
-        initializeMap();
+        console.log("connect board success")
 
-        console.log("Client INITIALIZE success");
+        if(data.boardNow != null && prevBoard != data.boardNow){
 
-        // SENSOR
-        const sensor_interval = setInterval(() => {
-            if(data[data.boardNow].updateDataOrNot.sensor == true){
-                data[data.boardNow].updateDataOrNot.sensor = false;
+            console.log("Start New Board");
 
-                updateChart();
-                updateTable();
-                updateMap();
+            prevBoard = data.boardNow;
 
-                updateLocalStorage_sensor();
-            }
-        },100)
+            // SET ZERO
+            deleteGrpah();
 
-        console.log("Client UPDATE SENSOR success");
+            console.log("SET ZERO success");
 
-        // COMMAND
-        const command_interval = setInterval(() => {
-            if(data[data.boardNow].updateDataOrNot.command == true){
-                data[data.boardNow].updateDataOrNot.command = false;
+            // INITIALIZE
+            initializeTable();
+            console.log("init Table success");
 
-                updateCommandMonitor();
+            initializeUpdateDataIO();
+            console.log("init IO success");
 
-                updateLocalStorage_command();
-            }
-        },100)
+            initializeUplink();
+            console.log("init Uplink success");
 
-        console.log("Client UPDATE COMMAND success");
+            initializeMap();
+            console.log("init Map success");
 
-        event();
-        
-        console.log("Client setup event success");
+            initializeGraph();
+            console.log("init Graph success");
 
-        reloadWindow();
+            console.log("Client INITIALIZE success");
 
-        console.log("Client reloadWindow success");
+            // SENSOR
+            const sensor_interval = setInterval(() => {
+                if(data[data.boardNow].updateDataOrNot.sensor == true){
+                    data[data.boardNow].updateDataOrNot.sensor = false;
 
+                    updateChart();
+                    updateTable();
+                    updateMap();
+
+                    updateLocalStorage();
+
+                    console.log("update sensor data")
+                }
+            },100)
+
+            console.log("Client UPDATE SENSOR success");
+
+            // COMMAND
+            const command_interval = setInterval(() => {
+                if(data[data.boardNow].updateDataOrNot.command == true){
+                    data[data.boardNow].updateDataOrNot.command = false;
+
+                    updateCommandMonitor();
+
+                    updateLocalStorage();
+
+                    console.log("update command data")
+                }
+            },100)
+
+            console.log("Client UPDATE COMMAND success");
+
+            event();
+            
+            console.log("Client setup event success");
+
+            reloadWindow();
+
+            console.log("Client reloadWindow success");
+
+            const visual_data = setInterval(() => {
+                console.log(data)
+            },2000)
+        };
     });
-})
+})();

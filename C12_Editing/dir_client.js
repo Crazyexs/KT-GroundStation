@@ -1,13 +1,9 @@
-import { fileURLToPath, pathToFileURL } from "url";
-import path from "path";
+/* C12_Editing/dir_clinet.js */
 
 let dir = { 
   function: "./custom_libary_client/function/",
-  config: "../config/",
+  config: "../../config/", // for function
+  config_sync_data: "../config/"
 };
-
-dir = Object.fromEntries(
-  Object.entries(dir).map(([key, relPath]) => [key, pathToFileURL(path.resolve(relPath))])
-);
 
 export { dir };

@@ -1,5 +1,18 @@
+const { id } = await import('../../id.js');
+
 const key_state = ["STARTUP","IDLE_SAFE","ARMED","PAD_PREOP","POWERED","COASTING","DROG_DEPL","DROG_DESC","MAIN_DEPL","MAIN_DESC","LANDED","REC_SAFE"];
 const allLabel = ["counter","state","gps_latitude","gps_longitude","apogee","last_ack","last_nack"];
+
+const { syncData_commandMonitor, updateCommandMonitor } = await import(`./fn_commandMonitor.js`);
+const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, initializeGraph } = await import(`./fn_graph.js`);
+const { syncData_IO, sendSelectPort, sendUplink, initializeUpdateDataIO } = await import(`./fn_IO.js`);
+const { syncData_localStorage, reloadWindow, reloadSyncData, reloadChart, loadChartData } = await import(`./fn_localStorage.js`);
+const { syncData_map, initializeMap, updateMap } = await import(`./fn_map.js`);
+const { syncData_serial, listBoardNumber, listAvaiablePort, disconnectSerialPort, connectSerialPort, connectBoardNumber } = await import(`./fn_serial.js`);
+const { syncData_table, initializeTable, updateTable } = await import(`./fn_table.js`);
+const { syncData_uplink, initializeUplink } = await import(`./fn_uplink.js`);
+
+
 
 
 /* Length text */
@@ -89,39 +102,65 @@ function isText(label){
 
 /* Get Event */
 export function event(){
-    // Graph
-    id.graph.button.add.addEventListener(click, () => {
-        addGraph();
-    })
-    id.graph.button.autoAdd.addEventListener(click, () => {
-        autoAddGraph();
-    })
-    id.graph.button.clear.addEventListener(click, () => {
 
-    })
+    // Graph buttons
+    if (id.graph.button.add) {
+        id.graph.button.add.addEventListener("click", () => addGraph());
+    } else {
+        console.log('addGraphBtn not found!');
+    }
+
+    if (id.graph.button.autoAdd) {
+        id.graph.button.autoAdd.addEventListener("click", () => autoAddGraph());
+    } else {
+        console.log('autoAddGraphBtn not found!');
+    }
+
+    if (id.graph.button.clear) {
+        id.graph.button.clear.addEventListener("click", () => clearGraphs?.());
+    } else {
+        console.log('clearGraphBtn not found!');
+    }
 
     // Uplink
-    id.uplink.button.addEventListener(click, () => {
-        sendUplink();
-    })
+    if (id.uplink.button) {
+        id.uplink.button.addEventListener("click", () => sendUplink());
+    } else {
+        console.log('sendBtn not found!');
+    }
 
     // Database
-    id.database.resetDatabaseBtn.addEventListener(click, () => {
-
-    })
+    if (id.database.resetDatabaseBtn) {
+        id.database.resetDatabaseBtn.addEventListener("click", () => {
+            fetch('/reset-db', { method: 'POST' })
+                .then(res => res.text())
+                .then(msg => alert(msg))
+                .catch(err => alert('Error: ' + err));
+        });
+    } else {
+        console.log('resetDbBtn not found!');
+    }
 
     // Serial
-    id.SerialPort.connectBtn.addEventListener(click, () => {
-        connectSerialPort();
-    })
-    id.SerialPort.disconnecBtn.addEventListener(click, () => {
-        disconnectSerialPort();
-    })
+    if (id.SerialPort.connectBtn) {
+        id.SerialPort.connectBtn.addEventListener("click", () => connectSerialPort());
+    } else {
+        console.log('Serial connect button not found!');
+    }
 
-    // local Storage
-    id.localStorage.clearBtn.addEventListener('click', () => {
-      clearLocalStorage
-    });
+    if (id.SerialPort.disconnectBtn) { // fixed typo
+        id.SerialPort.disconnectBtn.addEventListener("click", () => disconnectSerialPort());
+    } else {
+        console.log('Serial disconnect button not found!');
+    }
+
+    // Local Storage
+    if (id.localStorage.clearBtn) {
+        id.localStorage.clearBtn.addEventListener("click", () => clearLocalStorage());
+    } else {
+        console.log('clearLocalStorageBtn not found!');
+    }
+
 }
 
 /* Wait Until */
