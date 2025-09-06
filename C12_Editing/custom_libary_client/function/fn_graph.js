@@ -21,6 +21,7 @@ export function placeChartSlot() {
   // chart container
   const chartDiv = document.createElement('div');
   chartDiv.className = 'chart-container';
+  
   chartDiv.id = `chart-${Date.now()}`; // unique id
 
   content.appendChild(chartDiv);
@@ -39,6 +40,7 @@ export function placeChartSlot() {
 }
 
 export function createChart({
+  id_alititude = false,
   initGraph = true,
   chartOptions = null,
   xValue="counter",
@@ -96,9 +98,27 @@ export function createChart({
       chartOptions.series.push({ name: yValue, data: [] });
     }
   }
-  console.log(xMx,xMn,yMx,yMn);
+  if (xMn != null && xMn !== "") {
+    chartOptions.xaxis.min = Number(xMn);
+  }
+  if (xMx != null && xMx !== "") {
+    chartOptions.xaxis.max = Number(xMx);
+  }
+  if (yMn != null && yMn !== "") {
+    chartOptions.yaxis.min = Number(yMn);
+  }
+  if (yMx != null && yMx !== "") {
+    chartOptions.yaxis.max = Number(yMx);
+  }
+  // console.log(xMx,xMn,yMx,yMn);
   // ✅ use div instead of canvas
-  const chartDiv = placeChartSlot();
+  let chartDiv;
+  if(!id_alititude){
+    chartDiv = placeChartSlot();
+  }
+  else{
+    chartDiv = id.altitude.graph
+  }
 
   // ✅ create ApexCharts with div container
   const chart = new ApexCharts(chartDiv, chartOptions);
@@ -116,9 +136,9 @@ export function createChart({
 
 export function initializeGraph(){
     let x, y, xMx, xMn, yMx, yMn,type;
-    console.log(`there will be ${data.setting.key[data.boardNow].plot.length} init graph`)
+    // console.log(`there will be ${data.setting.key[data.boardNow].plot.length} init graph`)
     for (let valueGraph of data.setting.key[data.boardNow].plot) {
-        console.log(`add grpah init ${valueGraph.x} and ${valueGraph.y}`)
+        // console.log(`add grpah init ${valueGraph.x} and ${valueGraph.y}`)
         x = valueGraph.x;
         y = valueGraph.y;
 
@@ -176,7 +196,7 @@ export function deleteGrpah(){
 
 export function updateChart(){
     let dataChart = data[data.boardNow].sensor.dataIn;
-    let index = 0;
+    let index = 1;
     while(index < data[data.boardNow].n_chart){
         let chartOptions = data[data.boardNow].chartOptions[index]
         // let xValue = data[data.boardNow].charts[index].chartOptions.labels
@@ -184,7 +204,7 @@ export function updateChart(){
         let xTitle = chartOptions.xaxis.title.text;
         
         let shiftValue = data[data.boardNow].shiftValue;
-        console.log(`shiftValeu: ${shiftValue} len: ${dataChart[xTitle].length}`);
+        // console.log(`shiftValeu: ${shiftValue} len: ${dataChart[xTitle].length}`);
 
         let len;
         for(let yNumber of Object.keys(chartOptions.series)){
@@ -202,9 +222,9 @@ export function updateChart(){
         }else{
             chartOptions.labels = dataChart[xTitle].slice(len-shiftValue,len).map(String);
         }
-        console.log("chartData")
-        console.log(chartOptions.series)
-        console.log(chartOptions.labels)
+        // console.log("chartData")
+        // console.log(chartOptions.series)
+        // console.log(chartOptions.labels)
         data[data.boardNow].charts[index].updateOptions({series: chartOptions.series,labels: chartOptions.labels});
         index += 1;
     }
@@ -217,6 +237,45 @@ export function reloadChart(){
   for(let chartOptions of Array.array(data[data.boardNow].storageChart)){
     createChart({initGrpah: false,chartOptions: chartOptions});
   }
+}
+
+export function mapAltitude(){
+  createChart({id_alititude: true,xValue: "counter",yValue: data.setting.key[data.boardNow].altitude,yMn: 0,yMx: 1200})
+}
+
+export function updateMapAltitude(){
+    let dataChart = data[data.boardNow].sensor.dataIn;
+    let index = 0;
+
+    let chartOptions = data[data.boardNow].chartOptions[index]
+    // let xValue = data[data.boardNow].charts[index].chartOptions.labels
+    // let yValue = data[data.boardNow].charts[index].chartOptions.series
+    let xTitle = chartOptions.xaxis.title.text;
+    
+    let shiftValue = 1000;
+    // console.log(`shiftValeu: ${shiftValue} len: ${dataChart[xTitle].length}`);
+
+    let len;
+    for(let yNumber of Object.keys(chartOptions.series)){
+        let yName = chartOptions.series[yNumber].name;
+        len = dataChart[yName].length
+        if(shiftValue > len){
+            chartOptions.series[yNumber].data = dataChart[yName].slice(0,len)
+        }else{
+            chartOptions.series[yNumber].data = dataChart[yName].slice(len-shiftValue,len)
+        }
+    }
+    len = dataChart[xTitle].length;
+    if(shiftValue > len){
+        chartOptions.labels = dataChart[xTitle].slice(0,len).map(String);
+    }else{
+        chartOptions.labels = dataChart[xTitle].slice(len-shiftValue,len).map(String);
+    }
+    // console.log("chartData")
+    // console.log(chartOptions.series)
+    // console.log(chartOptions.labels)
+    data[data.boardNow].charts[index].updateOptions({series: chartOptions.series,labels: chartOptions.labels});
+    
 }
 
 export function syncData_graph(dataIn){

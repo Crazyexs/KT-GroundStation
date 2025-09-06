@@ -49,7 +49,12 @@ const id = {
     },
     localStorage: {
         clearBtn: qs('#clearLocalStorageBtn')
-    }
+    },
+    altitude: {
+        valueAlt: qs("#alt--value"),
+        graph: qs("#alt--graph")
+    },
+    stageValue: qs('#stageValue')
 }
 
 export { id }

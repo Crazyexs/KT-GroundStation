@@ -17,7 +17,7 @@ let data;
     const { syncData_commandMonitor, updateCommandMonitor } = await import(`${dir.function}fn_commandMonitor.js`);
     console.log("fn_commandMonitor.js import success");
 
-    const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, initializeGraph } = await import(`${dir.function}fn_graph.js`);
+    const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, mapAltitude, initializeGraph, updateMapAltitude } = await import(`${dir.function}fn_graph.js`);
     console.log("fn_graph.js import success");
 
     const { syncData_IO, sendSelectPort, sendUplink, initializeUpdateDataIO } = await import(`${dir.function}fn_IO.js`);
@@ -38,6 +38,9 @@ let data;
     const { syncData_uplink, initializeUplink } = await import(`${dir.function}fn_uplink.js`);
     console.log("fn_uplink.js import success");
 
+    const { syncData_css, updateAltitude, updateStage } = await import(`${dir.function}fn_css.js`);
+    console.log("universal_function.js import success");
+
     const { event, waitUntil } = await import(`${dir.function}universal_function.js`);
     console.log("universal_function.js import success");
 
@@ -57,6 +60,7 @@ let data;
     syncData_serial(data);
     syncData_table(data);
     syncData_uplink(data);
+    syncData_css(data);
 
     console.log("sync Data success");
 
@@ -97,6 +101,7 @@ let data;
             initializeMap();
             console.log("init Map success");
 
+            mapAltitude();
             initializeGraph();
             console.log("init Graph success");
 
@@ -110,6 +115,11 @@ let data;
                     updateChart();
                     updateTable();
                     updateMap();
+
+                    updateAltitude();
+                    updateMapAltitude();
+
+                    updateStage();
 
                     updateLocalStorage();
 

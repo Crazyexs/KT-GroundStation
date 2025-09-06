@@ -45,6 +45,7 @@ function run_port(boardNumber){
             const parts = trimmed.split(boardData.delimiter);
             let dbData = [];
             let IOData = {"boardNumber" : boardNumber};
+            
             if (parts.length === Object.keys(boardData.data_format).length) {
                 
                 let i = 0

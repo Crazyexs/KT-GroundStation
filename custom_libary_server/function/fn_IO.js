@@ -23,7 +23,9 @@ export function setupIOroutes() {
         data[boardNumber].connectOrNot = dataIn.connectOrNot;
     });
 
-    socket.on('uplink', (boardNumber,msg) => {
+    socket.on('uplink', (dataIn) => {
+        let boardNumber = dataIn.boardNumber;
+        let msg = dataIn.msg;
         console.log(`🔄 Received command from client:${boardNumber}: ${msg}`);
         const serial = data[boardNumber].serial;
         if (serial && serial.writable) {

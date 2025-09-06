@@ -8,20 +8,7 @@
                 "zoom": 12
             },
             "altitude": "apogee",
-            "state": [
-                "STARTUP",
-                "IDLE_SAFE",
-                "ARMED",
-                "PAD_PREOP",
-                "POWERED",
-                "COASTING",
-                "DROG_DEPL",
-                "DROG_DESC",
-                "MAIN_DEPL",
-                "MAIN_DESC",
-                "LANDED",
-                "REC_SAFE"
-            ],
+            "state": "state",
             "plot": [
                 {
                     "x": "counter",

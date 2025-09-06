@@ -24,8 +24,8 @@ export function initializeUpdateDataIO(){
             console.log(`Get sensor: ${dataIn}`)
         });
         socket.on("cmd-data" , (dataIn) => {
-            data[dataIn.boardNumber].dataIn.command.counter = dataIn.counter;
-            data[dataIn.boardNumber].dataIn.command.command = dataIn.command;
+            data[dataIn.boardNumber].command.counter = dataIn.counter;
+            data[dataIn.boardNumber].command.command = dataIn.command;
             data[data.boardNow].updateDataOrNot.command = true;
             console.log(`Get command: ${dataIn}`)
         });
@@ -40,7 +40,7 @@ export function sendUplink(){
     if(msg.length == 0){
         msg = id.uplink.placeholder.value;
     }
-    socket.emit("uplink",msg);
+    socket.emit("uplink",{boardNumber: data.boardNow,msg: msg});
 }
 
 export function sendSelectPort(boardNumber,port,baudRate,connectOrNot){
