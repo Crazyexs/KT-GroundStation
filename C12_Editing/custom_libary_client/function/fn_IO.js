@@ -41,6 +41,34 @@ export function sendUplink(){
         msg = id.uplink.placeholder.value;
     }
     socket.emit("uplink",{boardNumber: data.boardNow,msg: msg});
+
+    let count = 0;
+    const interval = setInterval(() => {
+        let last_ack = data[data.boardNow].sensor.dataIn["last_ack"];
+        let last_nack = data[data.boardNow].sensor.dataIn["last_nack"];
+        if(last_ack[last_ack.length - 1] != last_ack[last_ack.length - 2]){
+            id.uplink.result.textContent = "Success";
+            id.uplink.result.style.color = "green";
+            clearInterval(interval);
+        }
+        else if(last_nack[last_nack.length - 1] != last_nack[last_nack.length - 2]){
+            id.uplink.result.textContent = "Lora send error";
+            id.uplink.result.style.color = "yellow";
+            clearInterval(interval);
+        } 
+        else if(count > 1000){
+            id.uplink.result.textContent = "False";
+            id.uplink.result.style.color = "red";
+            clearInterval(interval);
+        }
+        count++;
+    },10)
+
+    setTimeout(() => {
+        id.uplink.result.textContent = "Wait for uplink...";
+        id.uplink.result.style.color = "white";
+    }, 3000);
+    
 }
 
 export function sendSelectPort(boardNumber,port,baudRate,connectOrNot){
