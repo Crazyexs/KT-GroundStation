@@ -7,7 +7,7 @@ let counter_cmd = 0;
 function changeDataType(dataIn,dataType){
     switch (dataType) {
         case 'INTEGER':
-            return parseInt(dataIn, 32);
+            return parseInt(dataIn, 10);
         case 'REAL':
             return parseFloat(dataIn);
         case 'TEXT':
@@ -50,8 +50,8 @@ function run_port(boardNumber){
                 
                 let i = 0
                 for (const [nameData, typeData] of Object.entries(boardData.data_format)) {
-                    dbData.push(changeDataType(parts[i], typeData));
-                    IOData[nameData] = String(parts[i], typeData);
+                    dbData.push(String(parts[i]));
+                    IOData[nameData] = changeDataType(parts[i],typeData);
                     i += 1;
                 }
                 const database_run = `INSERT INTO ${boardData.db.nameSensorDB} 
@@ -76,6 +76,8 @@ function run_port(boardNumber){
                 io.emit('sensor-data', IOData);
             } 
             else {
+                console.log(`cmd length ${parts.length} , format length ${Object.keys(boardData.data_format).length}`);
+
                 const cmd = trimmed;
                 // ✅ บันทึกลงฐานข้อมูล
                 boardData.db.command.run(`INSERT INTO ${boardData.db.nameCommandDB} (command) VALUES (?)`, [cmd],

@@ -7,17 +7,37 @@
                 "lon": "gps_longitude",
                 "zoom": 12
             },
-            "altitude": "apogee",
+            "altitude": "altitude",
             "state": "state",
             "plot": [
                 {
                     "x": "counter",
-                    "y": "apogee",
+                    "y": ["freq"],
                     "type": "line"
                 },
                 {
                     "x": "counter",
-                    "y": ["apogee","counter"],
+                    "y": ["altitude","apogee"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["gps_latitude","gps_longitude"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["voltageMon"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["last_ack,last_nack"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": "RSSI",
                     "type": "line"
                 }
             ],

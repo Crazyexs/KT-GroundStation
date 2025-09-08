@@ -25,7 +25,8 @@ const id = {
     uplink: {
         selected: qs('#uplink-cmd'),
         placeholder: qs('#cmd-tag'),
-        button: qs('#sendBtn')
+        button: qs('#sendBtn'),
+        result: qs('#resultUplink')
     },
     monitor: {
         sensor: qs('#value-monitor'),

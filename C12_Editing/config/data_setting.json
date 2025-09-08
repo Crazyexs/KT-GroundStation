@@ -3,13 +3,18 @@
         "header":"<0>,",
         "delimiter": ",",
         "data_format":{
+            "RocketName": "TEXT",
+            "freq": "REAL",
             "counter": "INTEGER",
             "state": "TEXT",
             "gps_latitude": "REAL",
             "gps_longitude": "REAL",
+            "altitude": "REAL",
             "apogee": "REAL",
-            "last_ack": "INTEGER",
-            "last_nack": "INTEGER"
+            "voltageMon": "REAL",
+            "last_ack": "REAL",
+            "last_nack": "REAL",
+            "RSSI": "REAL"
         },
         "database":{
             "sensor_database_name": "db1",

@@ -5,10 +5,25 @@ let data;
 let rocketMarker;
 
 export function initializeMap(){
-    const map = L.map(id.map).setView([13.7563, 100.5018], data.setting.key[data.boardNow].map.zoom);
+    const map = L.map(id.map).setView([14.8566086, 100.6362539,12], data.setting.key[data.boardNow].map.zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
-    rocketMarker = L.marker([13.7563, 100.5018]).addTo(map).bindPopup('Rocket Location');
-}
+    rocketMarker = L.marker([14.8566086, 100.6362539,12]).addTo(map).bindPopup('Rocket Location');
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            ourPosition = L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup("Your Current Location")
+            .openPopup();
+
+            // Optionally move map view to this location
+            map.setView([lat, lng], 13);
+        });
+        } else {
+        alert("Geolocation is not supported by this browser.");
+}}
 
 export function updateMap(){
     const dataIn = data[data.boardNow].sensor.dataIn;
