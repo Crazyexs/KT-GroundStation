@@ -3,9 +3,11 @@ const { id } = await import('../../id.js');
 
 let data;
 let rocketMarker;
+let ourPosition;
+let Location;
 
 export function initializeMap(){
-    const map = L.map(id.map).setView([14.8566086, 100.6362539,12], data.setting.key[data.boardNow].map.zoom);
+    const map = L.map(id.map).setView([15.036422727194878, 100.9128553472129], data.setting.key[data.boardNow].map.zoom);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
     rocketMarker = L.marker([14.8566086, 100.6362539,12]).addTo(map).bindPopup('Rocket Location');
     if (navigator.geolocation) {
@@ -13,9 +15,9 @@ export function initializeMap(){
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
 
-            ourPosition = L.marker([lat, lng])
+            Location = L.marker([lat, lng])
             .addTo(map)
-            .bindPopup("Your Current Location")
+            .bindPopup("Location From Map")
             .openPopup();
 
             // Optionally move map view to this location
@@ -23,7 +25,10 @@ export function initializeMap(){
         });
         } else {
         alert("Geolocation is not supported by this browser.");
-}}
+    }
+    ourPosition = L.marker([15.036422727194878, 100.9128553472129]).addTo(map).bindPopup('Ground Station');
+    
+}
 
 export function updateMap(){
     const dataIn = data[data.boardNow].sensor.dataIn;
@@ -36,6 +41,17 @@ export function updateMap(){
         rocketMarker.setLatLng([dataLat, dataLon]);
     }else{
         console.log(`lat: ${dataLat} type: ${Number.isFinite(parseFloat(dataLat))}, lon: ${dataLon} type: ${Number.isFinite(parseFloat(dataLon))}`)
+    }
+    
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            Location.setLatLng([lat, lng])
+        });
+        } else {
+        alert("Geolocation is not supported by this browser.");
     }
 }
 

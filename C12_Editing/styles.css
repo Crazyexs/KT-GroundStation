@@ -337,7 +337,7 @@ footer{margin:40px 0; color:var(--muted); text-align:center}
 
 .card--graph::before {
   z-index: 1;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   transform: translate(-30px, -30px);
 }
 
@@ -349,4 +349,14 @@ footer{margin:40px 0; color:var(--muted); text-align:center}
 .card--graph-content {
   position: relative;
   z-index: 3;
+}
+
+.card--graph:hover {
+  color: #000; /* switch all text inside to black */
+}
+
+.card--graph:hover .card__title,
+.card--graph:hover .card__body,
+.card--graph:hover .slot-hint {
+  color: #000; /* ensure all child text switches too */
 }

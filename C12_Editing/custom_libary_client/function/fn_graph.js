@@ -209,7 +209,8 @@ export function updateChart(){
         let len;
         for(let yNumber of Object.keys(chartOptions.series)){
             let yName = chartOptions.series[yNumber].name;
-            len = dataChart[yName].length
+            // console.log(dataChart[yName]);
+            len = dataChart[yName].length;
             if(data[data.boardNow].shiftValue > len){
                 chartOptions.series[yNumber].data = dataChart[yName].slice(0,len)
             }else{

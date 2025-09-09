@@ -17,7 +17,12 @@
                 },
                 {
                     "x": "counter",
-                    "y": ["altitude","apogee"],
+                    "y": ["altitude"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["apogee"],
                     "type": "line"
                 },
                 {
@@ -32,16 +37,31 @@
                 },
                 {
                     "x": "counter",
-                    "y": ["last_ack,last_nack"],
+                    "y": ["last_ack","last_nack"],
                     "type": "line"
                 },
                 {
                     "x": "counter",
-                    "y": "RSSI",
+                    "y": ["RSSI"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["SNR"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["PacketLength"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["counter"],
                     "type": "line"
                 }
             ],
-            "shiftValue": 5
+            "shiftValue": 50
         },
         "1": {
             "map": {

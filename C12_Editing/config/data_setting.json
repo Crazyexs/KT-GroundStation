@@ -14,7 +14,9 @@
             "voltageMon": "REAL",
             "last_ack": "REAL",
             "last_nack": "REAL",
-            "RSSI": "REAL"
+            "RSSI": "REAL",
+            "SNR": "REAL",
+            "PacketLength": "INTEGER"
         },
         "database":{
             "sensor_database_name": "db1",

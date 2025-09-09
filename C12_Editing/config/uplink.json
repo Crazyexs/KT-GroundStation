@@ -25,12 +25,20 @@
             "label": "Pad"
         },
         {
+            "value": "servo-a-set",
+            "label": "Servo A SET"
+        },
+        {
             "value": "servo-a-lock",
             "label": "Servo A Lock"
         },
         {
             "value": "servo-a-deploy",
             "label": "Servo A Deploy"
+        },
+        {
+            "value": "servo-b-set",
+            "label": "Servo B SET"
         },
         {
             "value": "servo-b-lock",
