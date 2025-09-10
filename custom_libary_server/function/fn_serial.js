@@ -39,6 +39,8 @@ function run_port(boardNumber){
 
         // โค้ดอื่นที่ต้องใช้ serial parser รันต่อที่นี่
         boardData.parser.on('data', (line) => {
+            const now = new Date();
+            line = now.toLocaleTimeString() + "," + line;
             const trimmed = line.trim();
             console.log(`${boardData.COM_PORT} get data CSV:`, trimmed);
 
