@@ -61,7 +61,6 @@
                     "type": "line"
                 }
             ],
-<<<<<<< HEAD
             "shiftValue": 150
         },
         "1": {
@@ -85,10 +84,6 @@
                 "LANDED",
                 "REC_SAFE"
             ]
-=======
-            "shiftValue": 5,
-            "lostTrack": 10
->>>>>>> 9e1ad24fd2732b911522709102e44a645c39f6fa
         }
     }
 }
