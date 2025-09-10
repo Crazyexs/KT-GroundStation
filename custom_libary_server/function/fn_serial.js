@@ -56,6 +56,11 @@ function run_port(boardNumber){
                     IOData[nameData] = changeDataType(parts[i],typeData);
                     i += 1;
                 }
+                // if(IOData["counter"] - 1 != prevCount && IOData["counter"] != 0){
+                //     IOData["lostTrack"] += 1
+                // }
+                // prevCount.push(IOData["lostTrack"]);
+
                 const database_run = `INSERT INTO ${boardData.db.nameSensorDB} 
                                 (${Object.entries(boardData.data_format)
                                     .map(([key,type]) => `${key}`)

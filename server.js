@@ -52,7 +52,7 @@ const { initSyncData } = await import('./sync_data.js');
 console.log('import syncData success');
 
   // initialize syncData
-let data = initSyncData(config.data_setting);
+let data = initSyncData(config.data_setting,config.setting);
 
 console.log('initialize syncData success');
 

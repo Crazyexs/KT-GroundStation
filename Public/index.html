@@ -469,21 +469,34 @@
   </main>
 
   <!-- ========== Footer ========== -->
-  <footer>
-    <div class="container">© <span id="year">2025</span> SPACE AC — Groundstation by KT</div>
-  </footer>
+<footer>
+  <div class="container">
+      © <span id="year"></span> SPACE AC — Groundstation by KT |
+      Deverlop by 
+      <a href="https://github.com/Crazyexs" target="_blank">Techit Monsakul</a> &
+      <a href="https://github.com/Kendo-C12" target="_blank">Sukrit Limpakanon</a>
+    </p>
+      <a href="about.html">About Us</a> 
+  </div>
+</footer>
+
+<script>
+  // auto-update year
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 
   <!-- App script -->
   <script type="module" src="app.js"></script>
   <script type="module" src="id.js"></script>
-  <!-- (Optional) tiny UX helper -->
+  <!--tiny UX helper -->
   <script>
     (function(){
       const boardSelect = document.getElementById('boardSelected');
       const boardBtn = document.getElementById('boardSelectedBtn');
       boardSelect?.addEventListener('keydown', e => { if (e.key === 'Enter') boardBtn?.click(); });
 
-      // Example status toggler you can call from app.js
+      
       window.setBoardStatus = function(ok){
         const dot = document.getElementById('board-dot');
         const state = document.getElementById('board-state');
