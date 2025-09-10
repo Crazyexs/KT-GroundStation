@@ -124,10 +124,6 @@ let data;
                     updateLocalStorage();
 
                     console.log("update sensor data")
-
-                    if(data[data.boardNow].startRocket == true){
-                        
-                    }
                 }
             },100)
 

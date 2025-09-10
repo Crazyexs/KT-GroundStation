@@ -1,4 +1,10 @@
-localStorage for chart reload initialization
-Add frontend
+Checklist
 
-fix suncData when localStorage
+
+1. Another Page For Rocket
+2. Map BackTrack
+3.
+4. Offline
+5. State BackTrack
+6. Dowload chart
+7. Decrease Datasclae

@@ -55,8 +55,7 @@ const id = {
         valueAlt: qs("#alt--value"),
         graph: qs("#alt--graph")
     },
-    stageValue: qs('#stageValue'),
-    saveRocket: qs('#saveRocket')
+    stageValue: qs('#stageValue')
 }
 
 export { id }

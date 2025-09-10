@@ -27,7 +27,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <!-- Main styles -->
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 
 <body>
@@ -86,17 +86,6 @@
             <button class="btn btn--accent" id="boardSelectedBtn">Connect Board</button>
 
             <div class="toolbar__spacer"></div>
-
-            
-            <button class="btn btn--ghost" id="saveRocket" title="Save data for ROCKET">
-              Start Save <Data></Data>
-            </button>
-
-            <button title="ROCKETDATA PAGE">
-              <a href="saveRocket/saveRocket.html">
-                SaveRocket Page
-             </a>
-            </button>
 
             <button class="btn btn--ghost" id="clearLocalStorageBtn" title="Clear cached UI state">
               Clear Storage
@@ -481,7 +470,6 @@
         <div class="card__body">
           <div class="btnrow">
             <a class="btn btn--primary" href="/download_database">Download Sensor Data</a>
-            <a class="btn" href="/download_cmd">Download Command Data</a>
           </div>
         </div>
       </article>

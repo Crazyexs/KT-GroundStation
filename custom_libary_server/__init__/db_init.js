@@ -21,7 +21,6 @@ export function initializeDatabase(data_settings) {
         for(const [key, value] of Object.entries(data_setting.data_format)) {
             // data[boardNumber].db.sensor.run(`DROP TABLE IF EXISTS ${sensor_database_name}`);
             // data[boardNumber].db.command.run(`DROP TABLE IF EXISTS ${command_database_name}`);
-
             const columns_sensor = Object.entries(data_setting.data_format)
                 .map(([key, type]) => `${key} ${type}`)
                 .join(", ");
