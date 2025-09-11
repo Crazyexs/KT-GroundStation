@@ -1,15 +1,24 @@
+import { shiftValue } from './fn_graph.js';
 import { listAvaiablePort } from './fn_serial.js';
 
 const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
 
 let data;
+let index = 0;
+let sending = false;
 
 const socket = (typeof io !== 'undefined') ? io() : null;
 
 export function initializeUpdateDataIO(){
     if(socket){
-        socket.on("sensor-data", (dataIn) => {
+        socket.on("sensor-data", (dataIn) => { 
+            
+            if(sending){
+                uplinkSending();
+                sending = false;
+            }
+
             let dataGet = data[dataIn.boardNumber].sensor.dataIn;
             for(let name of Object.keys(dataGet)){
                 if(Number.isFinite(dataIn[name])){
@@ -18,6 +27,15 @@ export function initializeUpdateDataIO(){
                 }
                 else{
                     dataGet[name].push(dataIn[name]);
+                }
+
+                if(dataGet[name].length() > data.setting.key[data.boardNow].shiftValue){
+                    dataGet[index] = dataGet[index] + dataGet[index+1];
+                    dataGet.splice(index+1,1);
+                    index++;
+                    if(index + 1 >= data.setting.key[data.boardNow].shiftValue){
+                        index = 0;
+                    }
                 }
             }
             data[data.boardNow].updateDataOrNot.sensor = true;
@@ -35,7 +53,7 @@ export function initializeUpdateDataIO(){
     }
 }
 
-export function sendUplink(){
+export function uplinkSending(){
     let msg = id.uplink.selected.value;
     if(msg.length == 0){
         msg = id.uplink.placeholder.value;
@@ -68,7 +86,10 @@ export function sendUplink(){
         id.uplink.result.textContent = "Wait for uplink...";
         id.uplink.result.style.color = "white";
     }, 3000);
-    
+}
+
+export function sendUplink(){
+    sending = true;
 }
 
 export function sendSelectPort(boardNumber,port,baudRate,connectOrNot){
