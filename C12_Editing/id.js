@@ -19,7 +19,8 @@ const id = {
         shiftValue: {
             placeholder: qs('#number_of_value'),
             button: qs('#addNumber_of_valueBtn')
-        }
+        },
+        dowload: qs('#downloadChart')
     },
     table: qs("#telemetry-table tbody"),
     uplink: {
@@ -33,6 +34,7 @@ const id = {
         command: qs('#monitor')
     },
     map: qs("#map"),
+    linkMap: qs("#location"),
     database: {
         resetDatabaseBtn: qs('#resetDbBtn')
     },
@@ -56,7 +58,12 @@ const id = {
         graph: qs("#alt--graph")
     },
     stageValue: qs('#stageValue'),
-    saveRocket: qs('#saveRocket')
+    saveRocket: qs('#saveRocket'),
+    
+    backtrack: {
+        uploadBtn: qs('#uploadBacktrackBtn'),
+        fileInput: qs('#backtrackFile')
+    }
 }
 
 export { id }

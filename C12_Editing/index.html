@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Map & Charts -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Map & Charts -->
+  <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css" />
+  <script src="./node_modules/leaflet/dist/leaflet.js"></script>
 
   <!-- ApexCharts -->
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="./node_modules/apexcharts/dist/apexcharts.min.js"></script>
 
   <!-- OpenLayers -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v9.2.4/ol.css">
-  <script src="https://cdn.jsdelivr.net/npm/ol@v9.2.4/dist/ol.js"></script>
+  <link rel="stylesheet" href="./node_modules/ol/ol.css">
+  <script src="./node_modules/ol/dist/ol.js"></script>
 
   <!-- Socket.IO -->
-  <script src="/socket.io/socket.io.js"></script>
+  <script src="./node_modules/socket.io-client/dist/socket.io.js"></script>
 
   <!-- Web tab -->
   <title>SPACE AC KT—Groundstation</title>
-  <link rel="icon" type="image/png" href="assets/spaceac.jpg" />
+  <link rel="icon" type="image/png" href="./assets/spaceac.jpg" />
 
   <!-- Web head -->
   <meta charset="utf-8" />
@@ -52,6 +52,8 @@
         <a class="nav__link" href="#graphs">Graphs</a>
         <a class="nav__link" href="#map-section">Map</a>
         <a class="nav__link" href="#downloads">Downloads</a>
+        <button id="uploadBacktrackBtn" class="btn btn--accent">Upload Backtrack CSV</button>
+        <input id="backtrackFile" type="file" accept=".csv" class="visually-hidden" />
       </nav>
     </div>
   </header>
@@ -86,17 +88,6 @@
             <button class="btn btn--accent" id="boardSelectedBtn">Connect Board</button>
 
             <div class="toolbar__spacer"></div>
-
-            
-            <button class="btn btn--ghost" id="saveRocket" title="Save data for ROCKET">
-              Start Save <Data></Data>
-            </button>
-
-            <button title="ROCKETDATA PAGE">
-              <a href="saveRocket/saveRocket.html">
-                SaveRocket Page
-             </a>
-            </button>
 
             <button class="btn btn--ghost" id="clearLocalStorageBtn" title="Clear cached UI state">
               Clear Storage
@@ -285,6 +276,7 @@
             <button class="btn" id="autoAddGraphBtn">Auto Add Graphs</button>
             <button class="btn" id="clearGraphBtn" data-btn="clear-graphs">Clear All</button>
             <button class="btn" id="addNumber_of_valueBtn">Apply Shift</button>
+            <button class="btn" id="downloadChart">downloadChart</button>
           </div>
 
             <div>
@@ -292,6 +284,7 @@
               <input id="number_of_value" placeholder="default 50" />
             </div>
           </div>
+
           <p class="muted">Auto Add will generate all valid (x≠y, non-text vs non-text) pairs.</p>
         </div>
       </article>
@@ -309,13 +302,14 @@
     </section>
 
     <!-- ========== Map ========== -->
+    
     <section id="map-section" class="container" aria-labelledby="map-title">
       <div class="section__hdr">
         <h2 class="section__title" id="map-title">Rocket Map</h2>
       </div>
       <div id="map" class="resizable" style="--min-h:420px; --ar:auto" role="img" aria-label="rocket map"></div>
+      <span id="location">Loading Loacation...</span>
     </section>
-
     <!-- ========== Telemetry Summary ========== -->
     <section class="container" aria-labelledby="telemetry-title">
       <article class="card">
@@ -487,24 +481,35 @@
       </article>
     </section>
   </main>
+   <!-- ========== Footer ========== -->
+<footer>
+  <div class="container">
+      © <span id="year"></span> SPACE AC — Groundstation by KT |
+      Deverlop by 
+      <a href="https://github.com/Crazyexs" target="_blank">Techit Monsakul</a> &
+      <a href="https://github.com/Kendo-C12" target="_blank">Sukrit Limpakanon</a>
+    </p>
+      <a href="about.html">About Us</a> 
+  </div>
+</footer>
 
-  <!-- ========== Footer ========== -->
-  <footer>
-    <div class="container">© <span id="year">2025</span> SPACE AC — Groundstation by KT</div>
-  </footer>
+<script>
+  // auto-update year
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 
   <!-- App script -->
   <script type="module" src="app.js"></script>
   <script type="module" src="id.js"></script>
-
-  <!-- (Optional) tiny UX helper -->
+  <!--tiny UX helper -->
   <script>
     (function(){
       const boardSelect = document.getElementById('boardSelected');
       const boardBtn = document.getElementById('boardSelectedBtn');
       boardSelect?.addEventListener('keydown', e => { if (e.key === 'Enter') boardBtn?.click(); });
 
-      // Example status toggler you can call from app.js
+      
       window.setBoardStatus = function(ok){
         const dot = document.getElementById('board-dot');
         const state = document.getElementById('board-state');

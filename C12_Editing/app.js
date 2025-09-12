@@ -45,6 +45,9 @@ let data;
     console.log("universal_function.js import success");
 
     console.log("import function success")
+
+    const { syncData_backtrack, initBacktrackUpload } = await import(`${dir.function}fn_backtrack.js`);
+    console.log("fn_backtrack.js import success");
     
     // const socket = io();
 
@@ -61,6 +64,8 @@ let data;
     syncData_table(data);
     syncData_uplink(data);
     syncData_css(data);
+    syncData_backtrack(data);
+    await initBacktrackUpload();  
 
     console.log("sync Data success");
 
@@ -126,7 +131,7 @@ let data;
                     console.log("update sensor data")
 
                     if(data[data.boardNow].startRocket == true){
-                        
+
                     }
                 }
             },100)

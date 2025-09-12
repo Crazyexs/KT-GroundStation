@@ -42,6 +42,8 @@ body{
     radial-gradient(1200px 600px at 75% -15%, #1b2a55 0%, #0b1020 60%, #050816 100%),
     linear-gradient(180deg, #060a14 0%, #060a14 100%);
   background-attachment: fixed;
+
+  font-family: 'Inter', sans-serif;
 }
 
 /* ===================== Topbar ===================== */
@@ -221,7 +223,7 @@ label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px}
 
 /* ===================== Map & Table ===================== */
 #map{
-  width:100%; min-height:420px;
+  width:100%; min-height:600px;
   border-radius:14px;
   border:var(--border);
   overflow:hidden;
@@ -359,4 +361,33 @@ footer{margin:40px 0; color:var(--muted); text-align:center}
 .card--graph:hover .card__body,
 .card--graph:hover .slot-hint {
   color: #000; /* ensure all child text switches too */
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('fonts/Inter-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+
+
+#location {
+  padding: 8px 14px;
+  background-color: rgba(30, 30, 47, 0.85);
+  color: var(--primary);
+  font-weight: 600;
+  border: 1px solid rgba(94, 234, 212, 0.3);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 12px rgba(0,0,0,.5);
+  text-align: center;
 }

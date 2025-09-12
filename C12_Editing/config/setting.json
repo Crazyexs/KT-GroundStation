@@ -61,29 +61,69 @@
                     "type": "line"
                 }
             ],
-            "shiftValue": 150
+            "shiftValue": 30
         },
         "1": {
             "map": {
                 "lat": "gps_latitude",
-                "lng": "gps_longitude",
+                "lon": "gps_longitude",
                 "zoom": 12
             },
-            "altitude": "apogee",
-            "state": [
-                "STARTUP",
-                "IDLE_SAFE",
-                "ARMED",
-                "PAD_PREOP",
-                "POWERED",
-                "COASTING",
-                "DROG_DEPL",
-                "DROG_DESC",
-                "MAIN_DEPL",
-                "MAIN_DESC",
-                "LANDED",
-                "REC_SAFE"
-            ]
+            "altitude": "altitude",
+            "state": "state",
+            "plot": [
+                {
+                    "x": "counter",
+                    "y": ["freq"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["altitude"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["apogee"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["gps_latitude","gps_longitude"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["voltageMon"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["last_ack","last_nack"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["RSSI"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["SNR"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["PacketLength"],
+                    "type": "line"
+                },
+                {
+                    "x": "counter",
+                    "y": ["counter"],
+                    "type": "line"
+                }
+            ],
+            "shiftValue": 30
         }
-    }
+   }
 }

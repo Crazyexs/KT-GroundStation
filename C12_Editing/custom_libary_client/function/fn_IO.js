@@ -29,14 +29,14 @@ export function initializeUpdateDataIO(){
                     dataGet[name].push(dataIn[name]);
                 }
 
-                if(dataGet[name].length() > data.setting.key[data.boardNow].shiftValue){
-                    dataGet[index] = dataGet[index] + dataGet[index+1];
-                    dataGet.splice(index+1,1);
-                    index++;
-                    if(index + 1 >= data.setting.key[data.boardNow].shiftValue){
-                        index = 0;
-                    }
-                }
+                // if(dataGet[name].length() > data.setting.key[data.boardNow].shiftValue){
+                //     dataGet[index] = dataGet[index] + dataGet[index+1];
+                //     dataGet.splice(index+1,1);
+                //     index++;
+                //     if(index + 1 >= data.setting.key[data.boardNow].shiftValue){
+                //         index = 0;
+                //     }
+                // }
             }
             data[data.boardNow].updateDataOrNot.sensor = true;
             console.log(`Get sensor: ${dataIn}`)

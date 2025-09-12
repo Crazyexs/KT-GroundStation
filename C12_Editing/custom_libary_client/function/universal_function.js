@@ -4,7 +4,7 @@ const key_state = ["STARTUP","IDLE_SAFE","ARMED","PAD_PREOP","POWERED","COASTING
 const allLabel = ["counter","state","gps_latitude","gps_longitude","apogee","last_ack","last_nack"];
 
 const { syncData_commandMonitor, updateCommandMonitor } = await import(`./fn_commandMonitor.js`);
-const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, initializeGraph } = await import(`./fn_graph.js`);
+const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, dowloadGraph, initializeGraph } = await import(`./fn_graph.js`);
 const { syncData_IO, sendSelectPort, sendUplink, initializeUpdateDataIO } = await import(`./fn_IO.js`);
 const { syncData_localStorage, reloadWindow, reloadSyncData, reloadChart, loadChartData } = await import(`./fn_localStorage.js`);
 const { syncData_map, initializeMap, updateMap } = await import(`./fn_map.js`);
@@ -121,6 +121,13 @@ export function event(){
     } else {
         console.log('clearGraphBtn not found!');
     }
+
+    if(id.graph.dowload){
+      id.graph.dowload.addEventListener("click", () => dowloadGraph?.());
+    } else {
+        console.log('download Chart not found!');
+    }
+
 
     // Uplink
     if (id.uplink.button) {

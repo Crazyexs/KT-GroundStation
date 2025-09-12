@@ -4,9 +4,12 @@ const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
 
 let data;
+let divChart = {};
 
 // Instead of canvas, create a div container for ApexCharts
 export function placeChartSlot() {
+  let realID;
+
   const empty = qsa('.graph-slot.is-empty')[0];
   const slot = document.createElement('div');
   slot.className = 'graph-slot resizable';
@@ -21,8 +24,8 @@ export function placeChartSlot() {
   // chart container
   const chartDiv = document.createElement('div');
   chartDiv.className = 'chart-container';
-  
-  chartDiv.id = `chart-${Date.now()}`; // unique id
+  realID = `chart-${Date.now()}`;
+  chartDiv.id = realID; // unique id
 
   content.appendChild(chartDiv);
   card.appendChild(content);
@@ -36,7 +39,7 @@ export function placeChartSlot() {
     id.graph.container.appendChild(slot);
   }
 
-  return chartDiv; // ✅ return the div, not canvas
+  return [chartDiv,realID]; // ✅ return the div, not canvas
 }
 
 export function createChart({
@@ -49,13 +52,15 @@ export function createChart({
   yMx=null, yMn=null,
   type="line"
 }) {
+  let realID;
+
   if (!chartOptions) {
     chartOptions = {
       chart: {
         height: 400,
         type: type,
         fontFamily: 'Helvetica, Arial, sans-serif',
-        foreColor: '#6E729B',
+        foreColor: '#000000ff',
         toolbar: { show: false }
       },
       stroke: { curve: 'smooth', width: 2 },
@@ -67,7 +72,13 @@ export function createChart({
         offsetX: 5,
         style: { fontSize: '14px', fontWeight: 'bold', color: '#373d3f' }
       },
-      markers: { size: 6, strokeWidth: 0, hover: { size: 9 } },
+      markers: { 
+        size: 0, 
+        strokeWidth: 0, 
+        hover: { 
+          size: 6 
+        } 
+      },
       grid: {
         borderColor: '#D9DBF3',
         xaxis: { lines: { show: true } },
@@ -77,17 +88,17 @@ export function createChart({
       xaxis: {
         // min: xMn, max: xMx,
         categories: [],
-        title: { text: xValue, style: { fontSize: '12px', fontWeight: 'bold', color: '#555' } }
+        title: { text: xValue, style: { fontSize: '12px', fontWeight: 'bold', color: '#000000ff' } }
       },
       yaxis: {
         // min: yMn, max: yMx,
-        title: { text: yValue, style: { fontSize: '12px', fontWeight: 'bold', color: '#555' } }
+        title: { text: yValue, style: { fontSize: '12px', fontWeight: 'bold', color: '#000000ff' } }
       },
       legend: {
         position: 'top',
         horizontalAlign: 'right',
         offsetY: -10,
-        labels: { colors: '#373d3f' }
+        labels: { colors: '#000000ff' }
       }
     };
 
@@ -114,10 +125,11 @@ export function createChart({
   // ✅ use div instead of canvas
   let chartDiv;
   if(!id_alititude){
-    chartDiv = placeChartSlot();
+    [chartDiv,realID] = placeChartSlot();
   }
   else{
     chartDiv = id.altitude.graph
+     realID = chartDiv.id;
   }
 
   // ✅ create ApexCharts with div container
@@ -131,6 +143,8 @@ export function createChart({
     data[data.boardNow].storageChart.push(chartOptions);
   }
   data[data.boardNow].chartOptions.push(chartOptions);
+
+  divChart[realID] = chartOptions.title.text;
 }
 
 
@@ -199,12 +213,10 @@ export function updateChart(){
     let index = 1;
     while(index < data[data.boardNow].n_chart){
         let chartOptions = data[data.boardNow].chartOptions[index]
-        // let xValue = data[data.boardNow].charts[index].chartOptions.labels
-        // let yValue = data[data.boardNow].charts[index].chartOptions.series
+
         let xTitle = chartOptions.xaxis.title.text;
         
         let shiftValue = data[data.boardNow].shiftValue;
-        // console.log(`shiftValeu: ${shiftValue} len: ${dataChart[xTitle].length}`);
 
         let len;
         for(let yNumber of Object.keys(chartOptions.series)){
@@ -223,9 +235,7 @@ export function updateChart(){
         }else{
             chartOptions.labels = dataChart[xTitle].slice(len-shiftValue,len).map(String);
         }
-        // console.log("chartData")
-        // console.log(chartOptions.series)
-        // console.log(chartOptions.labels)
+
         data[data.boardNow].charts[index].updateOptions({series: chartOptions.series,labels: chartOptions.labels});
         index += 1;
     }
@@ -278,6 +288,18 @@ export function updateMapAltitude(){
     data[data.boardNow].charts[index].updateOptions({series: chartOptions.series,labels: chartOptions.labels});
     
 }
+
+export function dowloadGraph() {
+  for (let [chartId, name] of Object.entries(divChart)) {
+    ApexCharts.exec(chartId, 'dataURI').then(({ imgURI }) => {
+      const a = document.createElement('a');
+      a.href = imgURI;
+      a.download = name + ".png";
+      a.click();
+    });
+  }
+}
+
 
 export function syncData_graph(dataIn){
     data = dataIn;
