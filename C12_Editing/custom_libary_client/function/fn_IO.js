@@ -13,12 +13,12 @@ const socket = (typeof io !== 'undefined') ? io() : null;
 export function initializeUpdateDataIO(){
     if(socket){
         socket.on("sensor-data", (dataIn) => { 
-            
             if(sending){
-                uplinkSending();
-                sending = false;
+                setTimeout(() => {
+                    uplinkSending();
+                    sending = false;
+                }, 200);
             }
-
             let dataGet = data[dataIn.boardNumber].sensor.dataIn;
             for(let name of Object.keys(dataGet)){
                 if(Number.isFinite(dataIn[name])){
@@ -90,6 +90,11 @@ export function uplinkSending(){
 
 export function sendUplink(){
     sending = true;
+    if(id.uplink.placeholder.value == "now" || (id.uplink.selected.value).length == 0){
+        console.log("Sending Now");
+        uplinkSending();
+        sending = false
+    }
 }
 
 export function sendSelectPort(boardNumber,port,baudRate,connectOrNot){
