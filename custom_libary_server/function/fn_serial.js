@@ -3,6 +3,7 @@ const { dir } = await import('../../dir.js');
 const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb, promisify, archiver} = await import(`${dir.expression}`);
 let data;
 let counter_cmd = 0;
+let index = 0;
 
 function changeDataType(dataIn,dataType){
     switch (dataType) {
@@ -56,11 +57,7 @@ function run_port(boardNumber){
                     IOData[nameData] = changeDataType(parts[i],typeData);
                     i += 1;
                 }
-                // if(IOData["counter"] - 1 != prevCount && IOData["counter"] != 0){
-                //     IOData["lostTrack"] += 1
-                // }
-                // prevCount.push(IOData["lostTrack"]);
-
+                IOData["index"] = index;
                 const database_run = `INSERT INTO ${boardData.db.nameSensorDB} 
                                 (${Object.entries(boardData.data_format)
                                     .map(([key,type]) => `${key}`)
@@ -79,6 +76,7 @@ function run_port(boardNumber){
                     }
                 );
 
+                index++;
                 // ✅ ส่งให้หน้าเว็บ
                 io.emit('sensor-data', IOData);
             } 

@@ -118,11 +118,13 @@ let data;
                     data[data.boardNow].updateDataOrNot.sensor = false;
 
                     updateChart();
+                    updateMapAltitude();
+                    console.log("update charts")
+
                     updateTable();
                     updateMap();
 
                     updateAltitude();
-                    updateMapAltitude();
 
                     updateStage();
 

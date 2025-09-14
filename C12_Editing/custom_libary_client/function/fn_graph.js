@@ -5,6 +5,58 @@ const { id } = await import('../../id.js');
 
 let data;
 let divChart = {};
+let maxPoints;
+
+function isNumber(value) {
+  return !isNaN(Number(value));
+}
+
+function downsampleWithPriority(data, maxPoints, priorityIndices = [], state=[]) {
+  console.log(state)
+  if (data.length <= maxPoints) return data.slice(); // copy original array
+
+  const step = Math.ceil(data.length / maxPoints);
+  const result = [];
+
+  // add sampled points
+  for (let i = 0; i < data.length; i += step) {
+    data[i].x = Number(data[i].x);
+    if(isNumber(data[i].y)){
+      data[i].y = Number(data[i].y);
+    }
+    data[i].state = state[i];
+    result.push(data[i]);
+  }
+
+  // add priority points if not already included
+  priorityIndices.forEach(idx => {
+    if (idx >= 0 && idx < data.length && !result.includes(data[idx])) {
+      // create a copy with state
+      const pointWithState = {
+        x: Number(data[idx].x),
+        y: isNumber(data[idx].y) ? Number(data[idx].y) : data[idx].y,
+        state: state[idx] ?? 'No info'   // assign state
+      };
+
+      // find the position in result closest to idx to preserve order
+      let insertPos = result.findIndex(p => data.indexOf(p) > idx);
+      if (insertPos === -1) insertPos = result.length;
+      result.splice(insertPos, 0, pointWithState);
+    }
+  });
+
+
+  for(let point of result){
+    point.x = Number(point.x);
+    point.y = Number(point.y);
+  }
+  console.log(result)
+  console.log(typeof result[0].x)
+  console.log(typeof result[0].y)
+  return result;
+}
+
+
 
 // Instead of canvas, create a div container for ApexCharts
 export function placeChartSlot() {
@@ -61,7 +113,47 @@ export function createChart({
         type: type,
         fontFamily: 'Helvetica, Arial, sans-serif',
         foreColor: '#000000ff',
-        toolbar: { show: false }
+        zoom: { enabled: true, type: 'x' },
+        toolbar: { show: true , tools: { zoomin: true, zoomout: true, reset: true, download: true, pan: true }},
+        events: {
+          zoomed: function(chartContext, { xaxis }) {
+            console.log('Zoomed to X:', xaxis);
+            const meta = chartContext.opts.meta;
+
+            const xValue = meta.xValue;
+            const yValues = Array.isArray(meta.yValues) ? meta.yValues : [meta.yValue];
+
+            const datasetX = data[data.boardNow].sensor.dataIn[xValue] || [];
+
+            const seriesData = yValues.map(yName => {
+              const datasetY = data[data.boardNow].sensor.dataIn[yName] || [];
+
+              // create {x, y} objects safely
+              let combined = datasetX.map((x, i) => ({ x, y: datasetY[i] ?? 0 }));
+              let state = data[data.boardNow].sensor.dataIn[data.setting.key[data.boardNow].state] || [];
+              // apply zoom window if defined
+              if (xaxis.min != null && xaxis.max != null) {
+                combined = combined.filter((p, i) => {
+                  // keep only points inside the zoom window
+                  return p.x >= xaxis.min && p.x <= xaxis.max;
+                });
+
+                // update state array for zoomed points
+                state = combined.map(p => p.state ?? 'No info');
+              }
+              return {
+                name: yName,
+                data: downsampleWithPriority(combined,
+                                             maxPoints,
+                                             data[data.boardNow].sensor.priority[yName] || [],
+                                             state || [])
+              };
+            });
+            console.log('Zoomed to X:');
+            console.log(seriesData)
+            chartContext.updateSeries(seriesData);
+          }
+        }
       },
       stroke: { curve: 'smooth', width: 2 },
       series: [],
@@ -86,9 +178,22 @@ export function createChart({
       },
       labels: [],
       xaxis: {
-        // min: xMn, max: xMx,
-        categories: [],
-        title: { text: xValue, style: { fontSize: '12px', fontWeight: 'bold', color: '#000000ff' } }
+        type: 'numeric',
+        title: { text: xValue, style: { fontSize: '12px', fontWeight: 'bold', color: '#000000ff' } },
+        annotations: {
+           xaxis: (data[data.boardNow].sensor.priority[xValue] || []).map(idx => {
+            const xVal = data[data.boardNow].sensor.dataIn[xValue][idx]; // get actual x from index
+            return {
+              x: xVal,
+              borderColor: '#ff0',
+              strokeDashArray: 4,
+              label: {
+                text: `Priority ${xVal}`,
+                style: { color: '#000', background: '#ff0' }
+              }
+            };
+          })
+        }
       },
       yaxis: {
         // min: yMn, max: yMx,
@@ -99,6 +204,42 @@ export function createChart({
         horizontalAlign: 'right',
         offsetY: -10,
         labels: { colors: '#000000ff' }
+      },
+      meta: { xValue, yValue },
+      tooltip: {
+        shared: true,  // important for multiple series
+        intersect: false, // show all series at hover
+        custom: function({ series, seriesIndex, dataPointIndex, w }) {
+          const xName = w.config.xaxis.title.text;
+          const xVal = w.globals.labels[dataPointIndex] ?? (w.globals.seriesX?.[0]?.[dataPointIndex] ?? ''); 
+
+          // extra text stored separately
+          const extraText = data[data.boardNow].sensor.dataIn[data.setting.key[data.boardNow].state][dataPointIndex] || 'No info';
+
+          // loop over all series for this point
+          let seriesHtml = '';
+
+          const state = w.globals.initialSeries[seriesIndex].data[dataPointIndex].state;
+
+          w.config.series.forEach((s, i) => {
+            const yVal = series[i][dataPointIndex];
+            const color = w.globals.colors[i];  // color of the series
+            seriesHtml += `
+              <div style="display:flex; align-items:center; gap:4px; margin-bottom:2px;">
+                <div style="width:12px; height:12px; background:${color}; border-radius:50%;"></div>
+                <div>${s.name}:   ${yVal}</div>
+              </div>
+            `;
+          });
+
+          return `
+            <div style="padding:6px; font-size:13px; min-width:150px; background:#fff; border:1px solid #949494ff; border-radius:4px;">
+              <div style="font-weight:bold; text-align:center; margin-bottom:4px;">${xName}: ${xVal}</div>
+              ${seriesHtml}
+              <div style="font-size:12px; color:#555; margin-top:4px;">${state}</div>
+            </div>
+          `;
+        }
       }
     };
 
@@ -149,6 +290,9 @@ export function createChart({
 
 
 export function initializeGraph(){
+  
+    maxPoints = data[data.boardNow].showValue;
+
     let x, y, xMx, xMn, yMx, yMn,type;
     // console.log(`there will be ${data.setting.key[data.boardNow].plot.length} init graph`)
     for (let valueGraph of data.setting.key[data.boardNow].plot) {
@@ -200,7 +344,8 @@ export function autoAddGraph(){
 }
 
 export function shiftValue(){
-    data[data.boardNow].shiftValue = parseInt(id.graph.shiftValue.placeholder);
+    data[data.boardNow].shiftValue = parseInt(id.graph.shiftValue.value);
+    updateChart();
 }
 
 export function deleteGrpah(){
@@ -208,38 +353,42 @@ export function deleteGrpah(){
     data[data.boardNow].storageChart = []
 }
 
-export function updateChart(){
-    let dataChart = data[data.boardNow].sensor.dataIn;
-    let index = 1;
-    while(index < data[data.boardNow].n_chart){
-        let chartOptions = data[data.boardNow].chartOptions[index]
+export function updateChart() {
+  let dataChart = data[data.boardNow].sensor.dataIn;
+  let index = 1;
 
-        let xTitle = chartOptions.xaxis.title.text;
-        
-        let shiftValue = data[data.boardNow].shiftValue;
+  while (index < data[data.boardNow].n_chart) {
+      let chartOptions = data[data.boardNow].chartOptions[index];
+      let xTitle = chartOptions.xaxis.title.text;
+      let shiftValue = data[data.boardNow].shiftValue * data[data.boardNow].showValue;
+;
 
-        let len;
-        for(let yNumber of Object.keys(chartOptions.series)){
-            let yName = chartOptions.series[yNumber].name;
-            // console.log(dataChart[yName]);
-            len = dataChart[yName].length;
-            if(data[data.boardNow].shiftValue > len){
-                chartOptions.series[yNumber].data = dataChart[yName].slice(0,len)
-            }else{
-                chartOptions.series[yNumber].data = dataChart[yName].slice(len-shiftValue,len)
-            }
-        }
-        len = dataChart[xTitle].length;
-        if(data[data.boardNow].shiftValue > len){
-            chartOptions.labels = dataChart[xTitle].slice(0,len).map(String);
-        }else{
-            chartOptions.labels = dataChart[xTitle].slice(len-shiftValue,len).map(String);
-        }
+      // Loop over each series
+      for (let i = 0; i < chartOptions.series.length; i++) {
+          let yName = chartOptions.series[i].name;
+          let len = dataChart[yName].length;
 
-        data[data.boardNow].charts[index].updateOptions({series: chartOptions.series,labels: chartOptions.labels});
-        index += 1;
-    }
+          // Slice the window of X and Y data
+          let start = Math.max(len - shiftValue, 0);
+          let xData = dataChart[xTitle].slice(start, len);
+          let yData = dataChart[yName].slice(start, len);
+
+          // Combine into {x, y} objects
+          console.log(data[data.boardNow].sensor.dataIn[data.setting.key[data.boardNow].state])
+          chartOptions.series[i].data = downsampleWithPriority(
+              xData.map((x, j) => ({ x, y: yData[j] })),
+              maxPoints,
+              data[data.boardNow].sensor.priority[yName],
+              data[data.boardNow].sensor.dataIn[data.setting.key[data.boardNow].state] || []
+          );
+      }
+
+      // ✅ Only update series
+      data[data.boardNow].charts[index].updateSeries(chartOptions.series);
+      index++;
+  }
 }
+
 
 export function reloadChart(){
   n_chart = loadChartData('n_chart');
@@ -251,42 +400,34 @@ export function reloadChart(){
 }
 
 export function mapAltitude(){
-  createChart({id_alititude: true,xValue: "counter",yValue: data.setting.key[data.boardNow].altitude,yMn: 0,yMx: 1200})
+  createChart({id_alititude: true,xValue: "indice",yValue: data.setting.key[data.boardNow].altitude,yMn: 0,yMx: 1200})
 }
 
-export function updateMapAltitude(){
+export function updateMapAltitude() {
     let dataChart = data[data.boardNow].sensor.dataIn;
     let index = 0;
 
-    let chartOptions = data[data.boardNow].chartOptions[index]
-    // let xValue = data[data.boardNow].charts[index].chartOptions.labels
-    // let yValue = data[data.boardNow].charts[index].chartOptions.series
+    let chartOptions = data[data.boardNow].chartOptions[index];
     let xTitle = chartOptions.xaxis.title.text;
-    
-    let shiftValue = 1000;
-    // console.log(`shiftValeu: ${shiftValue} len: ${dataChart[xTitle].length}`);
+    let shiftValue = 1000; // fixed window for altitude
 
-    let len;
-    for(let yNumber of Object.keys(chartOptions.series)){
-        let yName = chartOptions.series[yNumber].name;
-        len = dataChart[yName].length
-        if(shiftValue > len){
-            chartOptions.series[yNumber].data = dataChart[yName].slice(0,len)
-        }else{
-            chartOptions.series[yNumber].data = dataChart[yName].slice(len-shiftValue,len)
-        }
+    for (let i = 0; i < chartOptions.series.length; i++) {
+        let yName = chartOptions.series[i].name;
+        let len = dataChart[yName].length;
+
+        let start = Math.max(len - shiftValue, 0);
+        let xData = dataChart[xTitle].slice(start, len);
+        let yData = dataChart[yName].slice(start, len);
+
+        chartOptions.series[i].data = downsampleWithPriority(
+            xData.map((x, j) => ({ x, y: yData[j] })),
+            maxPoints,
+            data[data.boardNow].sensor.priority[yName],
+            data[data.boardNow].sensor.dataIn[data.setting.key[data.boardNow].state] || []
+        );
     }
-    len = dataChart[xTitle].length;
-    if(shiftValue > len){
-        chartOptions.labels = dataChart[xTitle].slice(0,len).map(String);
-    }else{
-        chartOptions.labels = dataChart[xTitle].slice(len-shiftValue,len).map(String);
-    }
-    // console.log("chartData")
-    // console.log(chartOptions.series)
-    // console.log(chartOptions.labels)
-    data[data.boardNow].charts[index].updateOptions({series: chartOptions.series,labels: chartOptions.labels});
-    
+
+    data[data.boardNow].charts[index].updateSeries(chartOptions.series);
 }
 
 export function dowloadGraph() {

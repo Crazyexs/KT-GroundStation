@@ -3,6 +3,7 @@
         "header":"<0>,",
         "delimiter": ",",
         "data_format":{
+            "indice": "INTEGER",
             "TimeStamp": "TEXT",
             "RocketName": "TEXT",
             "freq": "REAL",

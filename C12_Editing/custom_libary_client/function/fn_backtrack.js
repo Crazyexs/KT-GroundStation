@@ -303,12 +303,29 @@ function ensureGraphCompatibility(data, board){
   if (k.map?.lat)  needed.add(k.map.lat);
   if (k.map?.lon)  needed.add(k.map.lon);
   if (k.altitude)  needed.add(k.altitude);
+  needed.add('TimeStamp'); // always need counter for x-axis
+  needed.add('RocketName'); // commonly charted
 
   for (const key of needed){
     if (!Array.isArray(dataIn[key])) {
       dataIn[key] = [];
       if (!data[board].data_format[key]) data[board].data_format[key] = 'AUTO';
       console.warn(`[backtrack] Filled missing key "${key}" with [] for chart/map safety.`);
+    }
+    if(key == dataRef.setting.key[board].altitude) {
+      dataRef[dataRef.boardNow].groundAltitude = Math.min(...dataRef[dataRef.boardNow].sensor.dataIn[key].filter(v => Number.isFinite(v)));
+      for(let i = 0; i < dataRef[dataRef.boardNow].sensor.dataIn[key].length; i++) {
+        if(dataRef[dataRef.boardNow].sensor.dataIn[key][i] - dataRef[dataRef.boardNow].groundAltitude > 50) {
+          for(const keys of needed){
+            console.log(keys);
+            if (!Array.isArray(dataRef[dataRef.boardNow].sensor.priority[keys])) {
+                console.log(dataRef[dataRef.boardNow].sensor.priority[keys]);
+                dataRef[dataRef.boardNow].sensor.priority[keys] = [];
+            }
+            dataRef[dataRef.boardNow].sensor.priority[keys].push(i);
+          }
+        }
+      }
     }
   }
 

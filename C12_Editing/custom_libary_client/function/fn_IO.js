@@ -5,7 +5,7 @@ const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
 
 let data;
-let index = 0;
+let indice = 0;
 let sending = false;
 
 const socket = (typeof io !== 'undefined') ? io() : null;
@@ -13,12 +13,12 @@ const socket = (typeof io !== 'undefined') ? io() : null;
 export function initializeUpdateDataIO(){
     if(socket){
         socket.on("sensor-data", (dataIn) => { 
-            
             if(sending){
-                uplinkSending();
-                sending = false;
+                setTimeout(() => {
+                    uplinkSending();
+                    sending = false;
+                }, 200);
             }
-
             let dataGet = data[dataIn.boardNumber].sensor.dataIn;
             for(let name of Object.keys(dataGet)){
                 if(Number.isFinite(dataIn[name])){
@@ -28,18 +28,21 @@ export function initializeUpdateDataIO(){
                 else{
                     dataGet[name].push(dataIn[name]);
                 }
-
-                // if(dataGet[name].length() > data.setting.key[data.boardNow].shiftValue){
-                //     dataGet[index] = dataGet[index] + dataGet[index+1];
-                //     dataGet.splice(index+1,1);
-                //     index++;
-                //     if(index + 1 >= data.setting.key[data.boardNow].shiftValue){
-                //         index = 0;
-                //     }
-                // }
+                
+                if(name == data.setting.key[dataIn.boardNumber].altitude){
+                    if(data[dataIn.boardNumber].groundAltitude > dataIn[name]){
+                        data[dataIn.boardNumber].groundAltitude = dataIn[name];
+                    }
+                    if(dataIn[name] - data[dataIn.boardNumber].groundAltitude > 50){
+                        for(let names of Object.keys(dataGet)){
+                            data[dataIn.boardNumber].sensor.priority[names].push(dataIn["indice"]);
+                        }
+                    }
+                }
             }
             data[data.boardNow].updateDataOrNot.sensor = true;
-            console.log(`Get sensor: ${dataIn}`)
+            console.log(`Get sensor: ${dataIn}`);
+            indice++;
         });
         socket.on("cmd-data" , (dataIn) => {
             data[dataIn.boardNumber].command.counter = dataIn.counter;
@@ -90,6 +93,11 @@ export function uplinkSending(){
 
 export function sendUplink(){
     sending = true;
+    if(id.uplink.placeholder.value == "now" || (id.uplink.selected.value).length == 0){
+        console.log("Sending Now");
+        uplinkSending();
+        sending = false
+    }
 }
 
 export function sendSelectPort(boardNumber,port,baudRate,connectOrNot){

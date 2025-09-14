@@ -45,11 +45,15 @@ export function initSyncData(){
             charts: [],
             chartOptions: [],
             storageChart: [],
-            shiftValue: setting.key[name].shiftValue
+            shiftValue: setting.key[name].shiftValue,
+            showValue: setting.key[name].showValue
         };
+        data[name].sensor.priority = {};
+        data[name].groundAltitude = 1000;
         for(let [dataName,dataType] of Object.entries(data_setting[name].data_format)){
             data[name].sensor.dataIn[dataName] = [];
             data[name].sensor.dataType[dataName] = dataType;
+            data[name].sensor.priority[dataName] = [];
         }
     }
     return data;

@@ -1,6 +1,74 @@
 {
     "port": 3000,
     "key": {
+        "1": {
+            "map": {
+                "lat": "gps_latitude",
+                "lon": "gps_longitude",
+                "zoom": 12
+            },
+            "altitude": "altitude",
+            "state": "state",
+            "plot": [
+                {
+                    "x": "indice",
+                    "y": ["state"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["freq"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["altitude","state"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["apogee","altitude"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["gps_latitude","gps_longitude","state"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["voltageMon"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["last_ack","last_nack"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["RSSI"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["SNR"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["PacketLength"],
+                    "type": "line"
+                },
+                {
+                    "x": "indice",
+                    "y": ["counter"],
+                    "type": "line"
+                }
+            ],
+            "shiftValue": 1000,
+            "showValue": 10
+        },
         "0": {
             "map": {
                 "lat": "gps_latitude",
@@ -61,69 +129,8 @@
                     "type": "line"
                 }
             ],
-            "shiftValue": 30
-        },
-        "1": {
-            "map": {
-                "lat": "gps_latitude",
-                "lon": "gps_longitude",
-                "zoom": 12
-            },
-            "altitude": "altitude",
-            "state": "state",
-            "plot": [
-                {
-                    "x": "counter",
-                    "y": ["freq"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["altitude"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["apogee"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["gps_latitude","gps_longitude"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["voltageMon"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["last_ack","last_nack"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["RSSI"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["SNR"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["PacketLength"],
-                    "type": "line"
-                },
-                {
-                    "x": "counter",
-                    "y": ["counter"],
-                    "type": "line"
-                }
-            ],
-            "shiftValue": 30
+            "shiftValue": 30,
+            "showValue": 10
         }
    }
 }
