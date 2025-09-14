@@ -48,6 +48,9 @@ let data;
 
     const { syncData_backtrack, initBacktrackUpload } = await import(`${dir.function}fn_backtrack.js`);
     console.log("fn_backtrack.js import success");
+
+    const { syncData_tatae } = await import(`./tatae.js`);
+    console.log("tatae.js import success");
     
     // const socket = io();
 
@@ -65,7 +68,8 @@ let data;
     syncData_uplink(data);
     syncData_css(data);
     syncData_backtrack(data);
-    await initBacktrackUpload();  
+    await initBacktrackUpload();
+    syncData_tatae(data);
 
     console.log("sync Data success");
 
