@@ -163,10 +163,6 @@ let data;
             
             console.log("Client setup event success");
 
-            reloadWindow();
-
-            console.log("Client reloadWindow success");
-
             const visual_data = setInterval(() => {
                 console.log("data:")
                 console.log(data)
@@ -174,3 +170,43 @@ let data;
         };
     });
 })();
+
+window.addEventListener("load", () => {
+    reloadSyncData();
+    // reloadChart();
+	syncData_commandMonitor(data);
+    syncData_graph(data);
+    syncData_IO(data);
+    syncData_localStorage(data);
+    syncData_map(data);
+    syncData_serial(data);
+    syncData_table(data);
+    syncData_uplink(data);
+    syncData_css(data);
+    syncData_backtrack(data);
+    await initBacktrackUpload();
+    syncData_tatae(data);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

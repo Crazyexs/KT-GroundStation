@@ -123,7 +123,7 @@ export function event(){
     }
 
     if(id.graph.dowload){
-      id.graph.dowload.addEventListener("click", () => dowloadGraph?.());
+      id.graph.dowload.addEventListener("click", () => downloadGraph?.());
     } else {
         console.log('download Chart not found!');
     }

@@ -1,9 +1,8 @@
 const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
-
 const { reloadChart } = await import('./fn_graph.js')
 
-let data;
+let data = {};
 
 function saveData(key, obj) {
     const seen = new WeakSet();
@@ -17,10 +16,8 @@ function saveData(key, obj) {
     localStorage.setItem(key, json);
 }
 
-
-
 export function updateLocalStorage(){
-  saveData("syncData",data)
+  saveData("syncData", data);
 }
 
 export function clearLocalStorage(){
@@ -29,15 +26,15 @@ export function clearLocalStorage(){
 }
 
 export function reloadSyncData(){
-  data = localStorage.getItem("syncData")
-  data = data ? JSON.parse(data) : [];
+  const raw = localStorage.getItem("syncData");
+  data = raw ? JSON.parse(raw) : [];
 }
 
 export function reloadWindow(){
-  window.onload = () => {
-    // reloadChart();
+  window.addEventListener("load", () => {
     reloadSyncData();
-  };
+    // reloadChart();
+  });
 }
 
 export function syncData_localStorage(dataIn){
