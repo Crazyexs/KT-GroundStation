@@ -2,7 +2,7 @@ const { dir } = await import('../../dir_client.js');
 const { id } = await import('../../id.js');
 const { reloadChart } = await import('./fn_graph.js')
 
-let data = [];
+let data = {};
 
 function saveData(key, obj) {
     const seen = new WeakSet();
