@@ -4,6 +4,7 @@ import { id } from "./id.js";
 
 let prevBoard = null;
 let data;
+let reload = false;
 
 (async () => {
 
@@ -67,9 +68,9 @@ let data;
     syncData_table(data);
     syncData_uplink(data);
     syncData_css(data);
+    syncData_tatae(data);
     syncData_backtrack(data);
     await initBacktrackUpload();
-    syncData_tatae(data);
 
     console.log("sync Data success");
 
@@ -169,29 +170,29 @@ let data;
             },2000)
         };
     });
+
+    // if(reload == true){
+    //     data = reloadSyncData();
+    //     // reloadChart();
+    //     syncData_commandMonitor(data);
+    //     syncData_graph(data);
+    //     syncData_IO(data);
+    //     syncData_localStorage(data);
+    //     syncData_map(data);
+    //     syncData_serial(data);
+    //     syncData_table(data);
+    //     syncData_uplink(data);
+    //     syncData_css(data);
+    //     syncData_backtrack(data);
+    //     syncData_tatae(data);
+    // }
 })();
 
+
 window.addEventListener("load", () => {
-    reloadSyncData();
-    // reloadChart();
-	syncData_commandMonitor(data);
-    syncData_graph(data);
-    syncData_IO(data);
-    syncData_localStorage(data);
-    syncData_map(data);
-    syncData_serial(data);
-    syncData_table(data);
-    syncData_uplink(data);
-    syncData_css(data);
-    syncData_backtrack(data);
-    await initBacktrackUpload();
-    syncData_tatae(data);
+    console.log("Window loaded");
+    reload = true;
 });
-
-
-
-
-
 
 
 

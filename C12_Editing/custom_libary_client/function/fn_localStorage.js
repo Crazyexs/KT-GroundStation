@@ -28,6 +28,9 @@ export function clearLocalStorage(){
 export function reloadSyncData(){
   const raw = localStorage.getItem("syncData");
   data = raw ? JSON.parse(raw) : [];
+  console.log("Reload syncData from localStorage:");
+  console.log(data);
+  return data;
 }
 
 export function reloadWindow(){

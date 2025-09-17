@@ -12,7 +12,7 @@ function isNumber(value) {
 }
 
 function downsampleWithPriority(data, maxPoints, priorityIndices = [], state=[]) {
-  console.log(state)
+
   if (data.length <= maxPoints) return data.slice(); // copy original array
 
   const step = Math.ceil(data.length / maxPoints);
@@ -26,6 +26,17 @@ function downsampleWithPriority(data, maxPoints, priorityIndices = [], state=[])
     }
     data[i].state = state[i];
     result.push(data[i]);
+  }
+
+  // ✅ ensure last index is always included
+  const lastIdx = data.length - 1;
+  if (!result.includes(data[lastIdx])) {
+    const lastPoint = {
+      x: Number(data[lastIdx].x),
+      y: isNumber(data[lastIdx].y) ? Number(data[lastIdx].y) : data[lastIdx].y,
+      state: state[lastIdx] ?? "No info"
+    };
+    result.push(lastPoint);
   }
 
   // add priority points if not already included
@@ -50,9 +61,7 @@ function downsampleWithPriority(data, maxPoints, priorityIndices = [], state=[])
     point.x = Number(point.x);
     point.y = Number(point.y);
   }
-  console.log(result)
-  console.log(typeof result[0].x)
-  console.log(typeof result[0].y)
+
   return result;
 }
 
@@ -149,8 +158,6 @@ export function createChart({
                                              state || [])
               };
             });
-            console.log('Zoomed to X:');
-            console.log(seriesData)
             chartContext.updateSeries(seriesData);
           }
         }
@@ -262,7 +269,6 @@ export function createChart({
   if (yMx != null && yMx !== "") {
     chartOptions.yaxis.max = Number(yMx);
   }
-  // console.log(xMx,xMn,yMx,yMn);
   // ✅ use div instead of canvas
   let chartDiv;
   if(!id_alititude){
@@ -295,9 +301,7 @@ export function initializeGraph(){
     maxPoints = data[data.boardNow].showValue;
 
     let x, y, xMx, xMn, yMx, yMn,type;
-    // console.log(`there will be ${data.setting.key[data.boardNow].plot.length} init graph`)
     for (let valueGraph of data.setting.key[data.boardNow].plot) {
-        // console.log(`add grpah init ${valueGraph.x} and ${valueGraph.y}`)
         x = valueGraph.x;
         y = valueGraph.y;
 
@@ -375,7 +379,7 @@ export function updateChart() {
           let yData = dataChart[yName].slice(start, len);
 
           // Combine into {x, y} objects
-          console.log(data[data.boardNow].sensor.dataIn[data.setting.key[data.boardNow].state])
+          // console.log(data[data.boardNow].sensor.dataIn[data.setting.key[data.boardNow].state])
           chartOptions.series[i].data = downsampleWithPriority(
               xData.map((x, j) => ({ x, y: yData[j] })),
               maxPoints,

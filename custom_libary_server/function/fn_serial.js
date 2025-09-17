@@ -41,7 +41,7 @@ function run_port(boardNumber){
         // โค้ดอื่นที่ต้องใช้ serial parser รันต่อที่นี่
         boardData.parser.on('data', (line) => {
             const now = new Date();
-            line = now.toLocaleTimeString() + "," + line;
+            line = index + "," + now.toLocaleTimeString() + "," + line;
             const trimmed = line.trim();
             console.log(`${boardData.COM_PORT} get data CSV:`, trimmed);
 
@@ -57,7 +57,6 @@ function run_port(boardNumber){
                     IOData[nameData] = changeDataType(parts[i],typeData);
                     i += 1;
                 }
-                IOData["index"] = index;
                 const database_run = `INSERT INTO ${boardData.db.nameSensorDB} 
                                 (${Object.entries(boardData.data_format)
                                     .map(([key,type]) => `${key}`)
