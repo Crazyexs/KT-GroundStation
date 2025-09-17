@@ -23,6 +23,7 @@ const id = {
         dowload: qs('#downloadChart')
     },
     table: qs("#telemetry-table tbody"),
+    tableState: qs("#telemetry-tableState tbody"),
     uplink: {
         selected: qs('#uplink-cmd'),
         placeholder: qs('#cmd-tag'),
