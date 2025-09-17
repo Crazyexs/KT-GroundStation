@@ -270,9 +270,10 @@ export function createChart({
   }
   else{
     chartDiv = id.altitude.graph
-     realID = chartDiv.id;
+    realID = chartDiv.id;
   }
 
+  chartOptions.chart.id = realID;   // make ApexCharts know this chart’s id
   // ✅ create ApexCharts with div container
   const chart = new ApexCharts(chartDiv, chartOptions);
   chart.render();
@@ -430,7 +431,7 @@ export function updateMapAltitude() {
     data[data.boardNow].charts[index].updateSeries(chartOptions.series);
 }
 
-export function dowloadGraph() {
+export function downloadGraph() {
   for (let [chartId, name] of Object.entries(divChart)) {
     ApexCharts.exec(chartId, 'dataURI').then(({ imgURI }) => {
       const a = document.createElement('a');
