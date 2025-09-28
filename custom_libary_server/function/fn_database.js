@@ -64,7 +64,8 @@ export function setupDownloadRoutes() {
 
 
 export function resetDatabase(){
-  app.post('/reset-db', (req, res) => {
+  app.get('/reset-db', (req, res) => {
+    console.log("Database reset")
     for(const [boardNumber,boardData] of Object.entries(data)){
       const databaseData = boardData.db;
       databaseData.sensor.run("DELETE FROM " + databaseData.nameSensorDB);

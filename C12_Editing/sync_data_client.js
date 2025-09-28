@@ -44,9 +44,16 @@ export function initSyncData(){
             n_chart: 0,
             charts: [],
             chartOptions: [],
+            chartOptions3D: [],
             storageChart: [],
             shiftValue: setting.key[name].shiftValue,
-            showValue: setting.key[name].showValue
+            showValue: setting.key[name].showValue,
+            lastUplink: [],
+            workingPage: {
+                n_chart: 0,
+                charts: [],
+                chartOptions: [],
+            }
         };
         data[name].sensor.priority = {};
         data[name].groundAltitude = 1000;

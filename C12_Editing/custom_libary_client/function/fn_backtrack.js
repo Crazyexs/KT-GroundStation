@@ -298,13 +298,14 @@ function ensureGraphCompatibility(data, board){
       if (yKey) needed.add(yKey);
     });
   }
-
   const k = (data.setting?.key?.[board]) || {};
   if (k.map?.lat)  needed.add(k.map.lat);
   if (k.map?.lon)  needed.add(k.map.lon);
   if (k.altitude)  needed.add(k.altitude);
   needed.add('TimeStamp'); // always need counter for x-axis
   needed.add('RocketName'); // commonly charted
+
+  
 
   for (const key of needed){
     if (!Array.isArray(dataIn[key])) {

@@ -12,7 +12,9 @@ export function initSyncData(data_setting,setting){
             data_format: data_setting[name].data_format,
             header:data_setting[name].header,
             delimiter: data_setting[name].delimiter,
-            lostTrack: setting.key[name].lostTrack
+            lostTrack: setting.key[name].lostTrack,
+            showValue: setting.key[name].showValue,
+            shiftValue: 0
         };
     }
     return data;

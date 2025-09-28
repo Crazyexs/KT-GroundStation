@@ -3,7 +3,29 @@ const { dir } = await import('../../dir.js');
 const { callbackify, connect , express, app, server, io, Parser_db, fs, sqlite3, SerialPort, ReadlineParser, listPortsCb, promisify, archiver} = await import(`${dir.expression}`);
 let data;
 let counter_cmd = 0;
-let index = 0;
+let index = {};
+
+import deasync from 'deasync';
+
+function getLastNRows(db, table, column, shiftValue) {
+    shiftValue = Math.max(1, shiftValue);
+    let done = false;
+    let result = [];
+
+    db.all(`
+        SELECT ${column} 
+        FROM ${table} 
+        WHERE rowid > (SELECT MAX(rowid) - ? FROM ${table})
+    `, [shiftValue], (err, rows) => {
+        if (err) throw err;
+        result = rows.map(r => r[column]);
+        done = true;
+    });
+
+    while(!done) { deasync.runLoopOnce(); } // blocks until done
+    // console.log(result);
+    return result;
+}
 
 function changeDataType(dataIn,dataType){
     switch (dataType) {
@@ -41,7 +63,10 @@ function run_port(boardNumber){
         // โค้ดอื่นที่ต้องใช้ serial parser รันต่อที่นี่
         boardData.parser.on('data', (line) => {
             const now = new Date();
-            line = index + "," + now.toLocaleTimeString() + "," + line;
+            if(!index[boardNumber] && index[boardNumber] != 0){
+                index[boardNumber] = 0;
+            }
+            line = index[boardNumber] + "," + now.toLocaleTimeString() + "," + line;
             const trimmed = line.trim();
             console.log(`${boardData.COM_PORT} get data CSV:`, trimmed);
 
@@ -54,7 +79,6 @@ function run_port(boardNumber){
                 let i = 0
                 for (const [nameData, typeData] of Object.entries(boardData.data_format)) {
                     dbData.push(String(parts[i]));
-                    IOData[nameData] = changeDataType(parts[i],typeData);
                     i += 1;
                 }
                 const database_run = `INSERT INTO ${boardData.db.nameSensorDB} 
@@ -74,8 +98,17 @@ function run_port(boardNumber){
                         }
                     }
                 );
+                if(data[boardNumber].shiftValue < 1000){
+                    data[boardNumber].shiftValue += 1;
+                }
+                console.log(data[boardNumber].shiftValue);
+                // Usage
+                for (const [nameData, typeData] of Object.entries(boardData.data_format)) {
+                    IOData[nameData] = getLastNRows(boardData.db.sensor, boardData.db.nameSensorDB, nameData, data[boardNumber].shiftValue);
+                }
 
-                index++;
+                // console.log(IOData);
+                index[boardNumber]++;
                 // ✅ ส่งให้หน้าเว็บ
                 io.emit('sensor-data', IOData);
             } 
@@ -134,7 +167,22 @@ function run_port(boardNumber){
 };
 
 export function startPort(){
+
     for(let boardNumber of Object.keys(data)) {
+        // data[boardNumber].db.sensor.get(`
+        //     SELECT indice
+        //     FROM ${data[boardNumber].db.nameSensorDB}
+        //     WHERE rowid > (SELECT MAX(rowid) - ? FROM ${data[boardNumber].db.nameSensorDB})
+        //     ORDER BY rowid DESC
+        //     LIMIT 1
+        // `, [shiftValue], (err, row) => {
+        //     if (err) throw err;
+        //     index[boardNumber] = row ? row.indice : 0; // last indice
+        // });
+        // if(!index[boardNumber])
+        //     index[boardNumber] = 0;
+        // console.log("start at %d",index[boardNumber]);
+
         run_port(boardNumber);
     }
 }

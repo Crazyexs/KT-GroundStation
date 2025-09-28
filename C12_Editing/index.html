@@ -53,6 +53,7 @@
         <a class="nav__link" href="#map-section">Map</a>
         <a class="nav__link" href="#downloads">Downloads</a>
         <button id="uploadBacktrackBtn" class="btn btn--accent">Upload Backtrack CSV</button>
+        <button class="btn btn--accent"><a href="./workingPage/workingPage.html"> Working Page </a></button>
         <input id="backtrackFile" type="file" accept=".csv" class="visually-hidden" />
       </nav>
     </div>
@@ -65,7 +66,7 @@
         <h3 class="section__title" id="console-title">Mission Console</h3>
       </div>
     </section>
-
+    <br>
     <!-- ========== Board Controls (new) ========== -->
     <section class="container" aria-labelledby="board-ctrl-title">
       <article class="card">
@@ -100,6 +101,7 @@
         </div>
       </article>
     </section>
+    <br>
 
     <!-- ========== Uplink Commands ========== -->
     <section id="uplink" class="container" aria-labelledby="uplink-title">
@@ -114,23 +116,6 @@
           <div class="row cols-3">
             <div class="select select-lg">
               <select id="uplink-cmd" name="uplink-cmd" data-field="cmd">
-                <option value="Ping">Ping</option>
-                <option value="Wake">Wake</option>
-                <option value="On">On</option>
-                <option value="Arm">Arm</option>
-                <option value="Disarm">Disarm</option>
-                <option value="Pad">Pad</option>
-                <option value="Servo A Lock">Servo A Lock</option>
-                <option value="Servo A Deploy">Servo A Deploy</option>
-                <option value="Servo B Lock">Servo B Lock</option>
-                <option value="Servo B Deploy">Servo B Deploy</option>
-                <option value="Launch Override">Launch Override</option>
-                <option value="Recover">Recover</option>
-                <option value="Zero">Zero</option>
-                <option value="Sleep">Sleep</option>
-                <option value="Shutdown">Shutdown</option>
-                <option value="Reboot">Reboot</option>
-                <option value="Restart">Restart</option>
               </select>
             </div>
 
@@ -141,6 +126,7 @@
         </div>
       </article>
     </section>
+    <br>
 
     <!-- ========== Two-column Dashboard ========== -->
     <section class="container" aria-label="dashboard">
@@ -181,7 +167,6 @@
             </div>
             <div class="card__body">
               <div class="stage__value" id="stageValue">IDLE</div>
-              <!-- <div class="stage__chip" id="stageChip">IDLE</div> -->
             </div>
           </article>
 
@@ -207,11 +192,12 @@
         </div>
       </div> <!-- /dashboard-grid -->
     </section>
+    <br>
 
     <!-- ========== Graphs ========== -->
     <section id="graphs" class="container" aria-labelledby="graphs-title">
       <div class="section__hdr">
-        <h2 class="section__title" id="graphs-title">Flexible Graph — Add On</h2>
+        <h2 class="section__title" id="graphs-title">Graph Section</h2>
       </div>
 
       <!-- Graph Controls -->
@@ -227,13 +213,6 @@
               <div class="select">
                 <select id="xValue">
                   <option value="">xValue</option>
-                  <option value="counter">counter</option>
-                  <option value="state">state</option>
-                  <option value="gps_latitude">gps_latitude</option>
-                  <option value="gps_longitude">gps_longitude</option>
-                  <option value="apogee">apogee</option>
-                  <option value="last_ack">last_ack</option>
-                  <option value="last_nack">last_nack</option>
                 </select>
               </div>
             </div>
@@ -243,13 +222,6 @@
               <div class="select">
                 <select id="yValue">
                   <option value="">yValue</option>
-                  <option value="counter">counter</option>
-                  <option value="state">state</option>
-                  <option value="gps_latitude">gps_latitude</option>
-                  <option value="gps_longitude">gps_longitude</option>
-                  <option value="apogee">apogee</option>
-                  <option value="last_ack">last_ack</option>
-                  <option value="last_nack">last_nack</option>
                 </select>
               </div>
             </div>
@@ -273,22 +245,22 @@
 
           <div class="btnrow">
             <button class="btn btn--primary" id="addGraphBtn" data-btn="add-graph">Add Graph</button>
-            <button class="btn" id="autoAddGraphBtn">Auto Add Graphs</button>
+            <!-- <button class="btn" id="autoAddGraphBtn">Auto Add Graphs</button> -->
             <button class="btn" id="clearGraphBtn" data-btn="clear-graphs">Clear All</button>
             <button class="btn" id="addNumber_of_valueBtn">Apply Shift</button>
             <button class="btn" id="downloadChart">downloadChart</button>
           </div>
 
             <div>
-              <label for="number_of_value">Shift Size</label>
-              <input id="number_of_value" placeholder="default 50" />
+              <label for="number_of_value">Show value size</label>
+              <input id="number_of_value" placeholder="Number of value that show in graph" />
             </div>
           </div>
 
           <p class="muted">Auto Add will generate all valid (x≠y, non-text vs non-text) pairs.</p>
         </div>
       </article>
-
+      <br>
       <!-- Graph Grid -->
       <div class="graph-grid" id="graph-grid" aria-label="graphs list">
         <div class="graph-slot resizable is-empty" id="graph-1" style="--min-h:260px; --ar:auto">
@@ -308,6 +280,7 @@
         <h2 class="section__title" id="map-title">Rocket Map</h2>
       </div>
       <div id="map" class="resizable" style="--min-h:420px; --ar:auto" role="img" aria-label="rocket map"></div>
+      <br>
       <span id="location">Loading Loacation...</span>
     </section>
     
@@ -334,8 +307,9 @@
         </table>
       </div>
     </section>
+    <br>
     <!-- ========== Telemetry Summary ========== -->
-    <section class="container" aria-labelledby="telemetry-title">
+    <!-- <section class="container" aria-labelledby="telemetry-title">
       <article class="card">
         <div class="card__hdr">
           <div class="card__title" id="telemetry-title">Telemetry Summary</div>
@@ -361,7 +335,7 @@
           </div>
         </div>
       </article>
-    </section>
+    </section> -->
 
     <!-- ========== Value Monitor ========== -->
     <section class="container" aria-labelledby="valmon-title">
@@ -376,6 +350,7 @@
         </div>
       </article>
     </section>
+    <br>
 
     <!-- ========== Command Monitor ========== -->
     <section class="container" aria-labelledby="monitor-title">
@@ -390,6 +365,7 @@
         </div>
       </article>
     </section>
+    <br>
       <!-- Server Connect (Socket.IO) -->
     <section class="container" aria-labelledby="server-conn-title">
       <article class="card" id="downloads">
@@ -449,8 +425,10 @@
         </div>
       </article>
     </section>
+    <br>
+    
     <!-- Serial Connect (Web Serial) -->
-    <section class="container" aria-labelledby="conn-card-title">
+    <!--<section class="container" aria-labelledby="conn-card-title">
       <article class="card">
         <div class="card__hdr">
           <div class="card__title" id="conn-card-title">Connect by Client</div>
@@ -463,7 +441,7 @@
         <div class="card__body">
           <div class="row cols-2">
             <div>
-              <!-- <label for="baud">Baud Rate</label>
+              <label for="baud">Baud Rate</label>
               <div class="select select-lg">
                 <select id="baud" name="baud" data-field="baud">
                   <option value="115200" selected>115200</option>
@@ -472,7 +450,7 @@
                   <option value="230400">230400</option>
                   <option value="57600">57600</option>
                 </select>
-              </div> -->
+              </div>
             </div>
 
             <div>
@@ -484,11 +462,10 @@
           <div class="btnrow">
             <button class="btn btn--accent" data-btn="serial-request">Connect Serial</button>
             <button class="btn" data-btn="serial-disconnect">Disconnect</button>
-            <button class="btn btn--danger" data-btn="reset-db">Reset Database</button>
           </div>
         </div>
       </article>
-    </section>
+    </section> -->
 
     <!-- Downloads -->
     <section class="container" aria-labelledby="downloads-title">
@@ -500,6 +477,7 @@
           <div class="btnrow">
             <a class="btn btn--primary" href="/download_database">Download Sensor Data</a>
             <a class="btn" href="/download_cmd">Download Command Data</a>
+            <button class="btn btn--danger" data-btn="reset-db">Reset Database</button>
           </div>
         </div>
       </article>
@@ -520,7 +498,13 @@
 <script>
   // auto-update year
   document.getElementById("year").textContent = new Date().getFullYear();
+
 </script>
+
+  <script src="./libs/jszip/dist/jszip.min.js"></script>
+  <script src="./libs/file-saver/dist/FileSaver.min.js"></script>
+  <script src="./libs/plotly.js/dist/plotly.min.js"></script>
+  <script type="module" src="./custom_libary_client/function/fn_graph.js"></script>
 
 
   <!-- App script -->

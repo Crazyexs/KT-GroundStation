@@ -122,6 +122,12 @@ export function event(){
         console.log('clearGraphBtn not found!');
     }
 
+    if (id.graph.button.shiftValue) {
+        id.graph.button.shiftValue.addEventListener("click", () => shiftValue?.());
+    } else {
+        console.log('clearGraphBtn not found!');
+    }
+
     if(id.graph.dowload){
       id.graph.dowload.addEventListener("click", () => downloadGraph?.());
     } else {
@@ -139,7 +145,8 @@ export function event(){
     // Database
     if (id.database.resetDatabaseBtn) {
         id.database.resetDatabaseBtn.addEventListener("click", () => {
-            fetch('/reset-db', { method: 'POST' })
+            console.log("RESET DB")
+            fetch('/reset_db', { method: 'POST' })
                 .then(res => res.text())
                 .then(msg => alert(msg))
                 .catch(err => alert('Error: ' + err));

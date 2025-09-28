@@ -4,6 +4,7 @@ import { id } from "./id.js";
 
 let prevBoard = null;
 let data;
+let dataLoad;
 let reload = false;
 
 (async () => {
@@ -18,7 +19,7 @@ let reload = false;
     const { syncData_commandMonitor, updateCommandMonitor } = await import(`${dir.function}fn_commandMonitor.js`);
     console.log("fn_commandMonitor.js import success");
 
-    const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, mapAltitude, initializeGraph, updateMapAltitude } = await import(`${dir.function}fn_graph.js`);
+    const { syncData_graph, updateChart, deleteGrpah, shiftValue, autoAddGraph, addGraph, createChart, mapAltitude, initializeGraph, updateMapAltitude, update3DChart } = await import(`${dir.function}fn_graph.js`);
     console.log("fn_graph.js import success");
 
     const { syncData_IO, sendSelectPort, sendUplink, initializeUpdateDataIO } = await import(`${dir.function}fn_IO.js`);
@@ -45,6 +46,9 @@ let reload = false;
     const { event, waitUntil } = await import(`${dir.function}universal_function.js`);
     console.log("universal_function.js import success");
 
+    // const { syncData_workingPage, update_workingPageCommand, update_workingPageSensor, initWorkingPage } = await import(`./workingPage/workingPage.js`);
+    // console.log("workingPage.js import success");
+
     console.log("import function success")
 
     const { syncData_backtrack, initBacktrackUpload } = await import(`${dir.function}fn_backtrack.js`);
@@ -58,6 +62,20 @@ let reload = false;
     console.log("connect to server success")
 
     data = initSyncData();
+    data.reload = false;
+    
+    // if(reload == true){
+    //     dataLoad = reloadSyncData();
+    //     console.log("Window loaded");
+    //     console.log(dataLoad);
+    //     // reloadChart();
+    //     data.reload = true;
+
+    //     for(let boardNow of Object.keys(data.data_setting)){
+    //         data[boardNow].sensor = dataLoad[boardNow].sensor;
+    //         data[boardNow].command = dataLoad[boardNow].command;
+    //     }
+    // }
 
     syncData_commandMonitor(data);
     syncData_graph(data);
@@ -70,6 +88,7 @@ let reload = false;
     syncData_css(data);
     syncData_tatae(data);
     syncData_backtrack(data);
+    // syncData_workingPage(data);
     await initBacktrackUpload();
 
     console.log("sync Data success");
@@ -115,6 +134,9 @@ let reload = false;
             initializeGraph();
             console.log("init Graph success");
 
+            // initWorkingPage();
+            console.log("WorkingPage success");
+
             console.log("Client INITIALIZE success");
 
             // SENSOR
@@ -124,6 +146,7 @@ let reload = false;
 
                     updateChart();
                     updateMapAltitude();
+                    // update3DChart();
                     console.log("update charts")
 
                     updateTable();
@@ -133,7 +156,8 @@ let reload = false;
 
                     updateStage();
 
-                    updateLocalStorage();
+                    // update_workingPageSensor();
+                    // updateLocalStorage();
 
                     console.log("update sensor data")
 
@@ -151,8 +175,8 @@ let reload = false;
                     data[data.boardNow].updateDataOrNot.command = false;
 
                     updateCommandMonitor();
-
-                    updateLocalStorage();
+                    // update_workingPageCommand();
+                    // updateLocalStorage();
 
                     console.log("update command data")
                 }
@@ -170,27 +194,10 @@ let reload = false;
             },2000)
         };
     });
-
-    // if(reload == true){
-    //     data = reloadSyncData();
-    //     // reloadChart();
-    //     syncData_commandMonitor(data);
-    //     syncData_graph(data);
-    //     syncData_IO(data);
-    //     syncData_localStorage(data);
-    //     syncData_map(data);
-    //     syncData_serial(data);
-    //     syncData_table(data);
-    //     syncData_uplink(data);
-    //     syncData_css(data);
-    //     syncData_backtrack(data);
-    //     syncData_tatae(data);
-    // }
 })();
 
 
 window.addEventListener("load", () => {
-    console.log("Window loaded");
     reload = true;
 });
 

@@ -44,30 +44,39 @@ export function updateMap(){
     const dataLat = dataIn[nameLat][dataIn[nameLat].length - 1]
     const dataLon = dataIn[nameLon][dataIn[nameLon].length - 1]
     const state = dataIn[data.setting.key[data.boardNow].state][dataIn[data.setting.key[data.boardNow].state].length - 1]
-    if(stateNow != state){
-        let tableHtml = '<table style="border-collapse: collapse; width: 100%;">';
 
-        // header row (optional)
-        tableHtml += `
+    let tableHtml = '<table style="border-collapse: collapse; width: 100%;">';
+
+    // header row (optional)
+    tableHtml += `
+    <tr>
+        <th style="border: 1px solid black; padding: 2px;">Parameter</th>
+        <th style="border: 1px solid black; padding: 2px;">Value</th>
+    </tr>
+    `;
+
+    Object.entries(data[data.boardNow].data_format).forEach(([name, value]) => {
+    tableHtml += `
         <tr>
-            <th style="border: 1px solid black; padding: 2px;">Parameter</th>
-            <th style="border: 1px solid black; padding: 2px;">Value</th>
+        <th style="border: 1px solid black; padding: 2px;">${name}</th>
+        <td style="border: 1px solid black; padding: 2px;">${dataIn[name][dataIn[name].length-1]}</td>
         </tr>
-        `;
-
-        Object.entries(data[data.boardNow].data_format).forEach(([name, value]) => {
-        tableHtml += `
-            <tr>
-            <th style="border: 1px solid black; padding: 2px;">${name}</th>
-            <td style="border: 1px solid black; padding: 2px;">${dataIn[name][dataIn[name].length-1]}</td>
-            </tr>
-        `;
-        });
-
-        tableHtml += '</table>';
+    `;
+    });    
+    tableHtml += '</table>';
+    
+    if(stateNow != state){
         stateNow = state;
         console.log("Change state");
         LocationState[stateNow] = L.marker([dataLat, dataLon,12]).addTo(map).bindPopup(tableHtml).openPopup(); ;
+    }
+    else{
+        L.circleMarker([dataLat, dataLon], {
+            radius: 4,       // 🔹 smaller = smaller point
+            color: "red",
+            fillColor: "red",
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup(state);
     }
     
     if (Number.isFinite(parseFloat(dataLat)) && Number.isFinite(parseFloat(dataLon))){

@@ -5,7 +5,7 @@ let data;
 
 export function initializeUplink(){
     let value,label
-    id.uplink.selected.innerHTML = '<option value="">-- Select Port --</option>'; // reset
+    id.uplink.selected.innerHTML = '<option value="">-- Select Command --</option>'; // reset
     for(let uplinkNumber of data.uplink[data.boardNow]){
         value = uplinkNumber.value;
         label = uplinkNumber.label;

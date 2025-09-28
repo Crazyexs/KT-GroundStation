@@ -1,7 +1,7 @@
 {
     "port": 3000,
     "key": {
-        "0": {
+        "<3>": {
             "map": {
                 "lat": "gps_latitude",
                 "lon": "gps_longitude",
@@ -10,16 +10,6 @@
             "altitude": "altitude",
             "state": "state",
             "plot": [
-                {
-                    "x": "indice",
-                    "y": ["state"],
-                    "type": "line"
-                },
-                {
-                    "x": "indice",
-                    "y": ["freq"],
-                    "type": "line"
-                },
                 {
                     "x": "indice",
                     "y": ["altitude","state"],
@@ -67,7 +57,7 @@
                 }
             ],
             "shiftValue": 1000,
-            "showValue": 10
+            "showValue": 1000
         },
         "1": {
             "map": {

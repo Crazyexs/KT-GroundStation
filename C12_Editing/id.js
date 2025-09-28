@@ -1,5 +1,3 @@
-import { dir } from "./dir_client.js";
-
 const qs  = (s, r = document) => r.querySelector(s);
 
 const id = {
@@ -14,12 +12,10 @@ const id = {
         button: {
             add: qs('#addGraphBtn'),
             autoAdd: qs('#autoAddGraphBtn'),
-            clear: qs('#clearGraphBtn')
+            clear: qs('#clearGraphBtn'),
+            shiftValue: qs('#addNumber_of_valueBtn')
         },
-        shiftValue: {
-            placeholder: qs('#number_of_value'),
-            button: qs('#addNumber_of_valueBtn')
-        },
+        shiftValue: qs('#number_of_value'),
         dowload: qs('#downloadChart')
     },
     table: qs("#telemetry-table tbody"),
@@ -64,7 +60,11 @@ const id = {
     backtrack: {
         uploadBtn: qs('#uploadBacktrackBtn'),
         fileInput: qs('#backtrackFile')
-    }
+    },
+    alert: {
+        header: qs('#alert-title'),
+        text: qs('#alert-value')
+    },
 }
 
 export { id }

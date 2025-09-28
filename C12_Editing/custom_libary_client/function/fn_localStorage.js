@@ -13,6 +13,8 @@ function saveData(key, obj) {
         }
         return v;
     });
+    // console.log("save : ");
+    // console.log(json);
     localStorage.setItem(key, json);
 }
 

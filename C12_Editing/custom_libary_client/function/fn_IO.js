@@ -1,4 +1,3 @@
-import { shiftValue } from './fn_graph.js';
 import { listAvaiablePort } from './fn_serial.js';
 
 const { dir } = await import('../../dir_client.js');
@@ -10,45 +9,55 @@ let sending = false;
 
 const socket = (typeof io !== 'undefined') ? io() : null;
 
+function changeDataTypeArr(arr,dataType) {
+  return arr.map(v => dataType(v));
+}
+
 export function initializeUpdateDataIO(){
     if(socket){
         socket.on("sensor-data", (dataIn) => { 
-            if(sending){
-                setTimeout(() => {
-                    uplinkSending();
-                    sending = false;
-                }, 200);
-            }
+            // console.log(dataIn)
+            // if(sending){
+            //     setTimeout(() => {
+            //         uplinkSending();
+            //         sending = false;
+            //     }, 200);
+            // }
             let dataGet = data[dataIn.boardNumber].sensor.dataIn;
             for(let name of Object.keys(dataGet)){
-                if(Number.isFinite(dataIn[name])){
-                    dataGet[name].push(parseFloat(dataIn[name]));
-                    console.log(`counter: ${dataIn["counter"]}`)
+                if(Number.isFinite(dataIn[name][0])){
+                    dataGet[name] = changeDataTypeArr(dataIn[name],parseFloat);
+                    // console.log(`counter: ${dataIn["counter"]}`)
                 }
                 else{
-                    dataGet[name].push(dataIn[name]);
+                    dataGet[name] = dataIn[name];
                 }
                 
+
                 if(name == data.setting.key[dataIn.boardNumber].altitude){
-                    if(data[dataIn.boardNumber].groundAltitude > dataIn[name]){
-                        data[dataIn.boardNumber].groundAltitude = dataIn[name];
-                    }
-                    if(dataIn[name] - data[dataIn.boardNumber].groundAltitude > 50){
-                        for(let names of Object.keys(dataGet)){
-                            data[dataIn.boardNumber].sensor.priority[names].push(dataIn["indice"]);
+                    let priority = []
+                    for(let index = 0;index < dataIn[name].length;index++){
+                        if(data[dataIn.boardNumber].groundAltitude > dataIn[name][index]){
+                            data[dataIn.boardNumber].groundAltitude = dataIn[name][index];
                         }
+                        if(dataIn[name][0] - data[dataIn.boardNumber].groundAltitude > 50){
+                            priority.push(dataIn["indice"][index]);
+                        }
+                    }
+                    for(let names of Object.keys(dataGet)){
+                        data[dataIn.boardNumber].sensor.priority[names] = priority;
                     }
                 }
             }
             data[data.boardNow].updateDataOrNot.sensor = true;
-            console.log(`Get sensor: ${dataIn}`);
+            // console.log(`Get sensor: ${dataIn}`);
             indice++;
         });
         socket.on("cmd-data" , (dataIn) => {
             data[dataIn.boardNumber].command.counter = dataIn.counter;
             data[dataIn.boardNumber].command.command = dataIn.command;
             data[data.boardNow].updateDataOrNot.command = true;
-            console.log(`Get command: ${dataIn}`)
+            // console.log(`Get command: ${dataIn}`)
         });
         socket.on("Port-available", (ports) => {
             listAvaiablePort(ports);
@@ -58,10 +67,12 @@ export function initializeUpdateDataIO(){
 
 export function uplinkSending(){
     let msg = id.uplink.selected.value;
+    let placeholder = false;
     if(msg.length == 0){
         msg = id.uplink.placeholder.value;
+        placeholder = true;
     }
-    socket.emit("uplink",{boardNumber: data.boardNow,msg: msg});
+    socket.emit("uplink",{boardNumber: data.boardNow,msg: msg,placeholder: placeholder});
 
     let count = 0;
     const interval = setInterval(() => {
@@ -92,12 +103,14 @@ export function uplinkSending(){
 }
 
 export function sendUplink(){
-    sending = true;
-    if(id.uplink.placeholder.value == "now" || (id.uplink.selected.value).length == 0){
-        console.log("Sending Now");
-        uplinkSending();
-        sending = false
-    }
+    uplinkSending();
+
+    // sending = true;
+    // if(id.uplink.placeholder.value == "now" || (id.uplink.selected.value).length == 0){
+    //     console.log("Sending Now");
+    //     uplinkSending();
+    //     sending = false
+    // }
 }
 
 export function sendSelectPort(boardNumber,port,baudRate,connectOrNot){

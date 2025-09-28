@@ -166,3 +166,33 @@ footer .container {
   font-size: .95rem;
   color: var(--muted);
 }
+
+.card--graph {
+  position: relative; /* needed for absolute position of X */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
+}
+
+.graph-close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ff4d4f;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  z-index: 9999; /* super high to appear above chart */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/*
+.card--graph:hover .graph-close-btn {
+  display: block; 
+} 
+*/

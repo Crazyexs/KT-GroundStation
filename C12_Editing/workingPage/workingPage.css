@@ -1,0 +1,401 @@
+/* ===================== Global ===================== */
+:root {
+  /* ----- Color System (from 2nd overrides 1st) ----- */
+  --bg: #080c17;
+  --bg-2: #0b1020;
+  --surface: #0f172a;
+  --surface-2: #0b1220;
+  --elev-1: rgba(148,163,184,.12);
+  --elev-2: rgba(148,163,184,.18);
+  --elev-3: rgba(148,163,184,.28);
+
+  --text: #e7edf6;
+  --muted: #9fb0cd;
+  --primary: #5eead4;
+  --accent: #60a5fa;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --ok: #22c55e;
+  --bad: #ef4444;
+
+  /* ----- Effects ----- */
+  --border: 1px solid rgba(148,163,184,.18);
+  --border-soft: 1px solid rgba(148,163,184,.12);
+  --card-radius: 16px;
+  --pad: 14px;
+  --gap: 18px;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+
+  /* ----- Typography ----- */
+  --font: 'Inter', system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; font-family: var(--font); color: var(--text); overflow: hidden; }
+body {
+  background:
+    radial-gradient(1200px 600px at 75% -15%, #1b2a55 0%, #0b1020 60%, #050816 100%),
+    linear-gradient(180deg, #060a14 0%, #060a14 100%);
+  background-attachment: fixed;
+}
+
+/* ===================== Topbar ===================== */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: saturate(1.1) blur(10px);
+  background: linear-gradient(180deg, rgba(2,6,23,.75), rgba(2,6,23,.55));
+  border-bottom: var(--border);
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.topbar__inner { display: flex; align-items: center; gap: var(--gap); padding: var(--pad) 0; }
+
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; box-shadow: 0 6px 16px rgba(0,0,0,.35); }
+.brand__name { font-weight: 800; letter-spacing: .12em; }
+
+.pill {
+  margin-left: auto;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(94,234,212,.14), rgba(94,234,212,.07));
+  color: var(--primary);
+  border: 1px solid rgba(94,234,212,.32);
+  font-size: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+nav.primary { display: flex; gap: 8px; }
+.nav__link {
+  text-decoration: none;
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: border-color .2s ease, background .2s ease, transform .1s ease;
+}
+.nav__link:hover {
+  background: rgba(96,165,250,.1);
+  border-color: rgba(96,165,250,.3);
+}
+.nav__link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(96,165,250,.45);
+}
+
+/* ===================== Dashboard Grid ===================== */
+.dashboard {
+  display: grid;
+  grid-template-areas:
+    "map map location location location clear board"
+    "map map uplink uplink table table table"
+    "graph graph graph graph table table table"
+    "graph graph graph graph table table table"
+    "graph graph graph graph alert alert alert";
+
+  grid-template-columns: 0.5fr 1.5fr 0.5fr 0.5fr 0.5fr 0.3fr 0.2fr;
+  grid-template-rows: 5vh 25vh 15vh 15vh 25vh;
+
+  gap: clamp(10px, 2vw, 20px);
+  width: 100vw;
+  height: 100vh;
+  padding: clamp(10px, 2vw, 30px);
+  box-sizing: border-box;
+}
+
+/* Make blocks fill their grid cells */
+.block, .card {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Grid area mapping */
+.board    { grid-area: board; }
+.location { grid-area: location; min-width: 280px; }
+.timeStamp { grid-area: timeStamp; min-width: 280px; }
+.state    { grid-area: state; }
+.freq     { grid-area: freq; }
+.clear    { grid-area: clear; height: auto; }
+.map      { grid-area: map; }
+.last     { grid-area: last; }
+.uplink   { grid-area: uplink; }
+.graph    { grid-area: graph; }
+.table    { grid-area: table; overflow: hidden; }
+.alert    { grid-area: alert; background: var(--accent); color: #fff; }
+
+/* Responsive: stack blocks on small screens */
+@media (max-width: 980px) {
+  .dashboard {
+    grid-template-areas:
+      "board"
+      "location"
+      "timeStamp"
+      "state"
+      "freq"
+      "clear"
+      "map"
+      "last"
+      "uplink"
+      "graph"
+      "table"
+      "alert";
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(11, 1fr);
+  }
+}
+
+/* ===================== Blocks ===================== */
+.block {
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  padding: 1rem;
+  transition: all .2s ease;
+}
+.block:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ===================== Cards ===================== */
+.card {
+  background:
+    linear-gradient(180deg, rgba(8,13,28,.92), rgba(5,9,18,.92)),
+    linear-gradient(180deg, rgba(17,24,39,.85), rgba(2,6,23,.85));
+  border: var(--border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.card__hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--pad);
+  border-bottom: var(--border-soft);
+  background: linear-gradient(180deg, rgba(21,32,58,.35), rgba(12,18,33,.15));
+}
+.card__title { font-weight: 700; }
+.card__body {
+  display: flex;
+  flex-direction: column;
+  /* height: 200px;        /* fixed height for scrolling reference */
+  padding: 16px;        /* keep your padding */
+}
+
+/* ===================== Buttons ===================== */
+.btnrow { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(148,163,184,.25);
+  background: linear-gradient(180deg, rgba(15,23,42,.7), rgba(15,23,42,.5));
+  color: var(--text);
+  cursor: pointer;
+  transition: transform .06s ease, background .2s ease, border-color .2s ease;
+}
+.btn:hover { background: rgba(30,41,59,.72); }
+.btn:active { transform: translateY(1px); }
+
+.btn--primary {
+  border-color: rgba(94,234,212,.35);
+  background: linear-gradient(180deg, rgba(94,234,212,.14), rgba(94,234,212,.08));
+  color: var(--primary);
+}
+.btn--primary:hover { background: linear-gradient(180deg, rgba(94,234,212,.2), rgba(94,234,212,.12)); }
+
+.btn--accent {
+  border-color: rgba(96,165,250,.35);
+  background: linear-gradient(180deg, rgba(96,165,250,.14), rgba(96,165,250,.08));
+  color: var(--accent);
+}
+
+.btn--danger {
+  border-color: rgba(239,68,68,.35);
+  background: linear-gradient(180deg, rgba(239,68,68,.14), rgba(239,68,68,.08));
+  color: #fecaca;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: rgba(148,163,184,.25);
+  color: var(--muted);
+}
+.btn--ghost:hover {
+  background: rgba(148,163,184,.10);
+  color: var(--text);
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 1200px) {
+  .container { max-width: 100%; }
+}
+@media (max-width: 980px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .cols-4 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: 1fr; }
+  .graph-grid { grid-template-columns: 1fr; }
+  .topbar__inner { gap: 12px; }
+  .brand__name { letter-spacing: .08em; }
+}
+
+
+.fixed-input {
+  width: 50px;   /* fix ความกว้าง */
+  height: 35px;   /* fix ความสูง */
+  box-sizing: border-box; /* รวม padding และ border ไว้ใน width/height */
+}
+
+/* ===================== Graphs ===================== */
+.graph-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap);
+  overflow: hidden; /* prevent overflow */
+  min-height: 260px; /* or any fixed px height */
+  height: auto;      /* instead of 100% */
+}
+.graph-slot {
+  min-height: var(--min-h, 260px);
+  aspect-ratio: var(--ar, auto);
+  background: linear-gradient(180deg, #040816, #060a14);
+  border:1px dashed rgba(148,163,184,.25);
+  border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+
+
+.graph-slot .chart-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+.resizable {
+  resize: vertical;
+  min-height: var(--min-h, 260px);
+  /* min-width: var(--min-w, 500px); */
+  max-height: 100%;  /* cannot overflow parent */
+  overflow: auto;
+} 
+
+.graph-slot:hover{ border-color: rgba(96,165,250,.35) }
+.graph-slot canvas{width:100%; height:100%}
+.graph-slot .slot-hint{color:var(--muted); padding:10px}
+
+/* ===================== Map & Table ===================== */
+#map{
+  /* width:100%; min-height:600px; */
+  border-radius:14px;
+  border:var(--border);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+
+.table-wrap{
+  background: linear-gradient(180deg, #040816, #050a16);
+  border: var(--border);
+  border-radius:14px;
+  /* vertical table comfort */
+}
+table{width:100%; border-collapse:collapse}
+thead th{
+  text-align:left; padding:12px;
+  background:rgba(148,163,184,.08); color:var(--muted); font-weight:600
+}
+tbody td, tbody th{
+  padding:10px 12px; border-bottom:1px solid rgba(148,163,184,.08)
+}
+.table-wrap::-webkit-scrollbar {
+  height: 8px; /* small horizontal scrollbar */
+}
+.table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(100,100,100,0.5);
+  border-radius: 4px;
+}
+
+
+
+/* ===================== Resizable ===================== */
+.resizable{ resize: vertical; overflow:auto; min-height: var(--min-h, 200px) }
+
+/* ===================== Focus & Keyboard ===================== */
+:where(a, button, input, select, .port-box):focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(96,165,250,.45);
+  border-color: rgba(96,165,250,.45);
+}
+
+.stage__value {
+  background: #040816;
+  border:var(--border);
+  border-radius:12px; padding:10px; height:180px; overflow:auto;
+  font-family: var(--mono);
+  line-height:1.45;
+  height: 120px;
+}
+
+.card--graph {
+  width: 100%;
+  max-width: 680px;
+  padding: 15px;
+  height: 250px;
+  position: relative;
+}
+
+.card--graph::before,
+.card--graph::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.card--graph::before {
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.2);
+  transform: translate(-30px, -30px);
+}
+
+.card--graph::after {
+  z-index: 2;
+  background-color: #ffffff;
+}
+
+.card--graph-content {
+  position: relative;
+  z-index: 3;
+}
+
+.card--graph:hover {
+  color: #000; /* switch all text inside to black */
+}
+
+.card--graph:hover .card__title,
+.card--graph:hover .card__body,
+.card--graph:hover .slot-hint {
+  color: #000; /* ensure all child text switches too */
+}
+
+
+
+/* Make each graph fill its grid cell */
+.graph-slot {
+    width: 600px;
+    height: auto; /* min-height still controlled by your --min-h */
+}

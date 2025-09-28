@@ -29,8 +29,23 @@ export function setupIOroutes() {
         console.log(`🔄 Received command from client:${boardNumber}: ${msg}`);
         const serial = data[boardNumber].serial;
         if (serial && serial.writable) {
-        serial.write(`cmd ${msg}`);
+          if(dataIn.placeholder){
+            serial.write(`${msg}`);
+          }
+          else{
+            serial.write(`cmd ${msg}`);
+          }
         }
+    });
+
+    socket.on('clear', (dataIn) => {
+      let boardNumber = dataIn.boardNumber;
+      if(!dataIn.number){
+        data[boardNumber].shiftValue = 0;
+      }
+      else{
+        data[boardNumber].shiftValue = parseInt(dataIn.number);
+      }
     });
   });
 }
