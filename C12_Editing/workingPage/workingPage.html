@@ -36,6 +36,25 @@
 <body>
   <div class="dashboard">
     
+    <!-- ========== KT ========== -->
+
+    <div class="block KT">
+      <div class="KT-text">KT GS</div>
+    </div>
+
+    <!-- ========== LOGOS ========== -->
+
+    <div class="block logos">
+      <img src="./assets/dti_logo.png" alt="Logo 1">
+      <img src="./assets/intel_logo.png" alt="Logo 2">
+      <img src="./assets/kmutt_logo.png" alt="Logo 3">
+      <img src="./assets/school_logo.png" alt="Logo 4">
+      <img src="./assets/space_ac_logo.png" alt="Logo 5">
+      <img src="./assets/wangchan_logo.png" alt="Logo 6">
+    </div>
+
+    <!-- ========== SELECTED BOARD ========== -->
+
     <div class="block board">
       <select id="boardID">
       </select>
@@ -74,7 +93,7 @@
           <h3 id="resultUplink">Wait for uplink...</h3>
         </div>
 
-        <article class="card">
+        <!-- <article class="card"> -->
           <div class="card__body">
             <label for="uplink-cmd">Command</label>
             <div class="row cols-3">
@@ -88,7 +107,7 @@
               <button class="btn btn--accent" id="sendBtn" data-btn="send-cmd">Send</button>
             </div>
           </div>
-        </article>
+        <!-- </article> -->
       </section>
     </div>
 
@@ -103,6 +122,33 @@
           <div class="slot-hint skeleton">Another graph slot</div>
         </div> -->
     </div>
+    
+    <!-- ========== SERVO ========== -->
+
+    <div class="block servo">
+      <article class="card widget widget--stage" aria-labelledby="stage-title">
+        <div class="card__hdr">
+          <div class="card__title" id="stage-title">SERVO CHECK</div>
+        </div>
+        <div class="card__body">
+          <div class="stage__value" id="servoValue" style="font-size: 60px;">WAIT</div>
+        </div>
+      </article>
+    </div>
+    
+    <!-- ========== STATE ========== -->
+
+    <div class="block state">
+      <article class="card widget widget--stage" aria-labelledby="stage-title">
+        <div class="card__hdr">
+          <div class="card__title" id="stage-title">STAGE</div>
+        </div>
+        <div class="card__body">
+          <div class="stage__value" id="stageValue" style="font-size: 60px;">WAIT</div>
+        </div>
+      </article>
+    </div>
+
     <!-- ========== TABLE ========== -->
     <div class="block table">
       <div class="table-wrap resizable" style="overflow-x:auto;">

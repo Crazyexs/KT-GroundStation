@@ -12,13 +12,18 @@ let prevBoard = null;
 let init = false;
 let divChart = {};
 
+let oldack = 0;
+let oldnack = 0;
+
 let dataTable = [
-                    "TimeStamp",
+                    "counter",
+                    // "TimeStamp",
                     "RocketName",
                     "freq",
-                    "state",
+                    // "state",
                     "altitude",
                     "apogee",
+                    "servoCheck",
                     "voltageMon",
                     "RSSI",
                     "SNR",
@@ -27,13 +32,13 @@ let dataTable = [
                 ];
                 /*  [name,max,min] */
 let dataGraph = [
-                    [["altitude"],1300,0],
+                    [["altitude"],null,0],
                     
                 ]
 let dataradialBar = [
-                      [["voltageMon"],7.4,0,"+"],
-                      [["RSSI"],20,-130,"-"],
-                      [["SNR"],20,-130,"-"]
+                      // [["voltageMon"],7.4,0,"+"],
+                      // [["currentServo"],20,-130,"-"],
+                      // [["SNR"],20,-130,"-"]
                     ]
 function getGoogleMapsPinLink(lat, lng) {
   return `https://www.google.com/maps?q=${lat},${lng}`;
@@ -319,17 +324,19 @@ export function placeChartSlot() {
   const empty = qsa('.graph-slot.is-empty')[0];
   const slot = document.createElement('div');
   slot.className = 'graph-slot resizable';
-  slot.style.setProperty('--min-h','240px');
-  slot.style.setProperty('--min-w','650px'); // full width of grid cell
+  // slot.style.setProperty('heigth','600px');
+  // slot.style.setProperty('--min-w','1300px'); // full width of grid cell
 
   // wrap in card
   const card = document.createElement('div');
   card.className = 'card--graph';
-  card.style.setProperty('--min-w','650px'); // full width of grid cell
+  // card.style.setProperty('heigth','600px');
+  // card.style.setProperty('--min-w','1300px'); // full width of grid cell
 
   const content = document.createElement('div');
   content.className = 'card--graph-content';
-  content.style.setProperty('--min-w','650px'); // full width of grid cell
+  // content.style.setProperty('heigth','600px');
+  // content.style.setProperty('--min-w','1300px'); // full width of grid cell
 
   const chartDiv = document.createElement('div');
   chartDiv.className = 'chart-container';
@@ -378,8 +385,8 @@ export function createRadialChart({
   const chartOptions = {
     chart: {
       type: 'radialBar',
-      height: '240px',
-      width: '100%',
+      height: '480px',
+      width: '1300px',
       fontFamily: 'Helvetica, Arial, sans-serif',
       foreColor: '#000000ff',
       id: realID,
@@ -461,8 +468,8 @@ export function createChart({
   if (!chartOptions) {
     chartOptions = {
       chart: {
-        height: "240px",
-        width: "550px",
+        height: "500px",
+        width: "850px",
         type: type,
         fontFamily: 'Helvetica, Arial, sans-serif',
         foreColor: '#000000ff',
@@ -759,6 +766,9 @@ export function updateGraph(){
     }
 }
 
+/* ============================================= 9+ ============================================= */
+
+
 /* ============================================= Uplink ============================================= */
 
 export function initializeUplink(){
@@ -775,13 +785,21 @@ export function initializeUplink(){
 }
 
 export function uplinkSending(){
+    let now = 0;
     let msg = id.uplink.selected.value;
     let placeholder = false;
     if(msg.length == 0){
         msg = id.uplink.placeholder.value;
         placeholder = true;
     }
-    socket.emit("uplink",{boardNumber: data.boardNow,msg: msg,placeholder: placeholder});
+    else if(id.uplink.placeholder.value == "now"){
+      now = 1;
+    }
+    socket.emit("uplink",{boardNumber: data.boardNow,msg: msg,placeholder: placeholder,now: now});
+
+    id.uplink.result.textContent = "Wait for uplink...";
+    id.uplink.result.style.color = "white";
+
 
     const indice = data[data.boardNow].sensor.dataIn;
     const nowIndice = indice[indice.length - 1];
@@ -789,12 +807,14 @@ export function uplinkSending(){
     const interval = setInterval(() => {
         let last_ack = data[data.boardNow].sensor.dataIn["last_ack"];
         let last_nack = data[data.boardNow].sensor.dataIn["last_nack"];
-        if(last_ack[last_ack.length - 1] != last_ack[last_ack.length - 2]){
+        if(last_ack[last_ack.length - 1] != last_ack[last_ack.length - 2] /* && last_ack[last_ack.length - 1] != oldack */ ){
+            oldack = last_ack[last_ack.length - 1];
             id.uplink.result.textContent = "Success";
             id.uplink.result.style.color = "green";
             clearInterval(interval);
         }
-        else if(last_nack[last_nack.length - 1] != last_nack[last_nack.length - 2]){
+        else if(last_nack[last_nack.length - 1] != last_nack[last_nack.length - 2] /* && last_nack[last_nack.length - 1] != oldnack */ ){
+            oldnack = last_nack[last_nack.length - 2];
             id.uplink.result.textContent = "Lora send error";
             id.uplink.result.style.color = "yellow";
             clearInterval(interval);
@@ -825,6 +845,35 @@ export function event(){
     })
 }
 
+/* ============================================= SERVO ============================================= */
+function servo(){
+  let boardDatas = data[data.boardNow].sensor.dataIn;
+  let boardData = {};
+  for(const name of Object.keys(boardDatas)){
+      boardData[name] = boardDatas[name][boardDatas[name].length - 1];
+  }
+  if(!boardData["servoCheck"]){
+    document.getElementById("servoValue").textContent = "FALSE"
+  }
+  else{
+    document.getElementById("servoValue").textContent = "TRUE"
+  }
+  // console.log("SERVOOO " + document.getElementById("servoValue").value)
+  // console.log("SERRRPPPPOOOOOPOKDKJAJKSDKJDAKSD " + boardData["servoCheck"])
+
+}
+
+/* ============================================= STATE ============================================= */
+
+function state(){
+  let boardDatas = data[data.boardNow].sensor.dataIn;
+  let boardData = {};
+  for(const name of Object.keys(boardDatas)){
+      boardData[name] = boardDatas[name][boardDatas[name].length - 1];
+  }
+  document.getElementById("stageValue").textContent = boardData["state"];
+}
+
 /* ============================================= update ============================================= */
 
 export function update_workingPageCommand(){
@@ -836,6 +885,8 @@ export function update_workingPageSensor(){
     updateGraph();
     updateMap();
     updateTable();
+    servo();
+    state();
 }
 
 export function initWorkingPage(){

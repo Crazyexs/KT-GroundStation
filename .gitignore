@@ -1,1 +1,7 @@
 node_modules
+./testing_workspace
+./Note
+./Public
+./RESULT DYNAMC1.5
+./database/command_database.db
+./database/sensor_database.db

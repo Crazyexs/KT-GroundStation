@@ -88,18 +88,19 @@ nav.primary { display: flex; gap: 8px; }
   box-shadow: 0 0 0 3px rgba(96,165,250,.45);
 }
 
-/* ===================== Dashboard Grid ===================== */
-.dashboard {
+/* ===================== Dashboard Grid ===================== */.dashboard {
   display: grid;
   grid-template-areas:
-    "map map location location location clear board"
-    "map map uplink uplink table table table"
-    "graph graph graph graph table table table"
-    "graph graph graph graph table table table"
-    "graph graph graph graph alert alert alert";
+    "KT logos logos location location location clear board"
+    "map  map   map   location location location clear board"
+    "map  map   map   uplink   uplink   table table table"
+    "graph graph graph graph    servo    table table table"
+    "graph graph graph graph    servo    table table table"
+    "graph graph graph graph    state    alert alert alert"
+    "graph graph graph graph    state    alert alert alert";
 
-  grid-template-columns: 0.5fr 1.5fr 0.5fr 0.5fr 0.5fr 0.3fr 0.2fr;
-  grid-template-rows: 5vh 25vh 15vh 15vh 25vh;
+  grid-template-columns: 0.8fr 0.2fr 1.5fr 0.5fr 1fr 0.5fr 0.3fr 0.2fr;
+  grid-template-rows: 4vh 3vh 25vh 13.75vh 13.75vh 13.75vh 13.75vh;
 
   gap: clamp(10px, 2vw, 20px);
   width: 100vw;
@@ -116,6 +117,7 @@ nav.primary { display: flex; gap: 8px; }
 }
 
 /* Grid area mapping */
+.KT { grid-area: KT; }
 .board    { grid-area: board; }
 .location { grid-area: location; min-width: 280px; }
 .timeStamp { grid-area: timeStamp; min-width: 280px; }
@@ -126,6 +128,8 @@ nav.primary { display: flex; gap: 8px; }
 .last     { grid-area: last; }
 .uplink   { grid-area: uplink; }
 .graph    { grid-area: graph; }
+.servo    { grid-area: servo; }
+.state    { grid-area: state; }
 .table    { grid-area: table; overflow: hidden; }
 .alert    { grid-area: alert; background: var(--accent); color: #fff; }
 
@@ -133,6 +137,7 @@ nav.primary { display: flex; gap: 8px; }
 @media (max-width: 980px) {
   .dashboard {
     grid-template-areas:
+      "KT"
       "board"
       "location"
       "timeStamp"
@@ -143,6 +148,8 @@ nav.primary { display: flex; gap: 8px; }
       "last"
       "uplink"
       "graph"
+      "servo"
+      "state"
       "table"
       "alert";
     grid-template-columns: 1fr;
@@ -262,20 +269,22 @@ nav.primary { display: flex; gap: 8px; }
 /* ===================== Graphs ===================== */
 .graph-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
   gap: var(--gap);
-  overflow: hidden; /* prevent overflow */
-  min-height: 260px; /* or any fixed px height */
-  height: auto;      /* instead of 100% */
+  align-items: stretch;   /* make all children same height */
 }
+
 .graph-slot {
-  min-height: var(--min-h, 260px);
-  aspect-ratio: var(--ar, auto);
+  width: 100%;           /* fill parent grid cell */
+  height: 100%;          /* fill parent grid cell */
+  min-height: var(--min-h, 260px); /* keep a minimum */
   background: linear-gradient(180deg, #040816, #060a14);
-  border:1px dashed rgba(148,163,184,.25);
-  border-radius:14px;
-  display:flex; align-items:center; justify-content:center;
-  overflow:hidden;
+  border: 1px dashed rgba(148,163,184,.25);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 
@@ -286,7 +295,6 @@ nav.primary { display: flex; gap: 8px; }
 .resizable {
   resize: vertical;
   min-height: var(--min-h, 260px);
-  /* min-width: var(--min-w, 500px); */
   max-height: 100%;  /* cannot overflow parent */
   overflow: auto;
 } 
@@ -329,7 +337,7 @@ tbody td, tbody th{
 
 
 /* ===================== Resizable ===================== */
-.resizable{ resize: vertical; overflow:auto; min-height: var(--min-h, 200px) }
+.resizable{ resize: horizontal; overflow:auto; min-height: var(--min-h, 200px) }
 
 /* ===================== Focus & Keyboard ===================== */
 :where(a, button, input, select, .port-box):focus-visible{
@@ -349,9 +357,9 @@ tbody td, tbody th{
 
 .card--graph {
   width: 100%;
-  max-width: 680px;
+  max-width: 1300px;
   padding: 15px;
-  height: 250px;
+  height: auto;
   position: relative;
 }
 
@@ -396,6 +404,97 @@ tbody td, tbody th{
 
 /* Make each graph fill its grid cell */
 .graph-slot {
-    width: 600px;
+    width: auto;
     height: auto; /* min-height still controlled by your --min-h */
 }
+
+/* ===================== logos ===================== */
+
+.logos {
+  grid-area: logos;
+  display: flex;
+  justify-content: space-evenly; /* กระจายโลโก้ 5 อันเท่ากัน */
+  align-items: center;
+  background: transparent; /* ทำให้ block ล่องหน */
+  border: none;
+  box-shadow: none;
+}
+.logos img {
+  height: 40px;   /* ขนาดโลโก้ */
+  width: auto;
+  opacity: 0.9;   /* ทำให้ดูซอฟต์ */
+  transition: transform 0.2s ease;
+}
+.logos img:hover {
+  transform: scale(1.1); /* ขยายตอน hover */
+}
+
+/* ===================== KT ===================== */
+
+.KT {
+  grid-area: KT;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent; /* ล่องหน */
+  border: none;
+  box-shadow: none;
+}
+
+.KT-text {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #ff0077, #00d4ff); /* ไล่สี */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* ทำให้ข้อความเป็น gradient */
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255,255,255,0.2);
+  transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+
+.KT-text:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 20px #00d4ff, 0 0 40px #ff0077;
+}
+
+/* ===================== Inputs & Selects ===================== */
+input, select {
+  padding: 10px 12px;
+  font-family: var(--font);
+  font-size: 14px;
+  border-radius: var(--card-radius);
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(20,25,35,.85);
+  color: var(--text);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input::placeholder {
+  color: rgba(255,255,255,.5);
+}
+
+input:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 6px var(--primary);
+  background: rgba(30,35,50,.95);
+}
+
+/* fix fixed-input (small inputs like clearPlaceholder) */
+.fixed-input {
+  width: 50px;
+  height: 35px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: rgba(20,25,35,.85) url('data:image/svg+xml;utf8,<svg fill="white" height="14" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+  background-size: 12px;
+  padding-right: 30px;
+}
+

@@ -29,7 +29,10 @@ export function setupIOroutes() {
         console.log(`🔄 Received command from client:${boardNumber}: ${msg}`);
         const serial = data[boardNumber].serial;
         if (serial && serial.writable) {
-          if(dataIn.placeholder){
+          if(dataIn.now == 1){
+            serial.write(`now cmd ${msg}`);
+          }
+          else if(dataIn.placeholder){
             serial.write(`${msg}`);
           }
           else{

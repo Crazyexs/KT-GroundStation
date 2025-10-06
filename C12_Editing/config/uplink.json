@@ -1,5 +1,5 @@
 {
-    "<3>":[
+    "<1>":[
         {
             "value": "ping",
             "label": "Ping"
@@ -37,6 +37,10 @@
             "label": "Servo A Deploy"
         },
         {
+            "value": "servo-a-test",
+            "label": "Servo A TEST"
+        },
+        {
             "value": "servo-b-set",
             "label": "Servo B SET"
         },
@@ -47,6 +51,10 @@
         {
             "value": "servo-b-deploy",
             "label": "Servo B Deploy"
+        },
+        {
+            "value": "servo-b-test",
+            "label": "Servo B TEST"
         },
         {
             "value": "launch-override",

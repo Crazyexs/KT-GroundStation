@@ -66,13 +66,20 @@ export function initializeUpdateDataIO(){
 }
 
 export function uplinkSending(){
+    let now = 0;
     let msg = id.uplink.selected.value;
     let placeholder = false;
     if(msg.length == 0){
         msg = id.uplink.placeholder.value;
         placeholder = true;
     }
-    socket.emit("uplink",{boardNumber: data.boardNow,msg: msg,placeholder: placeholder});
+    else if(id.uplink.placeholder.value == "now"){
+      now = 1;
+    }
+    socket.emit("uplink",{boardNumber: data.boardNow,msg: msg,placeholder: placeholder,now: now});
+
+    id.uplink.result.textContent = "Wait for uplink...";
+    id.uplink.result.style.color = "white";
 
     let count = 0;
     const interval = setInterval(() => {

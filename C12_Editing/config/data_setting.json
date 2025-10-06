@@ -1,5 +1,5 @@
 {
-    "<3>":{
+    "<1>":{
         "header":"<0>,",
         "delimiter": ",",
         "data_format":{
@@ -14,6 +14,7 @@
             "gps_longitude": "REAL",
             "altitude": "REAL",
             "apogee": "REAL",
+            "servoCheck": "REAL",
             "voltageMon": "REAL",
             "last_ack": "REAL",
             "last_nack": "REAL",

@@ -145,6 +145,7 @@ export function createChart({
     chartOptions = {
       chart: {
         height: 400,
+        width: 1000,
         type: type,
         fontFamily: 'Helvetica, Arial, sans-serif',
         foreColor: '#000000ff',
