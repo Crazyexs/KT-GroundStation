@@ -24,6 +24,7 @@ let dataTable = [
                     "altitude",
                     "apogee",
                     "servoCheck",
+                    "currentServo",
                     "voltageMon",
                     "RSSI",
                     "SNR",

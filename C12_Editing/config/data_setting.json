@@ -1,11 +1,12 @@
 {
-    "<1>":{
+    "NOVA":{
         "header":"<0>,",
         "delimiter": ",",
         "data_format":{
             "indice": "INTEGER",
             "TimeStamp": "TEXT",
             "status": "TEXT",
+            "BoardNumber": "TEXT",
             "RocketName": "TEXT",
             "freq": "REAL",
             "counter": "INTEGER",
@@ -15,6 +16,7 @@
             "altitude": "REAL",
             "apogee": "REAL",
             "servoCheck": "REAL",
+            "currentServo": "REAL",
             "voltageMon": "REAL",
             "last_ack": "REAL",
             "last_nack": "REAL",
