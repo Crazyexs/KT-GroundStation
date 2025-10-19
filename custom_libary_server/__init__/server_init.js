@@ -10,7 +10,7 @@ const io = new Server(server);
 
 export function initializeServer(setting) {
     app.use(express.json());
-    app.use(express.static(path.join(process.cwd(), 'C12_Editing')));
+    app.use(express.static(path.join(process.cwd(), 'public')));
 
     const PORT = setting.port;
     server.listen(PORT, () => {

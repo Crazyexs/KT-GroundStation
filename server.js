@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'url';
 const dir = { 
   init: "./custom_libary_server/__init__/",
   function: "./custom_libary_server/function/",
-  config: "./C12_Editing/config/",
+  config: "./public/config/",
   expression: "./custom_libary_server/expression.js"
 };
 
