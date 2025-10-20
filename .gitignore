@@ -1,10 +1,10 @@
-node_modules
-testing_workspace
-Note
-Public
-RESULT_DYNAMC1.5
-database
-testing_workspace
+node_modules/
+testing_workspace/
+Note/
+Public/
+RESULT_DYNAMC1.5/
+database/
+testing_workspace/
 Note.txt
 serverAPI.js
 simUplink.js
