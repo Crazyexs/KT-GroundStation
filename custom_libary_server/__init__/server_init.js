@@ -1,9 +1,8 @@
-import expressPkg from 'express';
+import express from 'express';
 import path from 'path';
 import http from 'http';
 import { Server } from 'socket.io';
 
-const express = expressPkg;
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);

@@ -91,16 +91,12 @@ nav.primary { display: flex; gap: 8px; }
 /* ===================== Dashboard Grid ===================== */.dashboard {
   display: grid;
   grid-template-areas:
-    "KT logos logos location location location clear board"
-    "map  map   map   location location location clear board"
-    "map  map   map   uplink   uplink   table table table"
-    "graph graph graph graph    servo    table table table"
-    "graph graph graph graph    servo    table table table"
-    "graph graph graph graph    state    alert alert alert"
-    "graph graph graph graph    state    alert alert alert";
-
-  grid-template-columns: 0.8fr 0.2fr 1.5fr 0.5fr 1fr 0.5fr 0.3fr 0.2fr;
-  grid-template-rows: 4vh 3vh 25vh 13.75vh 13.75vh 13.75vh 13.75vh;
+    "KT logos location clear"
+    "config graph graph  table"
+    "widget velocity map talbe"
+    "widget rawData rawData rawData";
+  grid-template-columns: 1fr 1fr 1.5fr 1fr;
+  grid-template-rows: 5vh 40vh 40vh 5vh;
 
   gap: clamp(10px, 2vw, 20px);
   width: 100vw;
@@ -118,40 +114,34 @@ nav.primary { display: flex; gap: 8px; }
 
 /* Grid area mapping */
 .KT { grid-area: KT; }
-.board    { grid-area: board; }
+.logos    { grid-area: logos; }
 .location { grid-area: location; min-width: 280px; }
-.timeStamp { grid-area: timeStamp; min-width: 280px; }
-.state    { grid-area: state; }
-.freq     { grid-area: freq; }
 .clear    { grid-area: clear; height: auto; }
 .map      { grid-area: map; }
-.last     { grid-area: last; }
-.uplink   { grid-area: uplink; }
 .graph    { grid-area: graph; }
-.servo    { grid-area: servo; }
-.state    { grid-area: state; }
 .table    { grid-area: table; overflow: hidden; }
-.alert    { grid-area: alert; background: var(--accent); color: #fff; }
+.widget   { grid-area: widget; }
+.rawData  { grid-area: rawData; }
+.velocity { grid-area: velocity; }
+.config   { grid-area: config; }
+/* logos area defined in logos CSS section */
+
 
 /* Responsive: stack blocks on small screens */
 @media (max-width: 980px) {
   .dashboard {
     grid-template-areas:
       "KT"
-      "board"
+      "logos"
       "location"
-      "timeStamp"
-      "state"
-      "freq"
       "clear"
       "map"
-      "last"
-      "uplink"
       "graph"
-      "servo"
-      "state"
       "table"
-      "alert";
+      "widget"
+      "rawData"
+      "velocity"
+      "config";
     grid-template-columns: 1fr;
     grid-template-rows: repeat(11, 1fr);
   }

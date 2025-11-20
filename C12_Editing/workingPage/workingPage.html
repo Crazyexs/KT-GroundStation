@@ -5,21 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rocket Dashboard Layout</title>
   <link rel="stylesheet" href="workingPage.css" />
-
-  <!-- <link rel="stylesheet" href="../styles.css" /> -->
-  <!-- Map & Charts -->
-  <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css" />
-  <script src="./node_modules/leaflet/dist/leaflet.js"></script>
+  
+  <!-- Map & Charts (Leaflet) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- ApexCharts -->
-  <script src="./node_modules/apexcharts/dist/apexcharts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
   <!-- OpenLayers -->
-  <link rel="stylesheet" href="./node_modules/ol/ol.css">
-  <script src="./node_modules/ol/dist/ol.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
 
   <!-- Socket.IO -->
-  <script src="./node_modules/socket.io-client/dist/socket.io.js"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
   <!-- Web tab -->
   <title>SPACE AC KT—Groundstation</title>
@@ -28,9 +33,15 @@
   <!-- Web head -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Groundstation dashboard with sections for connect, commands, graphs, map, and table. Clean, dark, and responsive." />
+  <meta
+    name="description"
+    content="Groundstation dashboard with sections for connect, commands, graphs, map, and table. Clean, dark, and responsive."
+  />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
 
 </head>
 <body>
@@ -45,19 +56,6 @@
     <!-- ========== LOGOS ========== -->
 
     <div class="block logos">
-      <img src="./assets/dti_logo.png" alt="Logo 1">
-      <img src="./assets/intel_logo.png" alt="Logo 2">
-      <img src="./assets/kmutt_logo.png" alt="Logo 3">
-      <img src="./assets/school_logo.png" alt="Logo 4">
-      <img src="./assets/space_ac_logo.png" alt="Logo 5">
-      <img src="./assets/wangchan_logo.png" alt="Logo 6">
-    </div>
-
-    <!-- ========== SELECTED BOARD ========== -->
-
-    <div class="block board">
-      <select id="boardID">
-      </select>
     </div>
     
     <!-- ========== LOCATION of ROCKET ========== -->
@@ -77,17 +75,9 @@
 
     <div id="map" class="block map" style="--min-h:420px; --ar:auto" role="img" aria-label="rocket map"></div>
 
-    <!-- ========== last command ========== -->
-
-    <!-- <div class="block last">
-      <div class="monitor resizable" id="monitor" aria-live="polite" aria-label="command logs">
-        <div class="slot-hint skeleton">Waiting for messages…</div>
-      </div>
-    </div> -->
-
     <!-- ========== Uplink ========== -->
 
-    <div class="block uplink">
+    <div class="block config">
       <section id="uplink" class="container" aria-labelledby="uplink-title">
         <div class="section__hdr">
           <h3 id="resultUplink">Wait for uplink...</h3>
@@ -125,26 +115,13 @@
     
     <!-- ========== SERVO ========== -->
 
-    <div class="block servo">
+    <div class="block velocity">
       <article class="card widget widget--stage" aria-labelledby="stage-title">
         <div class="card__hdr">
           <div class="card__title" id="stage-title">SERVO CHECK</div>
         </div>
         <div class="card__body">
           <div class="stage__value" id="servoValue" style="font-size: 60px;">WAIT</div>
-        </div>
-      </article>
-    </div>
-    
-    <!-- ========== STATE ========== -->
-
-    <div class="block state">
-      <article class="card widget widget--stage" aria-labelledby="stage-title">
-        <div class="card__hdr">
-          <div class="card__title" id="stage-title">STAGE</div>
-        </div>
-        <div class="card__body">
-          <div class="stage__value" id="stageValue" style="font-size: 60px;">WAIT</div>
         </div>
       </article>
     </div>
@@ -167,20 +144,6 @@
           </tbody>
         </table>
       </div>
-    </div>
-
-    <!-- ========== ALERT ========== -->
-
-    <div class="block alert">
-      <article class="card widget widget--stage" aria-labelledby="stage-title">
-        <div class="card__hdr">
-          <div class="card__title" id="alert-title">ALERT</div>
-        </div>
-        <div class="card__body">
-          <div class="stage__value" id="alert-value" aria-live="polite">
-          </div>
-        </div>
-      </article>
     </div>
   </div>
 </body>
